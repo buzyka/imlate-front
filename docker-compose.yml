@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - BACKEND_URL=http://backend:8080
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  frontend-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - BACKEND_URL=http://backend:8080
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
