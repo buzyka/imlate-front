@@ -165,11 +165,13 @@
       title="Add QR code"
       width="300px"
       :close-on-click-modal="false"
+      @opened="focusQRInput"
     >
       <el-input
         v-model="newQRForUser"
         placeholder="Enter QR code"
         @keyup.enter="confirmAddQR"
+        ref="qrDialogInput"
       />
       <template #footer>
         <el-button @click="qrDialogVisible = false">Cancel</el-button>
@@ -289,6 +291,19 @@ function confirmAddQR(){
   selectedUser.value.QRkod.push(newQRForUser.value.trim())
   ElMessage.success('Code added')
   setTimeout(()=> qrDialogVisible.value=false, 200)
+}
+// QR dialog input reference
+
+const qrDialogInput = ref(null)
+/**
+ * Focus QR input after the dialog is opened.
+ * Element Plus dialogs render asynchronously,
+ * so focus must be applied using nextTick.
+ */
+function focusQRInput() {
+  nextTick(() => {
+    qrDialogInput.value?.focus()
+  })
 }
 </script>
 
