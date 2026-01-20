@@ -167,15 +167,22 @@
       :close-on-click-modal="false"
       @opened="focusQRInput"
     >
-      <el-input
-        v-model="newQRForUser"
-        placeholder="Enter QR code"
-        @keyup.enter="confirmAddQR"
-        ref="qrDialogInput"
-      />
+    <el-input
+      v-model="newQRForUser"
+      placeholder="Enter QR code"
+      :disabled="savingQR"
+      @keyup.enter="confirmAddQR"
+      ref="qrDialogInput"
+    />
       <template #footer>
         <el-button @click="qrDialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="confirmAddQR">Add</el-button>
+        <el-button
+          type="primary"
+          :loading="savingQR"
+          :disabled="!newQRForUser.trim() || savingQR"
+          @click="confirmAddQR">
+           Add
+        </el-button>
       </template>
     </el-dialog>
 
@@ -273,7 +280,10 @@ function editRemoveQR(i){ editForm.value.QRkod.splice(i,1) }
 function saveEdit(){ const i = users.value.findIndex(u=>u.id===editForm.value.id); if(i>=0) users.value.splice(i,1,{...editForm.value}); dialogVisible.value=false }
 
 /* ROW SELECT */
-function selectRow(row){ editInline(row) }
+function selectRow(row){
+  if (!row) return
+  editInline(row)
+}
 
 /* DOUBLE CLICK ADD QR */
 const qrDialogVisible = ref(false)
@@ -286,11 +296,33 @@ function openAddQRDialog(row){
   qrDialogVisible.value = true
 }
 
-function confirmAddQR(){
-  if(!newQRForUser.value.trim()) return
-  selectedUser.value.QRkod.push(newQRForUser.value.trim())
-  ElMessage.success('Code added')
-  setTimeout(()=> qrDialogVisible.value=false, 200)
+// Adding a QR code to a user from the dialog and sending QR to server
+const savingQR = ref(false)
+
+async function confirmAddQR() {
+  const qr = newQRForUser.value.trim()
+  if (!qr || savingQR.value) return
+
+  savingQR.value = true
+
+  try {
+    const { data } = await api.post(
+      `/users/${selectedUser.value.id}/qr`,
+      { qr }
+    )
+
+    // сервер — источник истины
+    selectedUser.value.QRkod = data.QRkod
+
+    ElMessage.success('QR saved')
+    qrDialogVisible.value = false
+  } catch (err) {
+    ElMessage.error(
+      err.response?.data?.message || 'Failed to save QR'
+    )
+  } finally {
+    savingQR.value = false
+  }
 }
 // QR dialog input reference
 
