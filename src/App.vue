@@ -1,15 +1,15 @@
 <template>
   <el-container style="min-height:100vh">
-    <el-header height="56px" class="app-header" v-if="isAuthed">
+    <el-header height="36px" class="app-header" v-if="isAuthed">
       <div class="brand">🔥 Vue Admin</div>
       <div class="spacer"></div>
       <el-button size="small" @click="logout">Logout</el-button>
     </el-header>
     <el-container>
-      <el-aside width="220px" v-if="isAuthed" class="app-aside">
+      <el-aside width="180px" v-if="isAuthed" class="app-aside">
         <el-menu router default-active="/">
-          <el-menu-item index="/">Dashboard</el-menu-item>
-          <el-menu-item index="/users">Users</el-menu-item>
+          <el-menu-item index="/">Staff Manager</el-menu-item>
+          <el-menu-item index="/users">Student Manager</el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>

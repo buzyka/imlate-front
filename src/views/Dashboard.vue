@@ -4,26 +4,51 @@
 
     <!-- Quick Stats -->
     <el-card>
+      
       <template #header><b>Quick Stats</b></template>
       <div class="stats">
 
-        <div class="stat clickable" @click="statusFilter = null">
+        <div
+         class="stat clickable" 
+         :class="{ active: statusFilter === null }"
+         @click="statusFilter = null"
+        >
           <div class="kpi">{{ users.length }}</div>
           <div>Users
             <span v-if="statusFilter === null" class="check">✓</span>
           </div>
         </div>
 
-        <div class="stat clickable" @click="statusFilter  = 'true'">
-          <div class="kpi">{{ activeCount }}</div>
-          <div>Active 
-          <span v-if="statusFilter === 'true'" class="check">✓</span></div>
+        <div
+         class="stat clickable" 
+         :class="{ active: statusFilter === 'signedIn' }"
+         @click="statusFilter  = 'signedIn'"
+        >
+          <div class="kpi">{{ SignedIN }}</div>
+          <div>Signed in 
+          <span v-if="statusFilter === 'signedIn'" class="check">✓</span></div>
+        </div>
+        
+        <div 
+        class="stat clickable" 
+        :class="{ active: statusFilter === 'signedOut' }"
+        @click="statusFilter  = 'signedOut'"
+          >
+          <div class="kpi">{{ SignedOut}}</div>
+          <div>Signed out 
+          <span v-if="statusFilter === 'signedOut'" class="check">✓</span></div>
         </div>
 
-        <div class="stat">
-          <div class="kpi">{{ createdThisWeek }}</div>
-          <div>New (7d)</div>
+        <div 
+        class="stat clickable" 
+        :class="{ active: statusFilter === 'notSigned' }"
+        @click="statusFilter  = 'notSigned'"
+      >
+          <div class="kpi">{{ NotSigned}}</div>
+          <div>Not Signed in 
+          <span v-if="statusFilter === 'notSigned'" class="check">✓</span></div>
         </div>
+
       </div>
     </el-card>
 
@@ -92,13 +117,22 @@ onMounted(async () => {
     {id:7,name:"Victor",SurName:"Farest", last_act_time:"13/01/2026 10:53:37",active:"true"},
     {id:8,name:"Veronika",SurName:"Vetost", last_act_time:"13/01/2026 12:00:37",active:"false"},
     {id:9,name:"Jak",SurName:"Forkar", last_act_time:"13/01/2026 10:53:37",active:"true"},
+    {id:10,name:"Tom",SurName:"Forkar", last_act_time:"13/01/2026 10:53:37",active:"false"},
   ]
   }
 })
 
-// подсчёт активных пользователей
-const activeCount = computed(() =>
+// подсчёт пользователей
+const SignedIN = computed(() =>
   users.value.filter(u => u.active === 'true').length
+)
+
+const SignedOut = computed(() =>
+  users.value.filter(u => u.active === 'false').length
+)
+
+const NotSigned = computed(() =>
+  users.value.filter(u => u.active === 'Not signed in').length
 )
 
 // поиск
@@ -114,12 +148,20 @@ const filtered = computed(() => {
 const filteredUsers = computed(() => {
   let result = users.value
 
-  // фильтр по статусу
-  if (statusFilter.value) {
-    result = result.filter(u => u.active === statusFilter.value)
+  // 1️⃣ фильтр по статусу
+  if (statusFilter.value === 'signedIn') {
+    result = result.filter(u => u.active === 'true')
   }
 
-  // поиск
+  if (statusFilter.value === 'signedOut') {
+    result = result.filter(u => u.active === 'false')
+  }
+
+  if (statusFilter.value === 'notSigned') {
+    result = result.filter(u => u.active === 'Not signed in')
+  }
+
+  // 2️⃣ поиск
   const query = q.value.trim().toLowerCase()
   if (query) {
     result = result.filter(u =>
@@ -141,14 +183,7 @@ const rowClassName = ({ row }) => {
   }
 }
 
-// Пример для новых пользователей за 7 дней
-const createdThisWeek = computed(() => {
-  const weekAgo = Date.now() - 7*86400000
-  return users.value.filter(u => {
-    const createdAt = u.createdAt ? new Date(u.createdAt).getTime() : Date.now()
-    return createdAt >= weekAgo
-  }).length
-})
+
 
 //сортирует строки по статусу в логическом порядке
 const sortByStatus = (a, b) => {
@@ -164,7 +199,28 @@ const sortByStatus = (a, b) => {
 <style scoped>
 .grid { display:grid; grid-template-columns: 1fr; gap:16px; margin-bottom:12px; }
 .stats { display:flex; gap:24px; }
-.stat { text-align:center; }
+.stat { text-align:center;
+
+  padding:16px; border-radius:8px;
+  cursor: pointer;
+  background: #f5f7fa;
+  box-shadow: 0 2px 8px #00000011;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.stat:hover {
+  background: #f0f2f5;  
+}
+
+.stat.active {
+  background: #d0e6ff; 
+  color: #0d3a66;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.stat.active .kpi {
+   color: #0d3a66;   
+}
+
 .kpi { font-size:22px; font-weight:800; line-height:1; }
 
 /* Подсветка строк по статусу */

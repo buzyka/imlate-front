@@ -4,13 +4,38 @@
     <!-- USERS TABLE -->
     <el-card>
       <template #header><b>Users</b></template>
+       
+  <el-row :gutter="16" class="mb-2">
 
+    <el-col :span="8">
       <el-input
         v-model="q"
-        placeholder="Search by name or email"
+        placeholder="Search by name or grade"
         clearable
         class="mb-2"
       />
+    </el-col>
+
+    <el-col :span="8">
+      <el-input
+        v-model="qName"
+        placeholder="Search by name"
+        clearable
+        class="mb-2"
+      />
+    </el-col>
+
+    <el-col :span="8">
+      <el-input
+        v-model="qGrade"
+        placeholder="Search by grade"
+        clearable
+        class="mb-2"
+      />
+    </el-col>
+
+
+  </el-row>
 
       <el-table
         :data="filtered"
@@ -26,38 +51,22 @@
           <template #default="scope">
             <div class="qr-wrap">
               <template v-for="(qr, i) in scope.row.QRkod" :key="i">
-                <input
-                  v-if="scope.row._edit === i"
-                  v-model="scope.row.QRkod[i]"
-                  :ref="el => qrInputRefs[scope.row.id + '-' + i] = el"
-                  @blur="scope.row._edit = null"
-                  @keyup.enter="scope.row._edit = null"
-                  class="qr-input"
-                />
-                <span v-else @dblclick="enableEdit(scope.row, i)">
+               
                   <el-tag
                     size="small"
                     closable
-                    @close="scope.row.QRkod.splice(i, 1)"
+                    @close="removeQRFromServer(scope.row, qr)"
                   >
                     {{ qr }}
                   </el-tag>
-                </span>
+               
               </template>
-
-              <el-button
-                size="small"
-                type="primary"
-                class="add-btn"
-                @click="addQRinTable(scope.row)"
-              >
-                +
-              </el-button>
+             
             </div>
           </template>
         </el-table-column>
 
-        <el-table-column prop="email" label="Email" />
+        <el-table-column prop="grade" label="Grade" />
         <el-table-column label="Active" width="80">
           <template #default="scope">
             <el-tag v-if="scope.row.active">Yes</el-tag>
@@ -65,72 +74,98 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="Actions" width="160">
-          <template #default="scope">
+        <el-table-column prop="LatestUpdate" label="Latest update" width="160">
+         <!-- <template #default="scope">
             <el-button size="small" @click="editInline(scope.row)">Edit</el-button>
-            <el-button size="small" @click="editDialog(scope.row)">EditD</el-button>
-          </template>
+           </template>-->
         </el-table-column>
       </el-table>
     </el-card>
 
     <!-- CREATE / EDIT FORM -->
     <el-card>
-      <template #header><b>Create / Edit User</b></template>
+  <template #header><b>Create / Edit User</b></template>
 
-      <el-form label-position="top">
-        <el-form-item label="Name">
-          <el-input v-model="form.name" />
-        </el-form-item>
+  <el-image
+    v-if="form.picture"
+    :src="form.picture"
+    
+    style="width:120px;height:120px;border-radius:50%;margin-bottom:16px"
+    fit="cover"
+  />
 
-        <el-form-item label="QR code Add" class="qr-input-row">
-          <el-input v-model="newQR" ref="QRkodInput" />
-          <el-button type="primary" @click="addQR">Add</el-button>
-        </el-form-item>
 
-        <el-table
-          v-if="form.QRkod.length"
-          :data="form.QRkod"
-          border
-          class="mb-2"
-        >
-          <el-table-column label="QR Code">
-            <template #default="scope">{{ scope.row }}</template>
-          </el-table-column>
-          <el-table-column width="70">
-            <template #default="scope">
-              <el-button size="small" type="danger" @click="removeQR(scope.$index)">
-                X
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+  <el-form
+    :model="form"
+    label-position="left"
+    label-width="120px"
+  >
+    <el-form-item label="Name">
+      <el-input v-model="form.name" />
+    </el-form-item>
 
-        <el-form-item label="Email">
-          <el-input v-model="form.email" />
-        </el-form-item>
+    <el-form-item label="Grade">
+      <el-input v-model="form.grade" />
+    </el-form-item>
+    <el-form-item label="Latest Update">
+      <el-input v-model="form.LatestUpdate" />
+    </el-form-item>
 
-        <el-form-item label="Active">
-          <el-switch v-model="form.active" />
-        </el-form-item>
-
-        <div class="flex">
-          <el-button type="primary" @click="save">
-            {{ form.id ? 'Update' : 'Create' }}
+    <el-form-item label="QR code Add">
+      <el-row :gutter="8" style="width:100%">
+        <el-col :span="16">
+          <el-input v-model="newQR" />
+        </el-col>
+        <el-col :span="8">
+          <el-button type="primary" style="width:100%" @click="addQR">
+            Add
           </el-button>
-          <el-button @click="reset">Reset</el-button>
-        </div>
-      </el-form>
-    </el-card>
+        </el-col>
+      </el-row>
+    </el-form-item>
 
+    <el-table
+      v-if="form.QRkod.length"
+      :data="form.QRkod"
+      border
+      class="mb-2"
+    >
+      <el-table-column label="QR Code">
+        <template #default="scope">{{ scope.row }}</template>
+      </el-table-column>
+      <el-table-column width="70">
+        <template #default="scope">
+          <el-button
+            size="small"
+            type="danger"
+            @click="removeQR(scope.$index)"
+          >
+            X
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-form-item label="Active">
+      <el-switch v-model="form.active" />
+    </el-form-item>
+
+    <el-form-item>
+      <el-button type="primary" @click="save">
+        {{ form.id ? 'Update' : 'Create' }}
+      </el-button>
+      <el-button @click="reset">Reset</el-button>
+    </el-form-item>
+  </el-form>
+</el-card>
     <!-- EDIT DIALOG -->
     <el-dialog v-model="dialogVisible" title="Edit User" width="450px">
       <el-form label-position="top">
         <el-form-item label="Name">
           <el-input v-model="editForm.name" />
         </el-form-item>
-        <el-form-item label="Email">
-          <el-input v-model="editForm.email" />
+        <el-form-item label="Grade">
+          <el-input v-model="editForm.grade" />
         </el-form-item>
         <el-form-item label="Add QR code">
           <el-input v-model="editNewQR" />
@@ -197,9 +232,11 @@ import api from '../services/api.js'
 /* STATE */
 const users = ref([])
 const q = ref('')
+const qName = ref('')
+const qGrade = ref('')  
 
 /* MAIN FORM */
-const form = ref({ id:null, name:'', email:'', QRkod:[], active:true })
+const form = ref({ id:null, name:'', grade:'', QRkod:[], LatestUpdate:'', active:true })
 const newQR = ref('')
 const QRkodInput = ref(null)
 
@@ -214,10 +251,23 @@ function enableEdit(row, i) {
 }
 
 /* SEARCH */
-const filtered = computed(() =>
-  !q.value ? users.value :
-  users.value.filter(u => (u.name + u.email).toLowerCase().includes(q.value.toLowerCase()))
-)
+const filtered = computed(() => {
+  if (!q.value) return users.value;
+
+  // Разбиваем поисковую строку на слова, убираем пробелы и приводим к lower case
+  const searchWords = q.value
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.replace(/\s+/g, '') )
+    .filter(Boolean); // убираем пустые строки
+
+  return users.value.filter(u => {
+    // Объединяем поля, которые хотим искать
+    const searchString = (u.name + u.grade).toLowerCase().replace(/\s+/g, '');
+    // Проверяем: все слова из поисковой строки есть в searchString
+    return searchWords.every(word => searchString.includes(word));
+  });
+});
 
 /* LOAD USERS */
 onMounted(refresh)
@@ -227,9 +277,12 @@ async function refresh() {
     users.value = data
   } catch {
     users.value = [
-      {id:1,name:"Alice",email:"alice@mail.com",QRkod:["A1","A2"],active:true},
-      {id:2,name:"Bob",email:"bob@mail.com",QRkod:["B1"],active:false},
-      {id:3,name:"Test",email:"t@mail.com",QRkod:[],active:true},
+      {id:1,name:"Alice",grade:"7 B",QRkod:["A1","A2"],active:true,LatestUpdate:"2023-01-01", picture:"/img/1.jpg" },
+      {id:2,name:"Bob",grade:"7 B",QRkod:["B1"],active:false, LatestUpdate:"2023-01-02", picture:"/img/2.jpg" },
+      {id:3,name:"Test",grade:"8 A",QRkod:[],active:true, LatestUpdate:"2023-01-03", picture:"/img/3.jpg" },
+      {id:4,name:"Aalice",grade:"8 B",QRkod:["A1","A2"],active:true, LatestUpdate:"2023-01-04", picture:"/img/4.jpg" },
+      {id:5,name:"Brad",grade:"7B",QRkod:["B1"],active:false , LatestUpdate:"2023-01-05", picture:"/img/5.jpg"},
+      {id:6,name:"Test Brad",grade:"7B",QRkod:[],active:true , LatestUpdate:"2023-01-06", picture:"/img/6.jpg"},
     ]
   }
 }
@@ -239,9 +292,10 @@ function editInline(row){
   Object.assign(form.value, {
     id: row.id,
     name: row.name,
-    email: row.email,
+    grade: row.grade,
     active: row.active,
-    QRkod: [...row.QRkod]
+    QRkod: [...row.QRkod],
+    picture: row.picture
   })
   nextTick(()=> QRkodInput.value?.focus())
 }
@@ -249,12 +303,7 @@ function editInline(row){
 /* QR ADD / REMOVE */
 function addQR(){ if(!newQR.value.trim()) return; form.value.QRkod.push(newQR.value.trim()); newQR.value="" }
 function removeQR(i){ form.value.QRkod.splice(i,1) }
-function addQRinTable(row){
-  if(!row.QRkod) row.QRkod=[]
-  row.QRkod.push("")
-  row._edit = row.QRkod.length - 1
-  nextTick(()=>{ const key = row.id + '-' + row._edit; qrInputRefs.value[key]?.focus() })
-}
+
 
 /* SAVE */
 function save(){
@@ -268,13 +317,12 @@ function save(){
   }
   reset()
 }
-function reset(){ Object.assign(form.value,{id:null,name:'',email:'',QRkod:[],active:true}); newQR.value="" }
+function reset(){ Object.assign(form.value,{id:null,name:'',grade:'',QRkod:[],active:true}); newQR.value="" }
 
 /* EDIT DIALOG */
 const dialogVisible = ref(false)
-const editForm = ref({ id:null,name:'',email:'',QRkod:[],active:true })
+const editForm = ref({ id:null,name:'',grade:'',QRkod:[],active:true })
 const editNewQR = ref("")
-function editDialog(u){ Object.assign(editForm.value,{ id:u.id,name:u.name,email:u.email,active:u.active,QRkod:[...u.QRkod] }); dialogVisible.value=true }
 function editAddQR(){ if(editNewQR.value.trim()) editForm.value.QRkod.push(editNewQR.value.trim()); editNewQR.value="" }
 function editRemoveQR(i){ editForm.value.QRkod.splice(i,1) }
 function saveEdit(){ const i = users.value.findIndex(u=>u.id===editForm.value.id); if(i>=0) users.value.splice(i,1,{...editForm.value}); dialogVisible.value=false }
@@ -300,12 +348,18 @@ function openAddQRDialog(row){
 const savingQR = ref(false)
 
 async function confirmAddQR() {
+  if (!selectedUser.value?.id) {
+  ElMessage.error('User not selected')
+  return
+  }
+
   const qr = newQRForUser.value.trim()
   if (!qr || savingQR.value) return
 
   savingQR.value = true
 
   try {
+    
     const { data } = await api.post(
       `/users/${selectedUser.value.id}/qr`,
       { qr }
@@ -317,13 +371,29 @@ async function confirmAddQR() {
     ElMessage.success('QR saved')
     qrDialogVisible.value = false
   } catch (err) {
-    ElMessage.error(
-      err.response?.data?.message || 'Failed to save QR'
-    )
+    console.error('ADD QR ERROR:', err.response?.data || err)
+    ElMessage.error('Server error – check backend logs')
   } finally {
     savingQR.value = false
   }
 }
+async function removeQRFromServer(user, qr) {
+  try {
+    // send a request to the server
+    await api.delete(`/users/${user.id}/qr`, { data: { qr } })
+
+    // After successful removal, update the array locally.
+    const index = user.QRkod.indexOf(qr)
+    if (index !== -1) user.QRkod.splice(index, 1)
+
+    ElMessage.success('QR deleted')
+  } catch (err) {
+    ElMessage.error(
+      err.response?.data?.message || 'Failed to delete QR'
+    )
+  }
+}
+
 // QR dialog input reference
 
 const qrDialogInput = ref(null)
