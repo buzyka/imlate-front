@@ -1,56 +1,76 @@
 <template>
   <div class="grid gap">
-    <h2 style="margin-bottom: 20px;">Привет, Светлана! 👋</h2>
+    <h2 style="margin-bottom: 20px;">Hello, Svetlana! 👋</h2>
 
     <!-- Quick Stats -->
-    <el-card>
-      
-      <template #header><b>Quick Stats</b></template>
-      <div class="stats">
+<el-card>
+  <template #header><b>Quick Stats</b></template>
 
-        <div
-         class="stat clickable" 
-         :class="{ active: statusFilter === null }"
-         @click="statusFilter = null"
-        >
-          <div class="kpi">{{ users.length }}</div>
-          <div>Users
-            <span v-if="statusFilter === null" class="check">✓</span>
-          </div>
-        </div>
+  <div class="stats">
 
-        <div
-         class="stat clickable" 
-         :class="{ active: statusFilter === 'signedIn' }"
-         @click="statusFilter  = 'signedIn'"
-        >
-          <div class="kpi">{{ SignedIN }}</div>
-          <div>Signed in 
-          <span v-if="statusFilter === 'signedIn'" class="check">✓</span></div>
-        </div>
-        
-        <div 
-        class="stat clickable" 
-        :class="{ active: statusFilter === 'signedOut' }"
-        @click="statusFilter  = 'signedOut'"
-          >
-          <div class="kpi">{{ SignedOut}}</div>
-          <div>Signed out 
-          <span v-if="statusFilter === 'signedOut'" class="check">✓</span></div>
-        </div>
-
-        <div 
-        class="stat clickable" 
-        :class="{ active: statusFilter === 'notSigned' }"
-        @click="statusFilter  = 'notSigned'"
-      >
-          <div class="kpi">{{ NotSigned}}</div>
-          <div>Not Signed in 
-          <span v-if="statusFilter === 'notSigned'" class="check">✓</span></div>
-        </div>
-
+    <!-- All users -->
+    <div
+      class="stat clickable"
+      :class="{ active: statusFilter === null }"
+      @click="statusFilter = null"
+    >
+      <div class="stat-line">
+        <span class="kpi">{{ users.length }}</span>
+        <span class="label">
+          All Users
+          <span v-if="statusFilter === null" class="check">✓</span>
+        </span>
       </div>
-    </el-card>
+    </div>
+
+    <!-- Signed in -->
+    <div
+      class="stat clickable"
+      :class="{ active: statusFilter === 'signedIn' }"
+      @click="statusFilter = 'signedIn'"
+    >
+      <div class="stat-line">
+        <span class="kpi">{{ SignedIN }}</span>
+        <span class="label">
+          Signed in
+          <span v-if="statusFilter === 'signedIn'" class="check">✓</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Signed out -->
+    <div
+      class="stat clickable"
+      :class="{ active: statusFilter === 'signedOut' }"
+      @click="statusFilter = 'signedOut'"
+    >
+      <div class="stat-line">
+        <span class="kpi">{{ SignedOut }}</span>
+        <span class="label">
+          Signed out
+          <span v-if="statusFilter === 'signedOut'" class="check">✓</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Not signed -->
+    <div
+      class="stat clickable"
+      :class="{ active: statusFilter === 'notSigned' }"
+      @click="statusFilter = 'notSigned'"
+    >
+      <div class="stat-line">
+        <span class="kpi">{{ NotSigned }}</span>
+        <span class="label">
+          Not signed in
+          <span v-if="statusFilter === 'notSigned'" class="check">✓</span>
+        </span>
+      </div>
+    </div>
+
+  </div> 
+
+</el-card>
 
     <!-- Search -->
     <el-input
@@ -184,7 +204,6 @@ const rowClassName = ({ row }) => {
 }
 
 
-
 //сортирует строки по статусу в логическом порядке
 const sortByStatus = (a, b) => {
   const order = { 'true': 1, 'false': 2, 'Not signed in': 3 }
@@ -194,34 +213,81 @@ const sortByStatus = (a, b) => {
  
   return aValue - bValue
 }
-
 </script>
+
+
 <style scoped>
 .grid { display:grid; grid-template-columns: 1fr; gap:16px; margin-bottom:12px; }
-.stats { display:flex; gap:24px; }
-.stat { text-align:center;
 
-  padding:16px; border-radius:8px;
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  color: #4a5568;          /* благородный тёмно-серый  текста. */
+  font-weight: 500;
+
+  padding: 14px;
+  border-radius: 18px;                 /* мягкие углы */
   cursor: pointer;
-  background: #f5f7fa;
-  box-shadow: 0 2px 8px #00000011;
-  transition: background 0.3s, box-shadow 0.3s;
+  background: #f7f9fc;                 /* очень светлый фон */
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+
+    transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.12s ease;   /* для клика */
 }
 .stat:hover {
-  background: #f0f2f5;  
+background: #eef3f8;
 }
 
-.stat.active {
-  background: #d0e6ff; 
-  color: #0d3a66;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+.stat:active {
+transform: scale(0.97);  /* лёгкое нажатие */
 }
+
+
+
+/* active (выбранный фильтр) */
+.stat.active {
+  background: linear-gradient(135deg, #eef5ff, #f8fbff);
+  border-color: #dbe7f7;
+  box-shadow: 0 6px 18px rgba(40, 80, 140, 0.12);
+  color: #334e68;          /* холодный slate-blue */
+}
+
+
+
 
 .stat.active .kpi {
-   color: #0d3a66;   
+  color: #1f3a5f;          /* «дорогой» тёмно-синий */
 }
 
-.kpi { font-size:22px; font-weight:800; line-height:1; }
+.kpi {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;          /* глубокий графит */
+}
+
+.check {
+  margin-left: 6px;
+  color: #3b82c4;
+  font-weight: 600;
+}
+.label {
+  font-size: 14px;
+  color: #6b7280;  /* мягкий серо-синий */
+  margin-top: 4px;
+}
+
+.stat.active .label {
+  color: #3b5b7a;
+}
+
 
 /* Подсветка строк по статусу */
 .signed-in-row {
@@ -240,3 +306,4 @@ const sortByStatus = (a, b) => {
 }
 
 </style> 
+
