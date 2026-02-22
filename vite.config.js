@@ -15,6 +15,12 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => '/login'
       },
+      '/api/refresh': {
+        target: BACKEND_URL,
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => '/refresh'
+      },
       '/admin-api': {
         target: BACKEND_URL,
         changeOrigin: true,
