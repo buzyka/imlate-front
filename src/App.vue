@@ -3,6 +3,7 @@
     <el-header height="36px" class="app-header" v-if="isAuthed">
       <div class="brand">🔥 Vue Admin</div>
       <div class="spacer"></div>
+      <el-button size="small" text @click="$router.push('/profile')">{{ auth.userName }}</el-button>
       <el-button size="small" @click="logout">Logout</el-button>
     </el-header>
     <el-container>
@@ -25,7 +26,10 @@ import { useAuthStore } from './stores/auth.js'
 
 const auth = useAuthStore()
 const isAuthed = computed(() => !!auth.token)
-const logout = () => auth.logout()
+const logout = () => {
+  auth.logout()
+  window.location.href = '/'
+}
 </script>
 
 <style scoped>
