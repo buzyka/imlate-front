@@ -11,6 +11,7 @@
         <el-menu router default-active="/">
           <el-menu-item index="/">Dashboard</el-menu-item>
           <el-menu-item index="/users">Student Manager</el-menu-item>
+          <el-menu-item index="/admin-users">Admin Users</el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
