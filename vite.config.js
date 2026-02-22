@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080'
+const BACKEND_URL = process.env.BACKEND_URL || 'https://app.isb.orb.local'
 
 export default defineConfig({
   plugins: [vue()],
@@ -9,9 +9,16 @@ export default defineConfig({
     host: true,
     port: 5173,
     proxy: {
-      '/api': {
+      '/api/login': {
         target: BACKEND_URL,
-        changeOrigin: true
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => '/login'
+      },
+      '/admin-api': {
+        target: BACKEND_URL,
+        changeOrigin: true,
+        secure: false
       }
     }
   }

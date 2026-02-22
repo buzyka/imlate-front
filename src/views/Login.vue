@@ -3,17 +3,14 @@
     <el-card class="login-card">
       <h2>Sign in</h2>
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="form.email" placeholder="you@example.com" />
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="form.username" placeholder="admin" />
         </el-form-item>
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" type="password" placeholder="••••••••" />
         </el-form-item>
         <el-button type="primary" :loading="loading" @click="submit">Login</el-button>
       </el-form>
-      <p class="hint">
-            Demo: any email & password will sign you in if backend is not ready.
-      </p>
     </el-card>
   </div>
 </template>
@@ -23,9 +20,9 @@ import { reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 
-const form = reactive({ email: '', password: '' })
+const form = reactive({ username: '', password: '' })
 const rules = {
-  email: [{ required: true, message: 'Email required', trigger: 'blur' }],
+  username: [{ required: true, message: 'Username required', trigger: 'blur' }],
   password: [{ required: true, message: 'Password required', trigger: 'blur' }]
 }
 const formRef = ref()
@@ -38,7 +35,7 @@ const submit = async () => {
   await formRef.value.validate()
   loading.value = true
   try {
-    await auth.login(form.email, form.password)
+    await auth.login(form.username, form.password)
     router.push(route.query.redirect || '/')
   } finally {
     loading.value = false

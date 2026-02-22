@@ -1,7 +1,6 @@
 <template>
   <div class="page">
-
-    <h2 class="title">Hello, Svetlana! 👋</h2>
+    <h2 class="title">Hello, {{ userName }}! 👋</h2>
 
     <el-card>
       <template #header><b>Quick Stats</b></template>
@@ -82,6 +81,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '../stores/auth.js'
+import api from '../services/api.js'
+
+const auth = useAuthStore()
+const userName = computed(() => auth.userName)
 
 const users = ref([])
 const q = ref('')
