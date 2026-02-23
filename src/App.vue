@@ -10,7 +10,7 @@
       <el-aside width="180px" v-if="isAuthed" class="app-aside">
         <el-menu router default-active="/">
           <el-menu-item index="/">Dashboard</el-menu-item>
-          <el-menu-item index="/users">Student Manager</el-menu-item>
+          <el-menu-item index="/users">Visitors</el-menu-item>
           <el-menu-item index="/admin-users">Admin Users</el-menu-item>
         </el-menu>
       </el-aside>

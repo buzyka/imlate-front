@@ -21,6 +21,11 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => '/refresh'
       },
+      '/assets': {
+        target: BACKEND_URL,
+        changeOrigin: true,
+        secure: false
+      },
       '/admin-api': {
         target: BACKEND_URL,
         changeOrigin: true,
