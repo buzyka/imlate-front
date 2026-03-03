@@ -5,7 +5,7 @@
 
     <el-card>
       <template #header><b>Quick Stats</b></template>
-
+  
 
       <div class="filters">
         <!--================= STATS ================= -->
@@ -33,13 +33,13 @@
 
         <!-- ================= SEARCH ================= -->
         <div class="search-group">
-          <el-input v-model="q" placeholder="Search by name or surname" clearable class="search-input" />
+          <el-input v-model="q" placeholder="Search by name or surname" clearable size="small" class="search-input" />
         </div>
 
         <!-- ================= DATE + QUICK ================= -->
         <div class="date-group">
 
-          <el-date-picker v-model="dateRange" type="daterange" start-placeholder="Начало" end-placeholder="Конец"
+          <el-date-picker v-model="dateRange" type="daterange" start-placeholder="Start" end-placeholder="End"
             format="DD.MM.YYYY" value-format="YYYY-MM-DD" size="small" class="date-picker" />
 
           <div class="quick-dates">
@@ -90,10 +90,10 @@ const dateRange = ref([])
 const activePeriod = ref(null)
 
 const periods = [
-  { key: 'today', label: 'Сегодня' },
-  { key: 'last7', label: 'Последние 7 дней' },
-  { key: 'month', label: 'Этот месяц' },
-  { key: 'reset', label: 'Сбросить' }
+  { key: 'today', label: 'Today' },
+  { key: 'last7', label: 'Last 7 days' },
+  { key: 'month', label: 'This month' },
+  { key: 'reset', label: 'Reset' }
 ]
 
 // ================= FORMAT DATE =================
@@ -226,11 +226,11 @@ const selectPeriod = (key) => {
 .page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 2px;
 }
 
 .title {
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 
 .filters {
@@ -238,7 +238,7 @@ const selectPeriod = (key) => {
   flex-wrap: wrap;
   gap: 16px;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1px;
 }
 
 .search-input {
