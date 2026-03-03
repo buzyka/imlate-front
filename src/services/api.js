@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: '/admin-api' // proxied to https://app.isb.orb.local/admin-api in vite.config.js
+  baseURL: '/admin-api' // proxied to BACKEND_URL/admin-api in vite.config.js
 })
 
 // attach token
@@ -27,7 +27,7 @@ function forceLogout() {
   localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')
   localStorage.removeItem('user')
-  window.location.href = '/login'
+  window.location.href = '/admin/login'
 }
 
 api.interceptors.response.use(
@@ -61,7 +61,7 @@ api.interceptors.response.use(
 
     try {
       // RFC 6749 compliant refresh request
-      const { data } = await axios.post('/api/refresh',
+      const { data } = await axios.post('/refresh',
         new URLSearchParams({
           grant_type: 'refresh_token',
           refresh_token: refreshToken

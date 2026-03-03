@@ -55,4 +55,52 @@ docker compose up --build backend
 * Поменяй `BACKEND_URL` в `docker-compose.yml` (например, на `http://host.docker.internal:8080` или URL твоего сервиса).
 * В dev/compose фронт проксирует `/api` туда автоматически (см. `vite.config.js`).
 
+## Настройка URL для изображений (BACKEND_URL)
+
+По умолчанию изображения загружаются по **относительному пути** (без хоста). Это подходит для случаев, когда фронтенд и бэкенд работают на одном домене или через прокси.
+
+Если нужно указать абсолютный адрес бэкенда (например, когда фронтенд и бэкенд на разных доменах), задай переменную окружения `BACKEND_URL`.
+
+### Примеры
+
+**Без хоста (по умолчанию, относительные пути):**
+
+```bash
+# docker compose — в .env или docker-compose.yml ничего не указывай
+docker compose up --build frontend-prod
+
+# make
+make build
+
+# npm
+npm run build
+```
+
+Изображения будут запрашиваться как `/assets/photo.jpg` (относительный путь).
+
+**С указанием хоста:**
+
+```bash
+# docker compose — создай файл .env рядом с docker-compose.yml:
+# BACKEND_URL=https://app.isb.orb.local
+docker compose up --build frontend-prod
+
+# make
+make build BACKEND_URL=https://app.isb.orb.local
+
+# npm
+BACKEND_URL=https://app.isb.orb.local npm run build
+```
+
+Изображения будут запрашиваться как `https://app.isb.orb.local/assets/photo.jpg` (абсолютный путь).
+
+### Где это работает
+
+Переменная `BACKEND_URL` используется:
+
+* В `vite.config.js` — для проксирования запросов к API в режиме разработки и для передачи значения `VITE_BACKEND_URL` в клиентский код.
+* В `Users.vue` — для формирования URL изображений посетителей.
+* В `Dockerfile` — как `ARG` при сборке продакшн-образа.
+* В `Makefile` — как переменная по умолчанию (пустая).
+
 Нужно добавить БД, миграции или окружения для реального сервера? Скажи, подкину docker-сервис для Postgres/SQLite и пример подключения.

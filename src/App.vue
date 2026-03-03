@@ -29,7 +29,7 @@ const auth = useAuthStore()
 const isAuthed = computed(() => !!auth.token)
 const logout = () => {
   auth.logout()
-  window.location.href = '/'
+  window.location.href = '/admin/'
 }
 </script>
 

@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     environment:
-      - BACKEND_URL=https://app.isb.orb.local
+      - BACKEND_URL=${BACKEND_URL:-}
     ports:
       - "5173:5173"
     volumes:
@@ -23,8 +23,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - BACKEND_URL=https://app.isb.orb.local
+      args:
+        - BACKEND_URL=${BACKEND_URL:-}
     ports:
       - "8081:80"
     # depends_on:

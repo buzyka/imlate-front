@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async login(username, password) {
-      const { data } = await axios.post('/api/login', { username, password }, {
+      const { data } = await axios.post('/login', { username, password }, {
         headers: { 'Content-Type': 'application/json' }
       })
       this.token = data.access_token

@@ -1,5 +1,7 @@
 # --- Build stage ---
 FROM node:20-alpine AS build
+ARG BACKEND_URL=""
+ENV BACKEND_URL=${BACKEND_URL}
 WORKDIR /app
 COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
 RUN npm ci || npm install

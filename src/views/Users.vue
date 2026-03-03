@@ -269,7 +269,7 @@ const filtered = computed(() => {
 })
 
 /* IMAGE URL — resolve relative paths to backend */
-const BACKEND_BASE = import.meta.env.VITE_BACKEND_URL || 'https://app.isb.orb.local'
+const BACKEND_BASE = import.meta.env.VITE_BACKEND_URL || ''
 function imageUrl(path) {
   if (!path) return ''
   if (path.startsWith('http')) return path
