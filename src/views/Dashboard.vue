@@ -9,42 +9,42 @@
 
       <div class="filters">
         <!--================= STATS ================= -->
-        <div class="status-group">
-          <el-tag :type="statusFilter === null ? 'primary' : 'info'" effect="light" class="status-chip"
+        <div class="flex-row">
+          <el-tag :type="statusFilter === null ? 'primary' : 'info'" effect="light" class="chip"
             @click="statusFilter = null">
             All Users ({{ users.length }})
           </el-tag>
 
-          <el-tag :type="statusFilter === true ? 'primary' : 'info'" effect="light" class="status-chip"
+          <el-tag :type="statusFilter === true ? 'primary' : 'info'" effect="light" class="chip"
             @click="statusFilter = true">
             Signed in ({{ signedIn }})
           </el-tag>
 
-          <el-tag :type="statusFilter === false ? 'primary' : 'info'" effect="light" class="status-chip"
+          <el-tag :type="statusFilter === false ? 'primary' : 'info'" effect="light" class="chip"
             @click="statusFilter = false">
             Signed out ({{ signedOut }})
           </el-tag>
 
-          <el-tag :type="statusFilter === 'notSigned' ? 'primary' : 'info'" effect="light" class="status-chip"
+          <el-tag :type="statusFilter === 'notSigned' ? 'primary' : 'info'" effect="light" class="chip"
             @click="statusFilter = 'notSigned'">
             Not signed ({{ notSigned }})
           </el-tag>
-        </div>
+        
 
         <!-- ================= SEARCH ================= -->
-        <div class="search-group">
+
           <el-input v-model="q" placeholder="Search by name or surname" clearable size="small" class="search-input" />
-        </div>
+       
 
         <!-- ================= DATE + QUICK ================= -->
-        <div class="date-group">
+        
 
           <el-date-picker v-model="dateRange" type="daterange" start-placeholder="Start" end-placeholder="End"
             format="DD.MM.YYYY" value-format="YYYY-MM-DD" size="small" class="date-picker" />
 
           <div class="quick-dates">
             <el-tag v-for="period in periods" :key="period.key" :type="activePeriod === period.key ? 'primary' : 'info'"
-              class="date-chip" effect="light" @click="selectPeriod(period.key)">
+              class="chip" effect="light" @click="selectPeriod(period.key)">
               {{ period.label }}
             </el-tag>
           </div>
@@ -124,6 +124,12 @@ onMounted(async () => {
     { id: 4, name: "Jon", SurName: "Gaarest", last_act_time: "13/01/2026 12:03:37", active: true },
     { id: 5, name: "Sam", SurName: "Borest", last_act_time: "13/01/2026 12:00:37", active: false },
     { id: 6, name: "Nik", SurName: "Garest", last_act_time: "13/01/2026 12:53:37", active: null },
+    { id: 7, name: "Jon", SurName: "Gaarest", last_act_time: "13/02/2026 12:03:37", active: true },
+    { id: 8, name: "Sam", SurName: "Borest", last_act_time: "13/02/2026 12:00:37", active: false },
+    { id: 9, name: "Nik", SurName: "Garest", last_act_time: "13/02/2026 12:53:37", active: null },
+    { id: 10, name: "Jon", SurName: "Gaarest", last_act_time: "13/03/2026 12:03:37", active: true },
+    { id: 11, name: "Sam", SurName: "Borest", last_act_time: "16/03/2026 12:00:37", active: false },
+    { id: 12, name: "Nik", SurName: "Garest", last_act_time: "13/01/2026 12:53:37", active: null },
   ]
 })
 
@@ -255,16 +261,7 @@ const selectPeriod = (key) => {
   flex-wrap: wrap;
 }
 
-.date-chip {
-  cursor: pointer;
-  border-radius: 20px;
-  padding: 6px 14px;
-  transition: all 0.2s ease;
-}
 
-.date-chip:hover {
-  transform: translateY(-2px);
-}
 
 .stats {
   display: grid;
@@ -289,57 +286,28 @@ const selectPeriod = (key) => {
 
 /* ================= STATUS ================= */
 
-.status-group {
+.flex-row {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
 }
-.status-chip {
+.chip {
   cursor: pointer;
   border-radius: 20px;
   padding: 6px 14px;
   transition: all 0.2s ease;
 }
-.status-chip:hover {
+
+.chip:hover {
+  background: #eef3f8;
   transform: translateY(-2px);
 }
 
-.stat:hover {
-  transform: translateY(-2px);
-}
-
-.stat {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  background: #f1f5f9;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-
-
-.stat.active {
-  background: #409eff;
-  color: white;
-  box-shadow: 0 4px 10px rgba(64, 158, 255, 0.3);
-}
-
-.kpi {
-  font-weight: 600;
-}
-
-.label {
-  font-size: 12px;
-}
 
 /* ================= SEARCH ================= */
 
-.search-group {
-  display: flex;
-  align-items: center;
-}
+
 
 .search-input {
   width: 250px;
@@ -347,12 +315,6 @@ const selectPeriod = (key) => {
 
 /* ================= DATE ================= */
 
-.date-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
 
 .date-picker {
   width: 320px;
@@ -364,14 +326,7 @@ const selectPeriod = (key) => {
   flex-wrap: wrap;
 }
 
-.date-chip {
-  cursor: pointer;
-  border-radius: 20px;
-  padding: 6px 14px;
-  transition: all 0.2s ease;
-}
 
-.date-chip:hover {
-  transform: translateY(-2px);
-}
+
+
 </style>
