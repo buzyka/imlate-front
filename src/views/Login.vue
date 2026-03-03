@@ -12,7 +12,7 @@
         <el-button type="primary" :loading="loading" @click="submit">Login</el-button>
       </el-form>
       <p class="hint">
-        Demo: any email & password will sign you in if backend is not ready.
+            Demo: any email & password will sign you in if backend is not ready.
       </p>
     </el-card>
   </div>

@@ -6,8 +6,8 @@ import Users from '../views/Users.vue'
 
 const routes = [
   { path: '/login', name: 'login', component: Login },
-  { path: '/', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/users', name: 'users', component: Users, meta: { requiresAuth: true } },
+  { path: '/', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true, title: 'Панель управления'} },
+  { path: '/users', name: 'users', component: Users, meta: { requiresAuth: true, title: 'Пользователи'} },
 ]
 
 const router = createRouter({

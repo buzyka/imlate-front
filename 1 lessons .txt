@@ -1,0 +1,40 @@
+<script setup>
+import { ref } from 'vue'
+
+// реактивная переменная — текущий класс
+const titleClass = ref('redTitle')
+const message = ref("Привет!")
+
+// функция, переключающая класс
+function changeClass() {
+  if (titleClass.value === 'redTitle') {
+    titleClass.value = 'blueTitle'
+  } else {
+    titleClass.value = 'redTitle'
+  }
+}
+function changeMessage() {
+  message.value = "Ты , Vue работает!"
+}
+</script>
+
+<template>
+  <h1 :class="titleClass">Сделай меня красным, потом синим!</h1>
+
+  <button @click="changeClass">
+    Поменять цвет
+  </button>
+  <p>{{ message }}</p>
+
+<el-button @click="changeMessage" type="success">Изменить текст</el-button>
+</template>
+
+<style>
+.redTitle {
+  color: red;
+}
+
+.blueTitle {
+  color: blue;
+}
+</style>
