@@ -1,11 +1,8 @@
 # ============================================================
-# Makefile for imlate-front (Vue 3 + Vite) — fully containerized
+# Makefile for imlate-front (Vue 3 + Vite)
 # ============================================================
 
 # Variables
-COMPOSE        = docker compose
-FRONTEND_DEV   = frontend-dev
-FRONTEND_PROD  = frontend-prod
 DIST_DIR       = dist
 NODE_IMAGE     = node:20-alpine
 BACKEND_URL   ?=
@@ -18,11 +15,8 @@ DOCKER_NODE    = docker run --rm \
                    -e BACKEND_URL=$(BACKEND_URL) \
                    $(NODE_IMAGE)
 
-.PHONY: help start stop restart logs bash bash-prod bash-run \
-        build build-clean build-preview \
-        install clean clean-all \
-        docker-build docker-build-dev docker-build-prod \
-        status
+.PHONY: help dev install build build-preview build-clean \
+        bash-run clean-dist clean-modules clean clean-all
 
 # ============================================================
 # Help
@@ -39,57 +33,28 @@ help: ## Show all available commands
 .DEFAULT_GOAL := help
 
 # ============================================================
-# Docker Compose — container management
+# Local development (requires Node.js installed)
 # ============================================================
 
-start: ## Start all services (docker compose up -d)
-	$(COMPOSE) up -d
-
-stop: ## Stop all services (docker compose down)
-	$(COMPOSE) down
-
-restart: stop start ## Restart all services
-
-start-dev: ## Start only the dev frontend
-	$(COMPOSE) up -d $(FRONTEND_DEV)
-
-start-prod: ## Start only the prod frontend (nginx)
-	$(COMPOSE) up -d $(FRONTEND_PROD)
-
-logs: ## Follow logs for all services
-	$(COMPOSE) logs -f
-
-logs-dev: ## Follow logs for the dev frontend
-	$(COMPOSE) logs -f $(FRONTEND_DEV)
-
-logs-prod: ## Follow logs for the prod frontend
-	$(COMPOSE) logs -f $(FRONTEND_PROD)
-
-status: ## Show container status
-	$(COMPOSE) ps
+dev: ## Start Vite dev server locally with hot reload
+	npm run dev
 
 # ============================================================
-# Shell access
+# Shell access (via Docker)
 # ============================================================
-
-bash: ## Open shell in the running dev container
-	$(COMPOSE) exec $(FRONTEND_DEV) sh
-
-bash-prod: ## Open shell in the running prod container
-	$(COMPOSE) exec $(FRONTEND_PROD) sh
 
 bash-run: ## Run a disposable Node.js container with shell
 	$(DOCKER_NODE) sh
 
 # ============================================================
-# Install dependencies (inside Docker)
+# Install dependencies (via Docker)
 # ============================================================
 
 install: ## Install npm dependencies (inside Docker)
 	$(DOCKER_NODE) sh -c "npm install"
 
 # ============================================================
-# Build frontend as static files (inside Docker)
+# Build frontend as static files (via Docker)
 # ============================================================
 
 build: ## Build frontend into static files in dist/ (inside Docker)
@@ -105,25 +70,13 @@ build-preview: build ## Build and launch production preview server (inside Docke
 build-clean: clean-dist build ## Clean dist/ and rebuild
 
 # ============================================================
-# Docker — image builds
-# ============================================================
-
-docker-build: docker-build-dev docker-build-prod ## Build all Docker images
-
-docker-build-dev: ## Build the dev Docker image
-	$(COMPOSE) build $(FRONTEND_DEV)
-
-docker-build-prod: ## Build the prod Docker image (nginx + static files)
-	$(COMPOSE) build $(FRONTEND_PROD)
-
-# ============================================================
 # Cleanup
 # ============================================================
 
 clean-dist: ## Remove dist/
 	rm -rf $(DIST_DIR)
 
-clean-modules: ## Remove node_modules volume
+clean-modules: ## Remove node_modules Docker volume
 	docker volume rm -f imlate_node_modules
 
 clean: clean-dist ## Clean build output (dist/)
