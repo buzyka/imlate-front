@@ -1,31 +1,58 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
 import api from '../services/api.js'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('access_token') || '',
+    refreshToken: localStorage.getItem('refresh_token') || '',
+    user: JSON.parse(localStorage.getItem('user') || 'null')
   }),
+  getters: {
+    userName: (state) => {
+      if (state.user?.name && state.user?.surname) {
+        return `${state.user.name} ${state.user.surname}`
+      }
+      return state.user?.name || state.user?.username || 'User'
+    },
+    userRole: (state) => state.user?.role || null,
+    isAdmin: (state) => state.user?.role === 'admin'
+  },
   actions: {
-    async login(email, password) {
+    async login(username, password) {
+      const { data } = await axios.post('/login', { username, password }, {
+        headers: { 'Content-Type': 'application/json' }
+      })
+      this.token = data.access_token
+      this.refreshToken = data.refresh_token
+      localStorage.setItem('access_token', this.token)
+      localStorage.setItem('refresh_token', this.refreshToken)
+      
+      // Store username from login
+      this.user = { username }
+      localStorage.setItem('user', JSON.stringify(this.user))
+      
+      // Try to fetch full user profile
+      await this.fetchUserProfile()
+      
+      return true
+    },
+    async fetchUserProfile() {
       try {
-        // Call your backend login
-        const { data } = await api.post('/login', { email, password })
-        this.token = data.token
-        localStorage.setItem('token', this.token)
-        return true
+        const { data } = await api.get('/current-user')
+        this.user = data
+        localStorage.setItem('user', JSON.stringify(this.user))
       } catch (e) {
-        // Fallback demo mode: accept any non-empty credentials
-        if (email && password) {
-          this.token = 'demo-token'
-          localStorage.setItem('token', this.token)
-          return true
-        }
-        throw e
+        // /current-user endpoint may not exist, keep username from login
       }
     },
     logout() {
       this.token = ''
-      localStorage.removeItem('token')
+      this.refreshToken = ''
+      this.user = null
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      localStorage.removeItem('user')
     }
   }
 })
