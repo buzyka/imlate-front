@@ -3,10 +3,9 @@
 
     <h2 class="title">Hello, Svetlana! 👋</h2>
 
-    <el-card>
+    <el-card  >
       <template #header><b>Quick Stats</b></template>
   
-
       <div class="filters">
         <!--================= STATS ================= -->
         <div class="flex-row">
@@ -239,35 +238,7 @@ const selectPeriod = (key) => {
   margin-bottom: 1px;
 }
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 1px;
-}
-
-.search-input {
-  width: 260px;
-}
-
-.date-picker {
-  width: 360px;
-}
-
-.quick-dates {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-}
+/* ================= ROW COLORS  ================= */
 
 .signed-in-row {
   background-color: #e0f0ff !important;
@@ -285,6 +256,13 @@ const selectPeriod = (key) => {
 
 
 /* ================= STATUS ================= */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 1px;
+}
 
 .flex-row {
   display: flex;
@@ -304,17 +282,13 @@ const selectPeriod = (key) => {
   transform: translateY(-2px);
 }
 
-
 /* ================= SEARCH ================= */
-
-
 
 .search-input {
   width: 250px;
 }
 
 /* ================= DATE ================= */
-
 
 .date-picker {
   width: 320px;
@@ -325,8 +299,5 @@ const selectPeriod = (key) => {
   gap: 8px;
   flex-wrap: wrap;
 }
-
-
-
 
 </style>
