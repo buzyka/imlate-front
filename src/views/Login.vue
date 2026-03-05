@@ -1,7 +1,10 @@
 <template>
   <div class="login-wrap">
     <el-card class="login-card">
-      <h2>Sign in</h2>
+      <div class="login-brand">
+        <img src="../assets/logo.png" alt="ImLate" class="login-logo" />
+        <h2>ImLate Control Panel</h2>
+      </div>
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
         <el-form-item label="Username" prop="username">
           <el-input v-model="form.username" placeholder="admin" />
@@ -49,5 +52,8 @@ const submit = async () => {
   background: #f7f7fb;
 }
 .login-card { width: 360px; }
+.login-brand { display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:20px; }
+.login-logo { width:64px; height:64px; object-fit:contain; }
+.login-brand h2 { margin:0; }
 .hint { margin-top:8px; color:#666; font-size:12px; }
 </style>
