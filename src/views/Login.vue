@@ -22,6 +22,7 @@
 import { reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
+import { ElMessage } from 'element-plus'
 
 const form = reactive({ username: '', password: '' })
 const rules = {
@@ -40,6 +41,8 @@ const submit = async () => {
   try {
     await auth.login(form.username, form.password)
     router.push(route.query.redirect || '/')
+  } catch (error) {
+    ElMessage.error(error.message || 'Login failed')
   } finally {
     loading.value = false
   }
