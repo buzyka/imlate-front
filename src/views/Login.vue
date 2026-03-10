@@ -47,7 +47,7 @@ const submit = async () => {
     router.push(route.query.redirect || '/')
   } catch (error) {
     console.error(error)
-    ElMessage.error(error.message || 'Login failed')
+    ElMessage.error('Invalid username or password')
   } finally {
     loading.value = false
   }
