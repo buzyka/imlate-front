@@ -1,19 +1,19 @@
 <template>
-  <div >
-    <el-card class="login-card" style="width: 400px; margin: 100px auto;">
+  <div>
+    <el-card class="login-card">
       <div class="login-brand">
         <img src="../assets/logo.png" alt="ImLate" class="login-logo" />
-        <h2 style="text-align: center; margin-bottom: 20px;" >ImLate Control Panel</h2>
+        <h2>ImLate Control Panel</h2>
       </div>
-      <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
+      <el-form :model="form" :rules="rules" ref="formRef" label-position="top" @keyup.enter="submit">
         <el-form-item label="Username" prop="username">
-          <el-input v-model="form.username" placeholder="admin" />
+          <el-input ref="usernameInput" v-model="form.username" placeholder="admin" />
         </el-form-item>
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="••••••••" @keyup.enter="submit"/>
+          <el-input v-model="form.password" type="password" placeholder="••••••••" />
         </el-form-item>
-        <el-form-item> 
-          <el-button type="primary" :loading="loading" style="width: 100%;" @click="submit">Login</el-button>
+        <el-form-item>
+          <el-button type="primary" :loading="loading" :disabled="isDisabled" style="width: 100%;" @click="submit">Login</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -21,10 +21,18 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 import { ElMessage } from 'element-plus'
+import { onMounted } from 'vue'
+
+
+const usernameInput = ref()
+
+onMounted(() => {
+  usernameInput.value.focus()
+})
 
 const form = reactive({ username: '', password: '' })
 const rules = {
@@ -33,21 +41,44 @@ const rules = {
 }
 const formRef = ref()
 const loading = ref(false)
-// Router и store
+// Router  and store
 const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
 
+//The Login button is automatically disabled.
+const isDisabled = computed(() => {
+  return !form.username || !form.password
+})
 // Submit function
 const submit = async () => {
-  await formRef.value.validate()
+  
+  if (!formRef.value) {
+    return
+  }
   loading.value = true
-  try {
+  try { 
+    await formRef.value.validate() //???
     await auth.login(form.username, form.password)
     router.push(route.query.redirect || '/')
   } catch (error) {
     console.error(error)
-    ElMessage.error('Invalid username or password')
+    const status = error?.response?.status
+    const backendMessage =
+      typeof error?.response?.data?.message === 'string'
+        ? error.response.data.message
+        : null
+    let message = 'Login failed. Please try again.'
+    // Provide a clear message for invalid credentials
+    if (status === 401 || status === 403) {
+      message = 'Incorrect username or password. Please try again.'
+    } else if (backendMessage) {
+      message = backendMessage
+    } else if (typeof error?.message === 'string') {
+      message = error.message
+    }
+    ElMessage.error(message)
+
   } finally {
     loading.value = false
   }
@@ -55,10 +86,38 @@ const submit = async () => {
 </script>
 
 <style scoped>
+.login-card {
+  padding: 30px;
+  width: 400px;
+  margin: 100px auto;
+}
 
-.login-card { padding: 30px; }
-.login-brand { display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:20px; }
-.login-logo { width:64px; height:64px; object-fit:contain; }
-.login-brand h2 { margin:0; }
-.hint { margin-top:8px; color:#666; font-size:12px; }
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.login-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.login-brand h2 {
+  margin: 0;
+}
+
+h2 {
+  text-align: right;
+  margin-bottom: 330px;
+}
+
+.hint {
+  margin-top: 8px;
+  color: #666;
+  font-size: 12px;
+}
 </style>
