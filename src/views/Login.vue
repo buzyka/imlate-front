@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login-page">
     <el-card class="login-card">
       <div class="login-brand">
         <img src="../assets/logo.png" alt="ImLate" class="login-logo" />
@@ -7,10 +7,10 @@
       </div>
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top" @keyup.enter="submit">
         <el-form-item label="Username" prop="username">
-          <el-input ref="usernameInput" v-model="form.username" placeholder="admin" />
+          <el-input ref="usernameInput" v-model="form.username" placeholder="admin" clearable/>
         </el-form-item>
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="••••••••" />
+          <el-input v-model="form.password" type="password" placeholder="••••••••" show-password autocomplete="current-password"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="loading" :disabled="isDisabled" style="width: 100%;" @click="submit">Login</el-button>
@@ -31,7 +31,7 @@ import { onMounted } from 'vue'
 const usernameInput = ref()
 
 onMounted(() => {
-  usernameInput.value.focus()
+  usernameInput.value?.focus()
 })
 
 const form = reactive({ username: '', password: '' })
@@ -53,12 +53,11 @@ const isDisabled = computed(() => {
 // Submit function
 const submit = async () => {
   
-  if (!formRef.value) {
-    return
-  }
-  loading.value = true
+  if (!formRef.value) return
+  
   try { 
     await formRef.value.validate() //???
+    loading.value = true
     await auth.login(form.username, form.password)
     router.push(route.query.redirect || '/')
   } catch (error) {
@@ -86,11 +85,21 @@ const submit = async () => {
 </script>
 
 <style scoped>
+
+.login-page {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 .login-card {
   padding: 30px;
-  width: 400px;
-  margin: 100px auto;
+  width: 100%;
+  max-width: 400px;
 }
+
 
 .login-brand {
   display: flex;
@@ -108,16 +117,6 @@ const submit = async () => {
 
 .login-brand h2 {
   margin: 0;
-}
-
-h2 {
-  text-align: right;
-  margin-bottom: 330px;
-}
-
-.hint {
-  margin-top: 8px;
-  color: #666;
-  font-size: 12px;
+  text-align: center;
 }
 </style>
