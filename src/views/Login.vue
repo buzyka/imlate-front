@@ -7,13 +7,15 @@
       </div>
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top" @keyup.enter="submit">
         <el-form-item label="Username" prop="username">
-          <el-input ref="usernameInput" v-model="form.username" placeholder="admin" clearable/>
+          <el-input ref="usernameInput" v-model="form.username" placeholder="admin" clearable />
         </el-form-item>
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="••••••••" show-password autocomplete="current-password"/>
+          <el-input v-model="form.password" type="password" placeholder="••••••••" show-password
+            autocomplete="current-password" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="loading" :disabled="isDisabled" style="width: 100%;" @click="submit">Login</el-button>
+          <el-button type="primary" :loading="loading" :disabled="isDisabled" style="width: 100%;"
+            @click="submit">Login</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -21,12 +23,10 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 import { ElMessage } from 'element-plus'
-import { onMounted } from 'vue'
-
 
 const usernameInput = ref()
 
@@ -52,14 +52,15 @@ const isDisabled = computed(() => {
 })
 // Submit function
 const submit = async () => {
-  
+
   if (!formRef.value) return
-  
-  try { 
-    await formRef.value.validate() //???
+
+  try {
+    await formRef.value.validate()
     loading.value = true
     await auth.login(form.username, form.password)
-    router.push(route.query.redirect || '/')
+    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+    router.push(redirect)
   } catch (error) {
     console.error(error)
     const status = error?.response?.status
@@ -85,21 +86,18 @@ const submit = async () => {
 </script>
 
 <style scoped>
-
 .login-page {
   min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
+
 
 .login-card {
   padding: 30px;
   width: 100%;
-  max-width: 400px;
-}
-
+  max-width: 400px;}
 
 .login-brand {
   display: flex;
