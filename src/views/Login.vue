@@ -41,7 +41,7 @@ const rules = {
 }
 const formRef = ref()
 const loading = ref(false)
-// Router  and store
+// Router and store
 const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
