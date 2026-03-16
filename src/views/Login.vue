@@ -125,5 +125,6 @@ const submit = async () => {
 
 .login-brand h2 {
   margin: 0;
+  text-align: center;
  }
 </style>
