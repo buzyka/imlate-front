@@ -55,13 +55,26 @@ const submit = async () => {
 
   if (!formRef.value) return
 
+  // Prevent submission (including Enter key) when form is disabled or already loading
+  if (isDisabled.value || loading.value) {
+    return
+  }
+
   try {
-    await formRef.value.validate()
+    const valid = await formRef.value.validate()
+    // If validation fails, do not proceed or show a login error
+    if (!valid) {
+      return
+    }
     loading.value = true
     await auth.login(form.username, form.password)
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     router.push(redirect)
   } catch (error) {
+    // Element Plus may reject with `false` on validation failure; don't treat that as a login error
+    if (error === false) {
+      return
+    }
     console.error(error)
     const status = error?.response?.status
     const backendMessage =
