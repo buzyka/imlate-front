@@ -36,8 +36,8 @@ onMounted(() => {
 
 const form = reactive({ username: '', password: '' })
 const rules = {
-  username: [{ required: true, message: 'Username required', trigger: 'blur' }],
-  password: [{ required: true, message: 'Password required', trigger: 'blur' }]
+  username: [{ required: true, message: 'Username required', trigger: ['blur', 'change']}],
+  password: [{ required: true, message: 'Password required', trigger: ['blur', 'change']}]
 }
 const formRef = ref()
 const loading = ref(false)
