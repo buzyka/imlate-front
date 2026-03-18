@@ -7,6 +7,7 @@
       <el-menu router :default-active="route.path">
         <el-menu-item index="/users">Visitors</el-menu-item>
         <el-menu-item index="/admin-users">Admin Users</el-menu-item>
+        <el-menu-item index="/reports">Reports</el-menu-item>
         <el-menu-item index="/settings">Settings</el-menu-item>
       </el-menu>
       <div class="aside-spacer"></div>
