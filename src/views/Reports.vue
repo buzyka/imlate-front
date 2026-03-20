@@ -1,70 +1,79 @@
-<!-- <template>
-  <div>
-    <h1>Reports Page</h1>
-    <p>Здесь будут отчёты</p>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'Reports'
-}
-</script>-->
 <template>
   <div>
     <h2>Список посещений</h2>
+
     <ul>
-      <li v-for="visit in sortedVisits" :key="visit.userId">
-        {{ visit.userName }} — {{ visit.status }} ({{ visit.timestamp }})
+      <li v-for="visit in sortedVisits" :key="visit.visitor_id">
+        {{ visit.name }} {{ visit.surname }} —
+        {{ visit.sign_status }}
+        ({{ formatDate(visit.visit_date) }})
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { ref, onMounted, computed } from 'vue'
+import api from '../services/api.js'
 
-const sortedVisits = ref([]);
+// 👉 состояние
+const visits = ref([])
 
-async function fetchVisits() {
-  const response = await axios.get('/admin-api/reports/visits', {
-  withCredentials: true
-  });
-  return response.data;
-}
+// 👉 даты
+const from = '2025-03-10'
+const to = '2026-03-19'
 
-function getLatestStatus(visits) {
-  const latestByUser = {};
-  visits.forEach(visit => {
-    const userId = visit.userId;
-    const timestamp = new Date(visit.timestamp);
-
-    if (!latestByUser[userId] || timestamp > new Date(latestByUser[userId].timestamp)) {
-      latestByUser[userId] = visit;
-    }
-  });
-  return Object.values(latestByUser);
-}
-
-function sortByStatus(latestVisits) {
-  return latestVisits.sort((a, b) => {
-    if (a.status === 'signed-in' && b.status !== 'signed-in') return -1;
-    if (a.status !== 'signed-in' && b.status === 'signed-in') return 1;
-    return 0;
-  });
-}
-
+// 👉 загрузка данных
 onMounted(async () => {
-  
- try {
-    const visits = await fetchVisits();
-    const latestVisits = getLatestStatus(visits);
-    sortedVisits.value = sortByStatus(latestVisits);
-   } catch (error) {
-    console.error('Ошибка при загрузке посещений:', error);
-  }
+  try {
+    const response = await api.get('/reports/visits', {
+      params: { from, to }
+    })
 
- 
-});
+    // ❗ ВАЖНО: берём data внутри data
+    visits.value = response.data.data
+
+  } catch (error) {
+    console.error('Ошибка при загрузке посещений:', error)
+  }
+})
+
+/**
+ * 👉 берём последний визит каждого пользователя
+ */
+const latestVisits = computed(() => {
+  const latestByUser = {}
+
+  visits.value.forEach(visit => {
+    const userId = visit.visitor_id
+
+    if (
+      !latestByUser[userId] ||
+      new Date(visit.visit_date) > new Date(latestByUser[userId].visit_date)
+    ) {
+      latestByUser[userId] = visit
+    }
+  })
+
+  return Object.values(latestByUser)
+})
+
+/**
+ * 👉 сортировка:
+ * signed-in сверху
+ */
+const sortedVisits = computed(() => {
+  return [...latestVisits.value].sort((a, b) => {
+    if (a.sign_status === b.sign_status) return 0
+    if (a.sign_status === 'signed-in') return -1
+    return 1
+  })
+})
+
+/**
+ * 👉 формат даты
+ */
+const formatDate = (date) => {
+  return new Date(date + 'T00:00:00').toLocaleDateString()
+}
 </script>
