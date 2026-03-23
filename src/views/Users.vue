@@ -79,6 +79,18 @@
           <template #default="scope">
             <el-button
               size="small"
+              type="primary"
+              :icon="Location"
+              circle
+              @click.stop="openTrackDialog(scope.row)"
+            />
+          </template>
+        </el-table-column>
+
+        <el-table-column label="" width="60" align="center">
+          <template #default="scope">
+            <el-button
+              size="small"
               type="danger"
               :icon="Delete"
               circle
@@ -88,6 +100,59 @@
         </el-table-column>
       </el-table>
     </el-card>
+
+    <!-- MANUAL TRACK DIALOG -->
+    <el-dialog
+      v-model="trackDialogVisible"
+      title="Track Visit"
+      width="420px"
+      :close-on-click-modal="false"
+    >
+      <template v-if="trackRow">
+        <div style="text-align:center;margin-bottom:16px">
+          <el-image
+            :src="trackRow.image ? imageUrl(trackRow.image) : noImageSrc"
+            style="width:100px;height:100px;border-radius:50%"
+            fit="cover"
+          />
+          <div style="margin-top:8px;font-size:16px;font-weight:600">
+            {{ trackRow.name }} {{ trackRow.surname }}
+          </div>
+        </div>
+
+        <el-form label-position="top">
+          <el-form-item label="Action">
+            <el-switch
+              v-model="trackSignedIn"
+              active-text="Sign In"
+              inactive-text="Sign Out"
+              style="--el-switch-on-color:#67c23a;--el-switch-off-color:#f56c6c"
+            />
+          </el-form-item>
+
+          <el-form-item label="Reason" required>
+            <el-input
+              v-model="trackReason"
+              type="textarea"
+              :rows="3"
+              placeholder="Enter reason for manual tracking"
+            />
+          </el-form-item>
+        </el-form>
+      </template>
+
+      <template #footer>
+        <el-button @click="trackDialogVisible = false">Cancel</el-button>
+        <el-button
+          type="primary"
+          :loading="trackSaving"
+          :disabled="!trackReason.trim()"
+          @click="submitTrack"
+        >
+          Save
+        </el-button>
+      </template>
+    </el-dialog>
 
     <!-- CREATE / EDIT FORM -->
     <el-card v-loading="formBusy">
@@ -200,7 +265,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete } from '@element-plus/icons-vue'
+import { Delete, Location } from '@element-plus/icons-vue'
 import api from '../services/api.js'
 
 /* STATE */
@@ -442,6 +507,40 @@ async function deleteVisitor(row) {
   } catch (err) {
     ElMessage.error(err.response?.data?.error || err.response?.data?.message || 'Failed to delete visitor')
     loading.value = false
+  }
+}
+
+/* MANUAL TRACK */
+const trackDialogVisible = ref(false)
+const trackRow = ref(null)
+const trackSignedIn = ref(true)
+const trackReason = ref('')
+const trackSaving = ref(false)
+
+function openTrackDialog(row) {
+  trackRow.value = row
+  trackSignedIn.value = true
+  trackReason.value = ''
+  trackDialogVisible.value = true
+}
+
+async function submitTrack() {
+  if (!trackReason.value.trim() || !trackRow.value) return
+
+  trackSaving.value = true
+  try {
+    await api.post('/track/visit', {
+      visitor_id: trackRow.value.id,
+      signed_in: trackSignedIn.value,
+      description: trackReason.value.trim()
+    })
+    const action = trackSignedIn.value ? 'signed in' : 'signed out'
+    ElMessage.success(`Visitor was ${action} successfully`)
+    trackDialogVisible.value = false
+  } catch (err) {
+    ElMessage.error(err.response?.data?.error || 'Failed to track visit')
+  } finally {
+    trackSaving.value = false
   }
 }
 
