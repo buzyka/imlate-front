@@ -1,0 +1,171 @@
+/* ======================
+   🎨 LAYOUT
+====================== */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  animation: fadeUp 0.5s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title {
+  margin-bottom: 8px;
+}
+
+/* ======================
+   🔹 FLEX SYSTEM (mini Tailwind)
+====================== */
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+
+/* ======================
+   🔹 SPACING (Tailwind style)
+====================== */
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+
+/* ======================
+   🔹 FILTERS BLOCK
+====================== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.search-input {
+  width: 260px;
+}
+
+.date-picker {
+  width: 320px;
+}
+
+/* ======================
+   🔹 CHIPS (премиум стиль)
+====================== */
+.chip {
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 6px 14px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  background: #eef3f8;
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+/* ======================
+   🔹 QUICK DATES
+====================== */
+.quick-dates {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ======================
+   💎 CARD (дорогой UI)
+====================== */
+.el-card {
+  border-radius: 18px;
+  border: none;
+  box-shadow: 0 5px 15px rgba(20, 40, 80, 0.08);
+
+  transition: all 0.25s ease;
+}
+
+.el-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(20, 40, 80, 0.12);
+}
+
+/* ======================
+   💎 TABLE (очень важно)
+====================== */
+.el-table {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.el-table th {
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+}
+
+
+
+.el-table__row:hover td {
+  background: #f1f5f9 !important;
+  transition: all 0.2s ease;
+}
+/* Row colors */
+.signed-in-row {
+  background-color: #ecfdf5 !important; /* мягкий зелёный */
+}
+
+.signed-out-row {
+  background-color: #fffbeb !important; /* нейтральный серый */
+}
+
+.not-signed-row {
+  background-color: #f9fafb !important; /* мягкий янтарный */
+}
+
+
+.el-tag--primary {
+  background: #e0ecff !important;
+  /*color: #1e40af !important;
+  box-shadow: 0 4px 14px rgba(30, 64, 175, 0.15);*/
+  transition: all 0.2s ease;
+}
+
+.el-tag--primary:hover {
+  transform: scale(1.05);
+}
+/*   */
+.el-input__wrapper,
+.el-date-editor {
+  transition: all 0.2s ease;
+}
+
+.el-input__wrapper:hover,
+.el-date-editor:hover {
+  box-shadow: 0 0 0 1px #c7d2fe;
+}
