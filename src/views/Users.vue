@@ -164,7 +164,7 @@
         fit="cover"
       />
 
-      <div v-if="form.id" style="margin-bottom:16px">
+      <div v-if="form.id && !isImported" style="margin-bottom:16px">
         <input
           ref="fileInputRef"
           type="file"
@@ -197,19 +197,19 @@
         label-width="120px"
       >
         <el-form-item label="Name" prop="name">
-          <el-input v-model="form.name" />
+          <el-input v-model="form.name" :disabled="isImported" />
         </el-form-item>
 
         <el-form-item label="Surname" prop="surname">
-          <el-input v-model="form.surname" />
+          <el-input v-model="form.surname" :disabled="isImported" />
         </el-form-item>
 
         <el-form-item label="Is Student">
-          <el-switch v-model="form.is_student" />
+          <el-switch v-model="form.is_student" :disabled="isImported" />
         </el-form-item>
 
         <el-form-item v-if="form.is_student" label="Grade">
-          <el-input-number v-model="form.grade" :min="0" controls-position="right" style="width:100%" />
+          <el-input-number v-model="form.grade" :min="0" :disabled="isImported" controls-position="right" style="width:100%" />
         </el-form-item>
 
         <template v-if="form.id">
@@ -251,7 +251,7 @@
         </template>
 
         <el-form-item>
-          <el-button type="primary" :loading="saving" @click="save">
+          <el-button type="primary" :loading="saving" :disabled="isImported && !!form.id" @click="save">
             {{ form.id ? 'Update' : 'Create' }}
           </el-button>
           <el-button @click="reset">Reset</el-button>
@@ -283,6 +283,7 @@ const formRef = ref(null)
 const fileInputRef = ref(null)
 const selectedFile = ref(null)
 const imagePreview = ref(null)
+const isImported = ref(false)
 
 /* FORM */
 const emptyForm = () => ({
@@ -373,6 +374,7 @@ async function refresh() {
 function selectRow(row) {
   if (!row) return
   clearFileSelection()
+  isImported.value = !!row.imported_from_isams
   form.value = {
     id: row.id,
     name: row.name,
@@ -548,6 +550,7 @@ async function submitTrack() {
 function reset() {
   form.value = emptyForm()
   newKey.value = ''
+  isImported.value = false
   clearFileSelection()
   formRef.value?.resetFields()
 }
