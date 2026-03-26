@@ -1,0 +1,35 @@
+name: Release Build
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          VITE_APP_VERSION: ${{ github.event.release.tag_name }}
+
+      - name: Create release archive
+        run: |
+          cd dist
+          zip -r ../isb-front-${{ github.event.release.tag_name }}.zip admin/
+
+      - name: Upload archive to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: isb-front-${{ github.event.release.tag_name }}.zip
