@@ -27,9 +27,9 @@ jobs:
       - name: Create release archive
         run: |
           cd dist
-          zip -r ../isb-front-${{ github.event.release.tag_name }}.zip admin/
+          zip -r ../imlate-ui-${{ github.event.release.tag_name }}.zip admin/
 
       - name: Upload archive to release
         uses: softprops/action-gh-release@v2
         with:
-          files: isb-front-${{ github.event.release.tag_name }}.zip
+          files: imlate-ui-${{ github.event.release.tag_name }}.zip

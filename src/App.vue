@@ -17,10 +17,10 @@
         @show="fetchBackendVersion"
       >
         <template #reference>
-          <div class="help-btn">
+          <button class="help-btn">
             <el-icon :size="16"><QuestionFilled /></el-icon>
             <span>Help</span>
-          </div>
+          </button>
         </template>
         <div class="help-panel">
           <h3 style="margin:0 0 8px">About ImLate</h3>
@@ -73,9 +73,7 @@ const logout = () => {
   window.location.href = '/admin/'
 }
 
-/* eslint-disable no-undef */
-const uiVersion = __APP_VERSION__
-/* eslint-enable no-undef */
+const uiVersion = import.meta.env.VITE_APP_VERSION
 const backendVersion = ref('')
 const backendVersionLoading = ref(false)
 
@@ -134,10 +132,14 @@ async function fetchBackendVersion() {
   display:flex;
   align-items:center;
   gap:8px;
+  width:100%;
   padding:12px 20px;
   cursor:pointer;
   color:#606266;
   font-size:14px;
+  font-family:inherit;
+  background:none;
+  border:none;
   border-top:1px solid #eee;
   transition:background .2s;
 }
