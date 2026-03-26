@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       'import.meta.env.VITE_BACKEND_URL': JSON.stringify(BACKEND_URL),
+      'import.meta.env.VITE_APP_VERSION': JSON.stringify(env.VITE_APP_VERSION || process.env.VITE_APP_VERSION || '2.0.x-dev'),
     },
     plugins: [vue()],
     server: {
