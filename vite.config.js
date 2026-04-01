@@ -34,6 +34,11 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false
         },
+        '/storage': {
+          target: BACKEND_URL,
+          changeOrigin: true,
+          secure: false
+        },
         '/admin-api': {
           target: BACKEND_URL,
           changeOrigin: true,
