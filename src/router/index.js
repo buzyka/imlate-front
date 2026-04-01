@@ -5,12 +5,14 @@ import Dashboard from '../views/Dashboard.vue'
 import Users from '../views/Users.vue'
 import Profile from '../views/Profile.vue'
 import AdminUsers from '../views/AdminUsers.vue'
+import Settings from '../views/Settings.vue'
 
 const routes = [
   { path: '/login', name: 'login', component: Login },
   { path: '/', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/users', name: 'users', component: Users, meta: { requiresAuth: true } },
   { path: '/admin-users', name: 'admin-users', component: AdminUsers, meta: { requiresAuth: true } },
+  { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } },
   { path: '/profile', name: 'profile', component: Profile, meta: { requiresAuth: true } },
 ]
 

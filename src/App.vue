@@ -4,10 +4,11 @@
       <div class="menu-logo">
         <img src="./assets/big-logo.png" alt="ImLate" />
       </div>
-      <el-menu router default-active="/">
+      <el-menu router :default-active="route.path">
         <el-menu-item index="/">Dashboard</el-menu-item>
         <el-menu-item index="/users">Visitors</el-menu-item>
         <el-menu-item index="/admin-users">Admin Users</el-menu-item>
+        <el-menu-item index="/settings">Settings</el-menu-item>
       </el-menu>
       <div class="aside-spacer"></div>
       <el-popover
@@ -62,11 +63,13 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { QuestionFilled, Document, Compass } from '@element-plus/icons-vue'
 import { useAuthStore } from './stores/auth.js'
 import api from './services/api.js'
 
 const auth = useAuthStore()
+const route = useRoute()
 const isAuthed = computed(() => !!auth.token)
 const logout = () => {
   auth.logout()
