@@ -64,7 +64,7 @@
       </div>
     </el-card>
 
-    <h2>Список посещений</h2>
+    <h2>Список посещений Список посещений</h2>
 
     <el-table :data="sortedVisits" border highlight-current-row style="margin-top: 20px">
       <el-table-column prop="id" label="N" width="70" sortable />
