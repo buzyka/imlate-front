@@ -79,6 +79,8 @@
   font-weight: 500;
   position: relative;
   overflow: hidden;
+  min-width: 120px;
+  text-align: center;
 }
 
 .chip:hover {
@@ -106,7 +108,6 @@
   border-radius: 18px;
   border: none;
   box-shadow: 0 5px 15px rgba(20, 40, 80, 0.08);
-
   transition: all 0.25s ease;
 }
 
@@ -129,8 +130,6 @@
   font-weight: 600;
 }
 
-
-
 .el-table__row:hover td {
   background: #f1f5f9 !important;
   transition: all 0.2s ease;
@@ -147,7 +146,6 @@
 .not-signed-row {
   background-color: #f9fafb !important; /* мягкий янтарный */
 }
-
 
 .el-tag--primary {
   background: #e0ecff !important;
