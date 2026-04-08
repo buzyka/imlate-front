@@ -1,43 +1,78 @@
 <template>
   <div class="page">
-
-
     <el-card>
       <template #header><b>Quick Stats</b></template>
 
-
       <div class="filters">
-        <!--================= STATS ================= -->
         <div class="flex flex-wrap items-center gap-12">
-          <el-tag :type="isStudentFilter  === null ? 'primary' : 'info'" effect="light" class="chip"
-            @click="isStudentFilter  = null">
+          <!-- ===== STUDENT FILTERS ===== -->
+          <el-tag
+            :type="isStudentFilter === null ? 'primary' : 'info'"
+            effect="light"
+            class="chip"
+            @click="isStudentFilter = null"
+          >
             All Users ({{ sortedVisits.length }})
           </el-tag>
-          <el-tag :type="isStudentFilter  === true ? 'primary' : 'info'" effect="light" class="chip"
-            @click="isStudentFilter  = true">
+
+          <el-tag
+            :type="isStudentFilter === true ? 'primary' : 'info'"
+            effect="light"
+            class="chip"
+            @click="isStudentFilter = true"
+          >
             Student ({{ signedIn }})
           </el-tag>
 
-          <el-tag :type="isStudentFilter  === false ? 'primary' : 'info'" effect="light" class="chip"
-            @click="isStudentFilter  = false">
+          <el-tag
+            :type="isStudentFilter === false ? 'primary' : 'info'"
+            effect="light"
+            class="chip"
+            @click="isStudentFilter = false"
+          >
             Staff ({{ signedIn }})
           </el-tag>
 
+          <!-- ===== STATUS FILTERS ===== -->
+          <el-tag
+            :type="statusFilter === 'signed_in' ? 'primary' : 'info'"
+            effect="light"
+            class="chip"
+            @click="statusFilter = 'signed_in'"
+          >
+            Signed in ({{ signedIn }})
+          </el-tag>
+
+          <el-tag
+            :type="statusFilter === 'signed_out' ? 'primary' : 'info'"
+            effect="light"
+            class="chip"
+            @click="statusFilter = 'signed_out'"
+          >
+            Signed out ({{ signedOut }})
+          </el-tag>
+
+          <el-tag
+            :type="statusFilter === 'not_signed' ? 'primary' : 'info'"
+            effect="light"
+            class="chip"
+            @click="statusFilter = 'not_signed'"
+          >
+            Not signed ({{ notSigned }})
+          </el-tag>
         </div>
       </div>
     </el-card>
 
     <h2>Список посещений</h2>
- 
-     <!-- ================= TABLE ================= -->
-    <el-table :data="filteredUsers" border highlight-current-row style="margin-top: 20px">
+
+    <el-table :data="sortedVisits" border highlight-current-row style="margin-top: 20px">
       <el-table-column prop="id" label="N" width="70" sortable />
       <el-table-column prop="name" label="Name" width="150" sortable />
-      <el-table-column prop="surname" label="surname" sortable />
+      <el-table-column prop="surname" label="Surname" sortable />
       <el-table-column prop="visit_date" label="Last Act Time" width="170" sortable />
-      <el-table-column prop="is_student" label="is_student" width="120" sortable />
-    
-     <!-- <el-table-column label="Status" width="130" sortable :sort-method="sign_status">-->
+      <el-table-column prop="is_student" label="Is Student" width="120" sortable />
+
       <el-table-column label="Status" width="130" sortable :sort-method="sortByStatus">
         <template #default="scope">
           <el-tag v-if="scope.row.sign_status === 'signed_in'" type="success">
@@ -51,130 +86,77 @@
           </el-tag>
         </template>
       </el-table-column>
-
     </el-table>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import api from '../services/api.js'
 
-
-// 👉 состояние
+// ===== STATE =====
 const visits = ref([])
-//const statusFilter = ref(null)
 const isStudentFilter = ref(null) // true | false | null
+const statusFilter = ref(null) // 'signed_in' | 'signed_out' | 'not_signed' | null
 
-// 👉 даты
-const from = '2026-03-03'
-const to = '2026-03-04'
+// ===== DATES =====
+const from = '2026-04-08'
+const to = '2026-04-09'
 
-// 👉 загрузка данных
+// ===== LOAD DATA FUNCTION =====
 const loadVisits = async () => {
   try {
     const params = { from, to }
-    
+
     if (isStudentFilter.value !== null) {
       params.is_student = isStudentFilter.value
     }
-    const response = await api.get('/reports/visits', { params })
-    // ❗ ВАЖНО: берём data внутри data
-    visits.value = response.data.data
 
+    if (statusFilter.value !== null) {
+      params.sign_status = statusFilter.value
+    }
+
+    const response = await api.get('/reports/visits', { params })
+    visits.value = response.data.data
   } catch (error) {
     console.error('Ошибка при загрузке посещений:', error)
   }
 }
 
-onMounted(() => {
+// ===== WATCH FILTERS =====
+watch([isStudentFilter, statusFilter], () => {
   loadVisits()
 })
 
-import { watch } from 'vue'
+// ===== ON MOUNT =====
+onMounted(() => loadVisits())
 
-watch(isStudentFilter, () => {
-  loadVisits()
-})
-// ================= FILTERED USERS =================
-const filteredUsers = computed(() => {
-  let result = sortedVisits.value
-
-  // status
-
-   if (isStudentFilter.value !== null) {
-    result = result.filter(u => u.is_student === isStudentFilter.value)
-  }
-
-  return result
-})
-
-/**
- * 👉 берём последний визит каждого пользователя
- */
+// ===== COMPUTED: LAST VISIT PER USER =====
 const latestVisits = computed(() => {
   const latestByUser = {}
-
-  visits.value.forEach(visit => {
-    const userId = visit.visitor_id
-
-    if (
-      !latestByUser[userId] ||
-      new Date(visit.visit_date) > new Date(latestByUser[userId].visit_date)
-    ) {
-      latestByUser[userId] = visit
+  visits.value.forEach(v => {
+    const id = v.visitor_id
+    if (!latestByUser[id] || new Date(v.visit_date) > new Date(latestByUser[id].visit_date)) {
+      latestByUser[id] = v
     }
   })
-
   return Object.values(latestByUser)
 })
 
-/**
- * 👉 сортировка:
-
- */
+// ===== SORTED BY STATUS =====
 const sortByStatus = (a, b) => {
-  const order = {
-    signed_in: 1,
-    signed_out: 2,
-    not_signed: 3
-  }
+  const order = { signed_in: 1, signed_out: 2, not_signed: 3 }
   return order[a.sign_status] - order[b.sign_status]
 }
 
-
-/**
- * 👉 сортировка:
- * signed-in сверху
- */
-
 const sortedVisits = computed(() => {
-  return [...latestVisits.value].sort((a, b) => {
-    if (a.sign_status === b.sign_status) return 0
-    if (a.sign_status === 'signed_in') return -1
-    return 1
-  })
+  return [...latestVisits.value].sort(sortByStatus)
 })
 
-// ================= COUNTERS =================
-const signedIn = computed(() =>
-  sortedVisits.value.filter(u => u.sign_status === 'signed_in').length
-)
-
-const signedOut = computed(() =>
-  sortedVisits.value.filter(u => u.sign_status === 'signed_out').length
-)
-
-const notSigned = computed(() =>
-  sortedVisits.value.filter(u => u.sign_status === 'not_signed').length
-)
-
-/**
- * 👉 формат даты
- */
-const formatDate = (date) => {
-  return new Date(date + 'T00:00:00').toLocaleDateString()
-}
+// ===== COUNTERS =====
+const signedIn = computed(() => sortedVisits.value.filter(u => u.sign_status === 'signed_in').length)
+const signedOut = computed(() => sortedVisits.value.filter(u => u.sign_status === 'signed_out').length)
+const notSigned = computed(() => sortedVisits.value.filter(u => u.sign_status === 'not_signed').length)
 </script>
 
 <style scoped>
@@ -191,8 +173,6 @@ const formatDate = (date) => {
   align-items: center;
   margin-bottom: 1px;
 }
-
-/* ================= STATUS ================= */
 
 .flex-row {
   display: flex;
