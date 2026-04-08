@@ -79,6 +79,8 @@
   font-weight: 500;
   position: relative;
   overflow: hidden;
+  min-width: 120px;
+  text-align: center;
 }
 
 .chip:hover {
@@ -127,8 +129,6 @@
   color: #334155;
   font-weight: 600;
 }
-
-
 
 .el-table__row:hover td {
   background: #f1f5f9 !important;
