@@ -26,8 +26,8 @@
           <el-option label="Signed out" value="signed_out" />
           <el-option label="Not signed" value="not_signed" />
         </el-select>
-
       </div>
+      
     </el-card>
 
     <!-- TITLE -->
@@ -49,7 +49,7 @@
         <el-table-column prop="visit_date" label="Last activity" width="180" sortable />
         <el-table-column prop="is_student" label="Student" width="120" sortable />
 
-        <el-table-column label="Status" width="140" sortable :sort-method="sortByStatus">
+        <el-table-column label="Status" width="140">
           <template #default="scope">
             <el-tag
               :type="getStatusType(scope.row.sign_status)"
@@ -65,6 +65,16 @@
     </el-card>
 
   </div>
+  <div class="pagination">
+  <el-pagination
+    background
+    layout="prev, pager, next"
+    :page-size="limit"
+    :total="total"
+    :current-page="page"
+    @current-change="handlePageChange"
+  />
+</div>
 </template>
 
 <script setup>
@@ -80,11 +90,22 @@ const statusFilter = ref(null) // 'signed_in' | 'signed_out' | 'not_signed' | nu
 const from = '2026-04-08'
 const to = '2026-04-09'
 
+// =====Server-side pagination
+const page = ref(1)
+const limit = ref(20)
+const total = ref(0)
+const loading = ref(false)
+
 // ===== LOAD DATA FUNCTION =====
 const loadVisits = async () => {
   try {
-    const params = { from, to }
-
+    loading.value = true
+    const params = {
+      from,
+      to,
+      page: page.value,
+      limit: limit.value
+    }
     if (isStudentFilter.value !== null) {
       params.is_student = isStudentFilter.value
     }
@@ -95,14 +116,27 @@ const loadVisits = async () => {
 
     const response = await api.get('/reports/visits', { params })
     visits.value = response.data.data
-  } catch (error) {
-    console.error('Ошибка при загрузке посещений:', error)
+    total.value = response.data.total  // backend MUST return this
+
+  } finally {
+    loading.value = false
   }
+}
+//===== Pagination handler
+
+const handlePageChange = (newPage) => {
+  page.value = newPage
+  loadVisits()
 }
 
 // ===== WATCH FILTERS =====
+let timeout
+
 watch([isStudentFilter, statusFilter], () => {
-  loadVisits()
+  clearTimeout(timeout)
+  timeout = setTimeout(() => {
+    loadVisits()
+  }, 300)
 })
 
 // ===== ON MOUNT =====
@@ -133,9 +167,14 @@ const getStatusText = (status) => {
 }
 
 // ===== SORTED BY STATUS =====
+const STATUS_ORDER = {
+  signed_in: 1,
+  signed_out: 2,
+  not_signed: 3
+}
+
 const sortByStatus = (a, b) => {
-  const order = { signed_in: 1, signed_out: 2, not_signed: 3 }
-  return order[a.sign_status] - order[b.sign_status]
+  return STATUS_ORDER[a.sign_status] - STATUS_ORDER[b.sign_status]
 }
 
 const sortedVisits = computed(() => {
