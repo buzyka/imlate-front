@@ -1,92 +1,69 @@
 <template>
   <div class="page">
-    <el-card>
-      <template #header><b>Quick Stats</b></template>
+
+    <!-- FILTER CARD -->
+    <el-card class="card">
+
+      <template #header>
+        <div class="card-header">
+          <div>
+            <b>Quick Stats</b>
+            <div class="subtitle">Filter and analyze visitor activity</div>
+          </div>
+        </div>
+      </template>
 
       <div class="filters">
-        <div class="flex flex-wrap items-center gap-12">
-          <!-- ===== STUDENT FILTERS ===== -->
-          <el-tag
-            :type="isStudentFilter === null ? 'primary' : 'info'"
-            effect="light"
-            class="chip"
-            @click="isStudentFilter = null"
-          >
-            All Users ({{ sortedVisits.length }})
-          </el-tag>
 
-          <el-tag
-            :type="isStudentFilter === true ? 'primary' : 'info'"
-            effect="light"
-            class="chip"
-            @click="isStudentFilter = true"
-          >
-            Student ({{ signedIn }})
-          </el-tag>
+        <el-select v-model="isStudentFilter" placeholder="Visitor type" clearable class="filter-item">
+          <el-option label="All visitors" :value="null" />
+          <el-option label="Students" :value="true" />
+          <el-option label="Teachers" :value="false" />
+        </el-select>
 
-          <el-tag
-            :type="isStudentFilter === false ? 'primary' : 'info'"
-            effect="light"
-            class="chip"
-            @click="isStudentFilter = false"
-          >
-            Staff ({{ signedIn }})
-          </el-tag>
+        <el-select v-model="statusFilter" placeholder="Status" clearable class="filter-item">
+          <el-option label="Signed in" value="signed_in" />
+          <el-option label="Signed out" value="signed_out" />
+          <el-option label="Not signed" value="not_signed" />
+        </el-select>
 
-          <!-- ===== STATUS FILTERS ===== -->
-          <el-tag
-            :type="statusFilter === 'signed_in' ? 'primary' : 'info'"
-            effect="light"
-            class="chip"
-            @click="statusFilter = 'signed_in'"
-          >
-            Signed in ({{ signedIn }})
-          </el-tag>
-
-          <el-tag
-            :type="statusFilter === 'signed_out' ? 'primary' : 'info'"
-            effect="light"
-            class="chip"
-            @click="statusFilter = 'signed_out'"
-          >
-            Signed out ({{ signedOut }})
-          </el-tag>
-
-          <el-tag
-            :type="statusFilter === 'not_signed' ? 'primary' : 'info'"
-            effect="light"
-            class="chip"
-            @click="statusFilter = 'not_signed'"
-          >
-            Not signed ({{ notSigned }})
-          </el-tag>
-        </div>
       </div>
     </el-card>
 
-    <h2>Список посещений Список посещений</h2>
+    <!-- TITLE -->
+    <div class="section-title">Fire report</div>
 
-    <el-table :data="sortedVisits" border highlight-current-row style="margin-top: 20px">
-      <el-table-column prop="id" label="N" width="70" sortable />
-      <el-table-column prop="name" label="Name" width="150" sortable />
-      <el-table-column prop="surname" label="Surname" sortable />
-      <el-table-column prop="visit_date" label="Last Act Time" width="170" sortable />
-      <el-table-column prop="is_student" label="Is Student" width="120" sortable />
+    <!-- TABLE CARD -->
+    <el-card class="card table-card">
 
-      <el-table-column label="Status" width="130" sortable :sort-method="sortByStatus">
-        <template #default="scope">
-          <el-tag v-if="scope.row.sign_status === 'signed_in'" type="success">
-            Signed in
-          </el-tag>
-          <el-tag v-else-if="scope.row.sign_status === 'signed_out'" type="warning">
-            Signed out
-          </el-tag>
-          <el-tag v-else type="info">
-            Not signed in
-          </el-tag>
-        </template>
-      </el-table-column>
-    </el-table>
+      <el-table
+        :data="sortedVisits"
+        border
+        highlight-current-row
+        class="modern-table"
+      >
+
+        <el-table-column prop="id" label="#" width="70" sortable />
+        <el-table-column prop="name" label="Name" sortable />
+        <el-table-column prop="surname" label="Surname" sortable />
+        <el-table-column prop="visit_date" label="Last activity" width="180" sortable />
+        <el-table-column prop="is_student" label="Student" width="120" sortable />
+
+        <el-table-column label="Status" width="140" sortable :sort-method="sortByStatus">
+          <template #default="scope">
+            <el-tag
+              :type="getStatusType(scope.row.sign_status)"
+              class="status-tag"
+            >
+              {{ getStatusText(scope.row.sign_status) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+    </el-card>
+
   </div>
 </template>
 
@@ -143,6 +120,18 @@ const latestVisits = computed(() => {
   return Object.values(latestByUser)
 })
 
+const getStatusType = (status) => {
+  if (status === 'signed_in') return 'success'
+  if (status === 'signed_out') return 'warning'
+  return 'info'
+}
+
+const getStatusText = (status) => {
+  if (status === 'signed_in') return 'Signed in'
+  if (status === 'signed_out') return 'Signed out'
+  return 'Not signed'
+}
+
 // ===== SORTED BY STATUS =====
 const sortByStatus = (a, b) => {
   const order = { signed_in: 1, signed_out: 2, not_signed: 3 }
@@ -160,24 +149,5 @@ const notSigned = computed(() => sortedVisits.value.filter(u => u.sign_status ==
 </script>
 
 <style scoped>
-.page {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 1px;
-}
-
-.flex-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
 </style>

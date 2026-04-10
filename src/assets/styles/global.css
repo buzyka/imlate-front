@@ -1,169 +1,133 @@
+
 /* ======================
-   🎨 LAYOUT
+   🌐 PAGE
 ====================== */
 .page {
+  padding: 20px;
+  background: #f6f8fc;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 16px;
-
-  animation: fadeUp 0.5s ease-out;
+  animation: fadeUp 0.35s ease;
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.title {
-  margin-bottom: 8px;
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ======================
-   🔹 FLEX SYSTEM (mini Tailwind)
+   💎 CARD (modern UI)
 ====================== */
-.flex {
+.card {
+  border-radius: 16px;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  transition: all 0.25s ease;
+  background: #fff;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+}
+
+/* ======================
+   🧠 HEADER
+====================== */
+.card-header {
   display: flex;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
-}
-
-.items-center {
+  justify-content: space-between;
   align-items: center;
+  font-size: 15px;
+  color: #0f172a;
 }
 
-.gap-8 { gap: 8px; }
-.gap-12 { gap: 12px; }
-.gap-16 { gap: 16px; }
+.subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
 
 /* ======================
-   🔹 SPACING (Tailwind style)
-====================== */
-.mt-10 { margin-top: 10px; }
-.mt-20 { margin-top: 20px; }
-.mb-10 { margin-bottom: 10px; }
-
-/* ======================
-   🔹 FILTERS BLOCK
+   🔍 FILTERS
 ====================== */
 .filters {
   display: flex;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 16px;
   align-items: center;
 }
 
-.search-input {
-  width: 260px;
+.filter-item {
+  width: 220px;
 }
 
-.date-picker {
-  width: 320px;
-}
-
-/* ======================
-   🔹 CHIPS (премиум стиль)
-====================== */
-.chip {
-  cursor: pointer;
-  border-radius: 999px;
-  padding: 6px 14px;
+/* inputs modern look */
+.el-input__wrapper {
+  border-radius: 10px !important;
   transition: all 0.2s ease;
-  font-weight: 500;
-  position: relative;
-  overflow: hidden;
-  min-width: 120px;
-  text-align: center;
+  box-shadow: none !important;
 }
 
-.chip:hover {
-  transform: translateY(-2px);
-  background: #eef3f8;
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px #c7d2fe !important;
 }
 
-.chip:active {
-  transform: scale(0.96);
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 2px #a5b4fc !important;
 }
 
 /* ======================
-   🔹 QUICK DATES
+   📌 SECTION TITLE
 ====================== */
-.quick-dates {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 6px 0;
 }
 
 /* ======================
-   💎 CARD (дорогой UI)
+   📊 TABLE MODERN
 ====================== */
-.el-card {
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 5px 15px rgba(20, 40, 80, 0.08);
-  transition: all 0.25s ease;
+.table-card {
+  padding: 4px;
 }
 
-.el-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(20, 40, 80, 0.12);
-}
-
-/* ======================
-   💎 TABLE (очень важно)
-====================== */
-.el-table {
-  border-radius: 14px;
+.modern-table {
+  border-radius: 12px;
   overflow: hidden;
 }
 
 .el-table th {
-  background: #f8fafc;
-  color: #334155;
+  background: #f8fafc !important;
+  color: #475569;
   font-weight: 600;
 }
 
 .el-table__row:hover td {
   background: #f1f5f9 !important;
-  transition: all 0.2s ease;
 }
-/* Row colors */
+
+/* ======================
+   🏷 STATUS TAGS
+====================== */
+.status-tag {
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+/* soft row highlights */
 .signed-in-row {
-  background-color: #ecfdf5 !important; /* мягкий зелёный */
+  background: #ecfdf5 !important;
 }
 
 .signed-out-row {
-  background-color: #fffbeb !important; /* нейтральный серый */
+  background: #fffbeb !important;
 }
 
 .not-signed-row {
-  background-color: #f9fafb !important; /* мягкий янтарный */
-}
-
-.el-tag--primary {
-  background: #e0ecff !important;
-  /*color: #1e40af !important;
-  box-shadow: 0 4px 14px rgba(30, 64, 175, 0.15);*/
-  transition: all 0.2s ease;
-}
-
-.el-tag--primary:hover {
-  transform: scale(1.05);
-}
-/*   */
-.el-input__wrapper,
-.el-date-editor {
-  transition: all 0.2s ease;
-}
-
-.el-input__wrapper:hover,
-.el-date-editor:hover {
-  box-shadow: 0 0 0 1px #c7d2fe;
+  background: #f8fafc !important;
 }
