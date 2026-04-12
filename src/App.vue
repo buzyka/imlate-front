@@ -1,11 +1,10 @@
 <template>
   <el-container class="app-shell">
     <el-aside width="180px" v-if="isAuthed" class="app-aside">
-      <div class="menu-logo">
+      <router-link to="/" class="menu-logo" aria-label="Go to ImLate admin home">
         <img src="./assets/big-logo.png" alt="ImLate" />
-      </div>
+      </router-link>
       <el-menu router :default-active="route.path">
-        <el-menu-item index="/">Dashboard</el-menu-item>
         <el-menu-item index="/users">Visitors</el-menu-item>
         <el-menu-item index="/admin-users">Admin Users</el-menu-item>
         <el-menu-item index="/settings">Settings</el-menu-item>
@@ -124,6 +123,7 @@ async function fetchBackendVersion() {
   padding: 16px 10px 10px;
   display:flex;
   justify-content:center;
+  text-decoration:none;
 }
 .menu-logo img {
   width: 100%;
