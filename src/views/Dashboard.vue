@@ -1,336 +1,266 @@
 <template>
-  <div class="page">
-    <h2 class="title">Hello, {{ userName }}! 👋</h2>
-
-    <el-card>
-      <template #header><b>Quick Stats</b></template>
-  
-
-      <div class="filters">
-        <!--================= STATS ================= -->
-        <div class="flex-row">
-          <el-tag :type="statusFilter === null ? 'primary' : 'info'" effect="light" class="chip"
-            @click="statusFilter = null">
-            All Users ({{ users.length }})
-          </el-tag>
-
-          <el-tag :type="statusFilter === true ? 'primary' : 'info'" effect="light" class="chip"
-            @click="statusFilter = true">
-            Signed in ({{ signedIn }})
-          </el-tag>
-
-          <el-tag :type="statusFilter === false ? 'primary' : 'info'" effect="light" class="chip"
-            @click="statusFilter = false">
-            Signed out ({{ signedOut }})
-          </el-tag>
-
-          <el-tag :type="statusFilter === 'notSigned' ? 'primary' : 'info'" effect="light" class="chip"
-            @click="statusFilter = 'notSigned'">
-            Not signed ({{ notSigned }})
-          </el-tag>
-        
-
-        <!-- ================= SEARCH ================= -->
-
-          <el-input v-model="q" placeholder="Search by name or surname" clearable size="small" class="search-input" />
-       
-
-        <!-- ================= DATE + QUICK ================= -->
-        
-
-          <el-date-picker v-model="dateRange" type="daterange" start-placeholder="Start" end-placeholder="End"
-            format="DD.MM.YYYY" value-format="YYYY-MM-DD" size="small" class="date-picker" />
-
-          <div class="quick-dates">
-            <el-tag v-for="period in periods" :key="period.key" :type="activePeriod === period.key ? 'primary' : 'info'"
-              class="chip" effect="light" @click="selectPeriod(period.key)">
-              {{ period.label }}
-            </el-tag>
-          </div>
-
+  <div class="landing-page">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">ImLate Administration</p>
+        <h1 class="hero-title">Registration system.</h1>
+        <p class="hero-text">
+          Welcome back, {{ userName }}. ImLate gives your team one clear place to
+          manage visitors, follow attendance activity, and keep access workflows organized.
+        </p>
+        <div class="hero-actions">
+          <a
+            href="https://imlate.buzyka.com/getting-started.html"
+            target="_blank"
+            rel="noopener"
+            class="hero-action hero-action--brand"
+          >
+            Getting Started
+          </a>
+          <a
+            href="https://imlate.buzyka.com/"
+            target="_blank"
+            rel="noopener"
+            class="hero-action hero-action--alt"
+          >
+            Documentation
+          </a>
         </div>
       </div>
-    </el-card>
 
-    <!-- ================= TABLE ================= -->
-    <el-table :data="filteredUsers" border highlight-current-row :row-class-name="rowClassName"
-      style="margin-top: 20px">
-      <el-table-column prop="id" label="ID" width="70" sortable />
-      <el-table-column prop="name" label="Name" width="150" sortable />
-      <el-table-column prop="SurName" label="SurName" sortable />
-      <el-table-column prop="last_act_time" label="Last Act Time" width="170" sortable />
+      <div class="hero-visual" aria-hidden="true">
+        <img :src="heroLogo" alt="" class="hero-logo">
+      </div>
+    </section>
 
-      <el-table-column label="Status" width="130" :sort-method="sortByStatus">
-        <template #default="scope">
-          <el-tag v-if="scope.row.active === true" type="success">
-            Signed in
-          </el-tag>
-          <el-tag v-else-if="scope.row.active === false" type="warning">
-            Signed out
-          </el-tag>
-          <el-tag v-else type="info">
-            Not signed in
-          </el-tag>
-        </template>
-      </el-table-column>
+    <section class="feature-grid">
+      <a
+        href="https://imlate.buzyka.com/getting-started.html"
+        target="_blank"
+        rel="noopener"
+        class="feature-card"
+      >
+        <div class="feature-icon">📖</div>
+        <h2 class="feature-title">Getting Started</h2>
+        <p class="feature-details">
+          Open the quickest path to setup, first steps, and the main ImLate workflow.
+        </p>
+      </a>
 
-    </el-table>
+      <a
+        href="https://imlate.buzyka.com/admin/index.html"
+        target="_blank"
+        rel="noopener"
+        class="feature-card"
+      >
+        <div class="feature-icon">⚙️</div>
+        <h2 class="feature-title">Admin Panel</h2>
+        <p class="feature-details">
+          Manage visitors, admin users, profile details, branding, and system settings.
+        </p>
+      </a>
 
+      <a
+        href="https://imlate.buzyka.com/public-frontend/index.html"
+        target="_blank"
+        rel="noopener"
+        class="feature-card"
+      >
+        <div class="feature-icon">🖥️</div>
+        <h2 class="feature-title">Tracking point</h2>
+        <p class="feature-details">
+          Read how the public tracking part works, including the RFID reader flow and attendance events.
+        </p>
+      </a>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useAuthStore } from '../stores/auth.js'
-import api from '../services/api.js'
+import heroLogo from '../assets/big-logo.png'
 
 const auth = useAuthStore()
 const userName = computed(() => auth.userName)
-
-const users = ref([])
-const q = ref('')
-const statusFilter = ref(null)
-const dateRange = ref([])
-const activePeriod = ref(null)
-
-const periods = [
-  { key: 'today', label: 'Today' },
-  { key: 'last7', label: 'Last 7 days' },
-  { key: 'month', label: 'This month' },
-  { key: 'reset', label: 'Reset' }
-]
-
-// ================= FORMAT DATE =================
-const formatDate = (date) => {
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
-}
-
-// ================= LOAD DATA =================
-onMounted(async () => {
-
-  const now = new Date()
-  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-
-  dateRange.value = [
-    formatDate(firstDay),
-    formatDate(lastDay)
-  ]
-
-  // demo data
-  users.value = [
-    { id: 1, name: "Alice", SurName: "Forest", last_act_time: "13/01/2026 12:53:37", active: true },
-    { id: 2, name: "Bob", SurName: "Smith", last_act_time: "12/01/2026 11:45:22", active: null },
-    { id: 3, name: "Alex", SurName: "Forest", last_act_time: "13/01/2026 11:53:37", active: true },
-    { id: 4, name: "Jon", SurName: "Gaarest", last_act_time: "13/01/2026 12:03:37", active: true },
-    { id: 5, name: "Sam", SurName: "Borest", last_act_time: "13/01/2026 12:00:37", active: false },
-    { id: 6, name: "Nik", SurName: "Garest", last_act_time: "13/01/2026 12:53:37", active: null },
-    { id: 7, name: "Jon", SurName: "Gaarest", last_act_time: "13/02/2026 12:03:37", active: true },
-    { id: 8, name: "Sam", SurName: "Borest", last_act_time: "13/02/2026 12:00:37", active: false },
-    { id: 9, name: "Nik", SurName: "Garest", last_act_time: "13/02/2026 12:53:37", active: null },
-    { id: 10, name: "Jon", SurName: "Gaarest", last_act_time: "13/03/2026 12:03:37", active: true },
-    { id: 11, name: "Sam", SurName: "Borest", last_act_time: "16/03/2026 12:00:37", active: false },
-    { id: 12, name: "Nik", SurName: "Garest", last_act_time: "13/01/2026 12:53:37", active: null },
-  ]
-})
-
-// ================= COUNTERS =================
-const signedIn = computed(() =>
-  users.value.filter(u => u.active === true).length
-)
-
-const signedOut = computed(() =>
-  users.value.filter(u => u.active === false).length
-)
-
-const notSigned = computed(() =>
-  users.value.filter(u => u.active === null).length
-)
-
-// ================= FILTERED USERS =================
-const filteredUsers = computed(() => {
-  let result = users.value
-
-  // status
-  if (statusFilter.value === true)
-    result = result.filter(u => u.active === true)
-
-  if (statusFilter.value === false)
-    result = result.filter(u => u.active === false)
-
-  if (statusFilter.value === 'notSigned')
-    result = result.filter(u => u.active === null)
-
-  // search
-  const query = q.value.trim().toLowerCase()
-  if (query) {
-    result = result.filter(u =>
-      ((u.name ?? '') + ' ' + (u.SurName ?? ''))
-        .toLowerCase()
-        .includes(query)
-    )
-  }
-
-  // date range
-  if (dateRange.value?.length === 2) {
-    const [start, end] = dateRange.value
-
-    result = result.filter(u => {
-      const [datePart] = u.last_act_time.split(' ')
-      const [day, month, year] = datePart.split('/')
-      const userDate = new Date(`${year}-${month}-${day}`)
-
-      return userDate >= new Date(start) &&
-        userDate <= new Date(end)
-    })
-  }
-
-  return result
-})
-
-// ================= ROW COLORS =================
-const rowClassName = ({ row }) => {
-  if (row.active === true) return 'signed-in-row'
-  if (row.active === false) return 'signed-out-row'
-  return 'not-signed-row'
-}
-
-// ================= SORT =================
-const sortByStatus = (a, b) => {
-  const order = { true: 1, false: 2, null: 3 }
-  return order[a.active] - order[b.active]
-}
-
-// ================= QUICK DATES =================
-const selectPeriod = (key) => {
-  activePeriod.value = key
-  const today = new Date()
-
-  if (key === 'today') {
-    const d = formatDate(today)
-    dateRange.value = [d, d]
-  }
-
-  if (key === 'last7') {
-    const start = new Date()
-    start.setDate(today.getDate() - 6)
-    dateRange.value = [formatDate(start), formatDate(today)]
-  }
-
-  if (key === 'month') {
-    const first = new Date(today.getFullYear(), today.getMonth(), 1)
-    const last = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-    dateRange.value = [formatDate(first), formatDate(last)]
-  }
-
-  if (key === 'reset') {
-    dateRange.value = []
-  }
-}
 </script>
 
 <style scoped>
-.page {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.landing-page {
+  --landing-navy: #1b2a4a;
+  --landing-navy-light: #253a63;
+  --landing-orange: #f5a623;
+  --landing-orange-dark: #e8961e;
+  --landing-text: #2c3e50;
+  --landing-soft: #f7f8fa;
+  --landing-border: rgba(27, 42, 74, 0.1);
+
+  width: 100%;
+  max-width: 1180px;
+  margin: 0;
+  min-height: 100%;
+  padding: 20px 32px 12px;
+  color: var(--landing-text);
 }
 
-.title {
-  margin-bottom: 1px;
-}
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 1px;
-}
-
-.search-input {
-  width: 260px;
-}
-
-.date-picker {
-  width: 360px;
-}
-
-.quick-dates {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-
-
-.stats {
+.hero {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: minmax(0, 560px) minmax(260px, 1fr);
+  gap: 48px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 32px;
+  border-bottom: 2px solid var(--landing-orange);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--landing-navy);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  max-width: 10ch;
+  margin: 10px 0 0;
+  color: var(--landing-navy);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.hero-text {
+  max-width: 34rem;
+  margin: 18px 0 0;
+  font-size: 1.04rem;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px;
+  margin-top: 28px;
 }
 
-.signed-in-row {
-  background-color: #e0f0ff !important;
+.hero-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 164px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-.signed-out-row {
-  background-color: #f0f0f0 !important;
+.hero-action--brand {
+  background: var(--landing-orange);
+  color: #fff;
 }
 
-.not-signed-row {
-  background-color: #fff4e0 !important;
+.hero-action--brand:hover {
+  background: var(--landing-orange-dark);
 }
 
+.hero-action--alt {
+  border-color: var(--landing-navy);
+  color: var(--landing-navy);
+  background: transparent;
+}
 
+.hero-action--alt:hover {
+  border-color: var(--landing-navy-light);
+  color: var(--landing-navy-light);
+  background: rgba(27, 42, 74, 0.05);
+}
 
-
-/* ================= STATUS ================= */
-
-.flex-row {
+.hero-visual {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.chip {
-  cursor: pointer;
-  border-radius: 20px;
-  padding: 6px 14px;
-  transition: all 0.2s ease;
+  justify-content: center;
 }
 
-.chip:hover {
-  background: #eef3f8;
-  transform: translateY(-2px);
+.hero-logo {
+  width: min(100%, 260px);
+  height: auto;
+  display: block;
 }
 
-
-/* ================= SEARCH ================= */
-
-
-
-.search-input {
-  width: 250px;
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
 }
 
-/* ================= DATE ================= */
-
-
-.date-picker {
-  width: 320px;
+.feature-card {
+  display: block;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid var(--landing-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
-.quick-dates {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.feature-card:hover {
+  box-shadow: 0 8px 24px rgba(27, 42, 74, 0.12);
+  transform: translateY(-3px);
 }
 
+.feature-icon {
+  margin-bottom: 12px;
+  font-size: 32px;
+}
 
+.feature-title {
+  margin: 0 0 8px;
+  color: var(--landing-navy);
+  font-size: 17px;
+  font-weight: 600;
+}
 
+.feature-details {
+  margin: 0;
+  font-size: 14px;
+  color: var(--landing-text);
+  opacity: 0.8;
+  line-height: 1.5;
+}
 
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-bottom: 28px;
+  }
+
+  .hero-logo {
+    width: min(100%, 250px);
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-page {
+    padding: 0;
+  }
+
+  .hero-title {
+    max-width: none;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-action {
+    width: 100%;
+  }
+}
 </style>
