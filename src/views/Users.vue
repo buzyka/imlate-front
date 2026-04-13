@@ -82,6 +82,8 @@
               type="primary"
               :icon="Location"
               circle
+              data-track-button="true"
+              :aria-label="`Manual track ${scope.row.name} ${scope.row.surname}`"
               @click.stop="openTrackDialog(scope.row)"
             />
           </template>
@@ -104,52 +106,79 @@
     <!-- MANUAL TRACK DIALOG -->
     <el-dialog
       v-model="trackDialogVisible"
+      class="manual-track-dialog"
       title="Track Visit"
-      width="420px"
+      width="560px"
       :close-on-click-modal="false"
     >
       <template v-if="trackRow">
-        <div style="text-align:center;margin-bottom:16px">
+        <div class="track-dialog-shell">
+          <div class="track-hero">
           <el-image
             :src="trackRow.image ? imageUrl(trackRow.image) : noImageSrc"
-            style="width:100px;height:100px;border-radius:50%"
+              class="track-avatar"
             fit="cover"
           />
-          <div style="margin-top:8px;font-size:16px;font-weight:600">
-            {{ trackRow.name }} {{ trackRow.surname }}
+            <div class="track-hero-copy">
+              <el-tag :type="trackDialogCopy.intent" effect="dark" round>
+                {{ trackDialogCopy.badge }}
+              </el-tag>
+              <div class="track-visitor-name">
+                {{ trackRow.name }} {{ trackRow.surname }}
+              </div>
+              <div class="track-visitor-title">{{ trackDialogCopy.title }}</div>
+              <p class="track-visitor-hint">{{ trackDialogCopy.hint }}</p>
+            </div>
           </div>
-        </div>
 
-        <el-form label-position="top">
-          <el-form-item label="Action">
-            <el-switch
-              v-model="trackSignedIn"
-              active-text="Sign In"
-              inactive-text="Sign Out"
-              style="--el-switch-on-color:#67c23a;--el-switch-off-color:#f56c6c"
-            />
-          </el-form-item>
+          <div class="track-section">
+            <div class="track-section-label">Action</div>
+            <div class="track-action-grid">
+              <button
+                v-for="option in trackActionOptions"
+                :key="option.key"
+                type="button"
+                class="track-action-card"
+                :class="[
+                  `is-${option.intent}`,
+                  { 'is-active': trackAction === option.key }
+                ]"
+                @click="trackAction = option.key"
+              >
+                <strong>{{ option.badge }}</strong>
+                <span>{{ option.title }}</span>
+              </button>
+            </div>
+          </div>
 
-          <el-form-item label="Reason" required>
+          <div class="track-section">
+            <div class="track-section-head">
+              <div class="track-section-label">Reason</div>
+              <span class="track-required">Required</span>
+            </div>
+            <p class="track-reason-help">
+              Add a short note so other administrators understand why this visit was recorded manually.
+            </p>
             <el-input
               v-model="trackReason"
               type="textarea"
-              :rows="3"
-              placeholder="Enter reason for manual tracking"
+              :rows="4"
+              resize="none"
+              :placeholder="trackReasonPlaceholder"
             />
-          </el-form-item>
-        </el-form>
+          </div>
+        </div>
       </template>
 
       <template #footer>
         <el-button @click="trackDialogVisible = false">Cancel</el-button>
         <el-button
-          type="primary"
+          :type="trackDialogCopy.intent"
           :loading="trackSaving"
           :disabled="!trackReason.trim()"
           @click="submitTrack"
         >
-          Save
+          {{ trackSubmitLabel }}
         </el-button>
       </template>
     </el-dialog>
@@ -267,6 +296,12 @@ import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Location } from '@element-plus/icons-vue'
 import api from '../services/api.js'
+import {
+  MANUAL_TRACK_ACTIONS,
+  getManualTrackActionMeta,
+  getManualTrackDialogCopy,
+  getManualTrackSubmitLabel,
+} from '../features/manual-tracking.js'
 
 /* STATE */
 const visitors = ref([])
@@ -515,13 +550,24 @@ async function deleteVisitor(row) {
 /* MANUAL TRACK */
 const trackDialogVisible = ref(false)
 const trackRow = ref(null)
-const trackSignedIn = ref(true)
+const trackAction = ref('sign_in')
 const trackReason = ref('')
 const trackSaving = ref(false)
+const trackActionOptions = MANUAL_TRACK_ACTIONS.map((key) => ({
+  key,
+  ...getManualTrackActionMeta(key),
+}))
+const trackDialogCopy = computed(() => getManualTrackDialogCopy(trackAction.value))
+const trackSubmitLabel = computed(() => getManualTrackSubmitLabel(trackAction.value))
+const trackReasonPlaceholder = computed(() => (
+  trackAction.value === 'sign_in'
+    ? 'Example: Visitor arrived at reception and forgot to scan.'
+    : 'Example: Visitor left the building without scanning at the exit.'
+))
 
 function openTrackDialog(row) {
   trackRow.value = row
-  trackSignedIn.value = true
+  trackAction.value = 'sign_in'
   trackReason.value = ''
   trackDialogVisible.value = true
 }
@@ -531,13 +577,13 @@ async function submitTrack() {
 
   trackSaving.value = true
   try {
+    const actionMeta = getManualTrackActionMeta(trackAction.value)
     await api.post('/track/visit', {
       visitor_id: trackRow.value.id,
-      signed_in: trackSignedIn.value,
+      signed_in: actionMeta.signedIn,
       description: trackReason.value.trim()
     })
-    const action = trackSignedIn.value ? 'signed in' : 'signed out'
-    ElMessage.success(`Visitor was ${action} successfully`)
+    ElMessage.success(`Visitor was ${actionMeta.successLabel} successfully`)
     trackDialogVisible.value = false
   } catch (err) {
     ElMessage.error(err.response?.data?.error || 'Failed to track visit')
@@ -560,5 +606,106 @@ function reset() {
 .grid { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
 .mb-2 { margin-bottom: 12px; }
 .qr-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
+.track-dialog-shell { display: grid; gap: 20px; }
+.track-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 4px 4px 0;
+}
+.track-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.track-hero-copy {
+  display: grid;
+  gap: 8px;
+}
+.track-visitor-name {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1f2937;
+}
+.track-visitor-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+.track-visitor-hint,
+.track-reason-help {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b7280;
+}
+.track-section {
+  display: grid;
+  gap: 10px;
+}
+.track-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.track-section-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #374151;
+}
+.track-required {
+  font-size: 12px;
+  font-weight: 600;
+  color: #dc2626;
+}
+.track-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.track-action-card {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.track-action-card strong {
+  font-size: 16px;
+  color: #111827;
+}
+.track-action-card span {
+  font-size: 13px;
+  color: #6b7280;
+}
+.track-action-card:hover {
+  transform: translateY(-1px);
+}
+.track-action-card.is-success.is-active {
+  border-color: #67c23a;
+  box-shadow: 0 0 0 3px rgba(103, 194, 58, 0.15);
+}
+.track-action-card.is-danger.is-active {
+  border-color: #f56c6c;
+  box-shadow: 0 0 0 3px rgba(245, 108, 108, 0.15);
+}
+@media (max-width: 700px) {
+  .track-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .track-action-grid {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
 </style>
