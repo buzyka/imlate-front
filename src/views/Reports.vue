@@ -7,27 +7,45 @@
       <template #header>
         <div class="card-header">
           <div>
-            <b>Quick Stats</b>
-            <div class="subtitle">Filter and analyze visitor activity</div>
+            <b v-if="!loading">Quick Stats</b>
+            <!-- SKELETON HEADER -->
+            <el-skeleton v-else animated>
+              <template #template>
+                <el-skeleton-item variant="h3" style="width: 120px;" />
+                <el-skeleton-item variant="text" style="width: 200px; margin-top: 6px;" />
+              </template>
+            </el-skeleton>
+
+            <div v-if="!loading" class="subtitle">Filter and analyze visitor activity</div>
           </div>
         </div>
       </template>
-
+      <!-- FILTERS -->
       <div class="filters">
 
-        <el-select v-model="isStudentFilter" placeholder="Visitor type" clearable class="filter-item">
-          <el-option label="All visitors" :value="null" />
-          <el-option label="Students" :value="true" />
-          <el-option label="Teachers" :value="false" />
-        </el-select>
+        <el-skeleton :loading="isFirstLoad" animated>
+          <template #template>
+            <div style="display:flex; gap:12px;">
+              <el-skeleton-item variant="rect" style="width: 180px; height: 32px;" />
+              <el-skeleton-item variant="rect" style="width: 180px; height: 32px;" />
+            </div>
+          </template>
 
-        <el-select v-model="statusFilter" placeholder="Status" clearable class="filter-item">
-          <el-option label="Signed in" value="signed_in" />
-          <el-option label="Signed out" value="signed_out" />
-          <el-option label="Not signed" value="not_signed" />
-        </el-select>
+          <template #default>
+            <el-select v-model="isStudentFilter" placeholder="Visitor type" clearable class="filter-item">
+              <el-option label="All visitors" :value="null" />
+              <el-option label="Students" :value="true" />
+              <el-option label="Teachers" :value="false" />
+            </el-select>
+
+            <el-select v-model="statusFilter" placeholder="Status" clearable class="filter-item">
+              <el-option label="Signed in" value="signed_in" />
+              <el-option label="Signed out" value="signed_out" />
+              <el-option label="Not signed" value="not_signed" />
+            </el-select>
+          </template>
+        </el-skeleton>
       </div>
-      
     </el-card>
 
     <!-- TITLE -->
@@ -35,46 +53,53 @@
 
     <!-- TABLE CARD -->
     <el-card class="card table-card">
+      <el-skeleton :loading="loading" animated>
+        <template #template>
+          <!-- TABLE SKELETON -->
+          <div v-for="i in 8" :key="i" style="display:flex; gap:12px; padding:12px;">
+            <el-skeleton-item variant="text" style="width: 50px;" />
+            <el-skeleton-item variant="text" style="width: 120px;" />
+            <el-skeleton-item variant="text" style="width: 120px;" />
+            <el-skeleton-item variant="text" style="width: 160px;" />
+            <el-skeleton-item variant="text" style="width: 100px;" />
+            <el-skeleton-item variant="text" style="width: 120px;" />
+          </div>
+        </template>
+        <template #default>
 
-      <el-table
-        :data="sortedVisits"
-        border
-        highlight-current-row
-        class="modern-table"
-      >
+          <el-table :data="sortedVisits" border highlight-current-row class="modern-table"
+            v-loading="loading && !isFirstLoad" element-loading-text="Loading...">
 
-        <el-table-column prop="id" label="#" width="70" sortable />
-        <el-table-column prop="name" label="Name" sortable />
-        <el-table-column prop="surname" label="Surname" sortable />
-        <el-table-column prop="visit_date" label="Last activity" width="180" sortable />
-        <el-table-column prop="is_student" label="Student" width="120" sortable />
+            <el-table-column prop="id" label="#" width="70" sortable />
+            <el-table-column prop="name" label="Name" sortable />
+            <el-table-column prop="surname" label="Surname" sortable />
+            <el-table-column prop="visit_date" label="Last activity" width="180" sortable />
+            <el-table-column prop="is_student" label="Student" width="120" sortable />
 
-        <el-table-column label="Status" width="140">
-          <template #default="scope">
-            <el-tag
-              :type="getStatusType(scope.row.sign_status)"
-              class="status-tag"
-            >
-              {{ getStatusText(scope.row.sign_status) }}
-            </el-tag>
-          </template>
-        </el-table-column>
+            <el-table-column label="Status" width="140">
+              <template #default="scope">
+                <el-tag :type="getStatusType(scope.row.sign_status)">
+                  {{ getStatusText(scope.row.sign_status) }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <!-- 🔥 EMPTY STATE -->
+            <template #empty>
+              <div style="padding: 40px; text-align: center;">
+                <p>No data found</p>
+              </div>
+            </template>
+          </el-table>
+        </template>
 
-      </el-table>
-
+      </el-skeleton>
     </el-card>
 
   </div>
   <div class="pagination">
-  <el-pagination
-    background
-    layout="prev, pager, next"
-    :page-size="limit"
-    :total="total"
-    :current-page="page"
-    @current-change="handlePageChange"
-  />
-</div>
+    <el-pagination background layout="prev, pager, next" :page-size="limit" :total="total" :current-page="page"
+      @current-change="handlePageChange" />
+  </div>
 </template>
 
 <script setup>
@@ -95,6 +120,7 @@ const page = ref(1)
 const limit = ref(20)
 const total = ref(0)
 const loading = ref(false)
+const isFirstLoad = ref(true)
 
 // ===== LOAD DATA FUNCTION =====
 const loadVisits = async () => {
@@ -120,6 +146,7 @@ const loadVisits = async () => {
 
   } finally {
     loading.value = false
+    isFirstLoad.value = false
   }
 }
 //===== Pagination handler
@@ -135,6 +162,7 @@ let timeout
 watch([isStudentFilter, statusFilter], () => {
   clearTimeout(timeout)
   timeout = setTimeout(() => {
+    page.value = 1
     loadVisits()
   }, 300)
 })
@@ -187,6 +215,4 @@ const signedOut = computed(() => sortedVisits.value.filter(u => u.sign_status ==
 const notSigned = computed(() => sortedVisits.value.filter(u => u.sign_status === 'not_signed').length)
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
