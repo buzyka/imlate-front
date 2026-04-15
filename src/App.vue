@@ -53,7 +53,7 @@
         <el-button size="small" text @click="$router.push('/profile')">{{ auth.userName }}</el-button>
         <el-button size="small" @click="logout">Logout</el-button>
       </el-header>
-      <el-main>
+      <el-main class="app-main">
         <router-view/>
       </el-main>
     </el-container>
@@ -95,14 +95,20 @@ async function fetchBackendVersion() {
 
 <style scoped>
 .app-shell {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
+  overflow: hidden;
 }
 .app-content {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+}
+.app-main {
+  min-height: 0;
+  overflow: auto;
 }
 .app-header {
   display:flex; align-items:center; gap:12px;

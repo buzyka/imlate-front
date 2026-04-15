@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="reports-page">
 
     <!-- FILTER CARD  )-->
     <el-card class="card">
@@ -113,25 +113,22 @@
       </el-skeleton>
     </el-card>
 
-  </div>
-  <div class="pagination">
-    <el-pagination background layout="prev, pager, next" :page-size="limit" :total="total" :current-page="page"
-      @current-change="handlePageChange" />
+    <div class="reports-pagination">
+      <el-pagination background layout="prev, pager, next" :page-size="limit" :total="total" :current-page="page"
+        @current-change="handlePageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
+import { buildReportsQuery, getReportsDateRange } from '../features/reports-query.js'
 import api from '../services/api.js'
 
 // ===== STATE =====
 const visits = ref([])
 const isStudentFilter = ref(null) // true | false | null
 const statusFilter = ref(null) // 'signed_in' | 'signed_out' | 'not_signed' | null
-
-// ===== DATES =====
-const from = '2026-04-08'
-const to = '2026-04-09'
 
 const gradeFilter = ref([]) // multiple select
 const grades = Array.from({ length: 12 }, (_, i) =>  //list of Grades
@@ -150,27 +147,17 @@ const isFirstLoad = ref(true)
 // ===== LOAD DATA FUNCTION =====
 
 const buildParams = () => {
-  const params = new URLSearchParams()
+  const { from, to } = getReportsDateRange()
 
-  params.append('from', from)
-  params.append('to', to)
-  params.append('page', page.value)
-  params.append('limit', limit.value)
-
-  if (isStudentFilter.value !== null) {
-    params.append('is_student', isStudentFilter.value)
-  }
-
-  if (statusFilter.value !== null) {
-    params.append('sign_status', statusFilter.value)
-  }
-
-  if (gradeFilter.value.length > 0) {
-    gradeFilter.value.forEach(g => {
-      params.append('year_group', g)
-    })
-  }
-  return params
+  return buildReportsQuery({
+    from,
+    to,
+    page: page.value,
+    limit: limit.value,
+    isStudentFilter: isStudentFilter.value,
+    statusFilter: statusFilter.value,
+    gradeFilter: gradeFilter.value,
+  })
 }
 
 const buildQueryString = () => buildParams().toString()
@@ -199,8 +186,19 @@ const handlePageChange = (newPage) => {
 //====== Grade =======
 
 watch(isStudentFilter, (val) => {
+  if (val === undefined) {
+    isStudentFilter.value = null
+    return
+  }
+
   if (val !== true) {
     gradeFilter.value = []
+  }
+})
+
+watch(statusFilter, (val) => {
+  if (val === undefined) {
+    statusFilter.value = null
   }
 })
 
@@ -264,4 +262,19 @@ const signedOut = computed(() => sortedVisits.value.filter(u => u.sign_status ==
 const notSigned = computed(() => sortedVisits.value.filter(u => u.sign_status === 'not_signed').length)
 </script>
 
-<style scoped></style>
+<style scoped>
+.reports-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #f6f8fc;
+  min-height: 100%;
+  animation: fadeUp 0.35s ease;
+}
+
+.reports-pagination {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
