@@ -1,7 +1,7 @@
 <template>
   <div class="page">
 
-    <!-- FILTER CARD -->
+    <!-- FILTER CARD  )-->
     <el-card class="card">
 
       <template #header>
@@ -43,9 +43,23 @@
               <el-option label="Signed out" value="signed_out" />
               <el-option label="Not signed" value="not_signed" />
             </el-select>
+
+            <el-select v-model="gradeFilter" multiple :disabled="isStudentFilter !== true" placeholder="Select grade(s)"
+              class="filter-item">
+              <el-option v-for="g in grades" :key="g.value" :label="g.label" :value="g.value" />
+            </el-select>
+
+            <el-tag v-if="gradeFilter.length === 1" type="success">
+              Single grade mode
+            </el-tag>
+
+            <el-tag v-else-if="gradeFilter.length > 1" type="warning">
+              Multi grade mode
+            </el-tag>
           </template>
         </el-skeleton>
       </div>
+
     </el-card>
 
     <!-- TITLE -->
@@ -70,7 +84,11 @@
           <el-table :data="sortedVisits" border highlight-current-row class="modern-table"
             v-loading="loading && !isFirstLoad" element-loading-text="Loading...">
 
-            <el-table-column prop="id" label="#" width="70" sortable />
+            <el-table-column label="#" width="70" align="center" fixed>
+              <template #default="scope">
+                {{ (page - 1) * limit + scope.$index + 1 }}
+              </template>
+            </el-table-column>
             <el-table-column prop="name" label="Name" sortable />
             <el-table-column prop="surname" label="Surname" sortable />
             <el-table-column prop="visit_date" label="Last activity" width="180" sortable />
@@ -115,6 +133,13 @@ const statusFilter = ref(null) // 'signed_in' | 'signed_out' | 'not_signed' | nu
 const from = '2026-04-08'
 const to = '2026-04-09'
 
+const gradeFilter = ref([]) // multiple select
+const grades = Array.from({ length: 12 }, (_, i) =>  //list of Grades
+({
+  label: `Grade ${i + 1}`,
+  value: i + 1
+}))
+
 // =====Server-side pagination
 const page = ref(1)
 const limit = ref(20)
@@ -123,43 +148,67 @@ const loading = ref(false)
 const isFirstLoad = ref(true)
 
 // ===== LOAD DATA FUNCTION =====
+
+const buildParams = () => {
+  const params = new URLSearchParams()
+
+  params.append('from', from)
+  params.append('to', to)
+  params.append('page', page.value)
+  params.append('limit', limit.value)
+
+  if (isStudentFilter.value !== null) {
+    params.append('is_student', isStudentFilter.value)
+  }
+
+  if (statusFilter.value !== null) {
+    params.append('sign_status', statusFilter.value)
+  }
+
+  if (gradeFilter.value.length > 0) {
+    gradeFilter.value.forEach(g => {
+      params.append('year_group', g)
+    })
+  }
+  return params
+}
+
+const buildQueryString = () => buildParams().toString()
+
 const loadVisits = async () => {
   try {
     loading.value = true
-    const params = {
-      from,
-      to,
-      page: page.value,
-      limit: limit.value
-    }
-    if (isStudentFilter.value !== null) {
-      params.is_student = isStudentFilter.value
-    }
 
-    if (statusFilter.value !== null) {
-      params.sign_status = statusFilter.value
-    }
+    const response = await api.get(`/reports/visits?${buildQueryString()}`)
 
-    const response = await api.get('/reports/visits', { params })
     visits.value = response.data.data
-    total.value = response.data.total  // backend MUST return this
+    total.value = response.data.total
 
   } finally {
     loading.value = false
     isFirstLoad.value = false
   }
 }
+
 //===== Pagination handler
 
 const handlePageChange = (newPage) => {
   page.value = newPage
   loadVisits()
 }
+//====== Grade =======
+
+watch(isStudentFilter, (val) => {
+  if (val !== true) {
+    gradeFilter.value = []
+  }
+})
 
 // ===== WATCH FILTERS =====
 let timeout
 
-watch([isStudentFilter, statusFilter], () => {
+
+watch([isStudentFilter, statusFilter, () => gradeFilter.value.slice()], () => {
   clearTimeout(timeout)
   timeout = setTimeout(() => {
     page.value = 1
