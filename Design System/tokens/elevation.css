@@ -10,6 +10,8 @@
 --il-shadow-card-hover:0 10px 26px rgba(15,23,42,.1);
 --il-shadow-feature-hover:0 8px 24px rgba(27,42,74,.12);
 --il-shadow-link-hover:0 2px 8px rgba(64,158,255,.15);
+--il-shadow-sticky-left:6px 0 8px -6px rgba(15,23,42,.12);
+--il-shadow-sticky-right:-6px 0 8px -6px rgba(15,23,42,.12);
 
 /* Focus / selection rings */
 --il-ring-input-hover:0 0 0 1px #c7d2fe;

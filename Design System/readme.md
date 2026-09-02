@@ -147,7 +147,7 @@ Root manifest:
 | `tokens/` | `colors.css`, `typography.css`, `spacing.css`, `elevation.css`, `motion.css` |
 | `assets/` | `logo.png`, `app-icon.png`, `favicon.ico`, `icons/` (40 Element Plus SVGs) |
 | `components/` | React primitives, grouped by concern |
-| `guidelines/` | 20 foundation specimen cards (Colors, Type, Spacing, Brand) |
+| `guidelines/` | 20 foundation specimen cards (Colors, Type, Spacing, Brand) + `reports-workspace.md`, the Reports redesign proposal |
 | `ui_kits/admin/` | Click-through recreation of ImLate Administration |
 | `templates/admin-screen/` | Starting template: admin shell with a table + edit-panel CRUD view |
 | `SKILL.md` | Agent Skills front matter for use outside this project |
@@ -157,11 +157,11 @@ Root manifest:
 ### Components
 
 `components/core/` — **Button**, **Icon**, **Card** (+ `CardSubtitle`), **Tag**, **Avatar**, **Divider**
-`components/forms/` — **Input**, **Textarea**, **InputNumber**, **Select**, **Switch**, **FormField** (+ `FormActions`), **FileUploadRow**
-`components/data/` — **DataTable**, **StatusTag**, **Pagination**, **Skeleton** (+ `SkeletonItem`), **KpiStat**
+`components/forms/` — **Input**, **Textarea**, **InputNumber**, **Select**, **Switch**, **SegmentedControl**, **DateRangePicker** (+ `DATE_PRESETS`, `DateRangePicker.format`), **FormField** (+ `FormActions`), **FileUploadRow**
+`components/data/` — **DataTable**, **PivotGrid**, **Legend**, **TableToolbar**, **StatusTag**, **MiniBar**, **Pagination**, **Skeleton** (+ `SkeletonItem`), **KpiStat**
 `components/navigation/` — **SidebarMenu** (+ `SidebarFooterButton`), **Topbar**, **Tabs**, **PageHeader** (+ `SectionTitle`)
 `components/feedback/` — **Dialog** (+ **ConfirmDialog**), **Message** (+ `MessageStack`), **Popover**
-`components/patterns/` — **FeatureCard**, **PillButton**, **ActionChoiceCard**, **AssetSlotCard**, **HelpPanel**, **FilterBar** (+ `FilterItem`)
+`components/patterns/` — **FeatureCard**, **PillButton**, **ActionChoiceCard**, **AssetSlotCard**, **HelpPanel**, **FilterBar** (+ `FilterItem`), **FilterChip**
 
 Each directory holds `<Name>.jsx`, `<Name>.d.ts` (props contract), `<Name>.prompt.md` (what/when + usage), and one `@dsCard` HTML showing the group's states.
 
@@ -174,7 +174,17 @@ The Vue app composes Element Plus components directly rather than defining a com
 - **StatusTag** — extracts `getStatusType` / `getStatusText` from `Reports.vue` so the status→colour mapping can't drift.
 - **FilterBar / FilterItem** — the `.filters` / `.filter-item` classes from `global.css`, expressed as components.
 
-Nothing else was invented. Notably absent, because the source has no counterpart: date pickers, breadcrumbs, drawers, tooltips, radio and checkbox groups, batch/bulk actions, inline editing, collapsible panels, charts, and dark mode. **ImLate has no dark mode** — do not add one.
+Five more were added for the Reports workspace redesign (see `guidelines/reports-workspace.md`). Each is built entirely from existing tokens, but none has a counterpart in `imlate-front` — treat them as proposals until they ship:
+
+- **SegmentedControl** — date-range presets. Element Plus radio-button geometry.
+- **DateRangePicker** — dual-calendar From/To. The Vue app hardcodes today→tomorrow and has no picker.
+- **FilterChip** — removable "label: value" pill summarising an applied filter.
+- **TableToolbar** — search-within-results, row count, CSV/PDF export above a grid.
+- **MiniBar** — single-proportion bar for in-cell summaries. The system's only chart primitive.
+- **PivotGrid** — matrix grid with sticky identity columns, generated period columns, a sticky row total and a totals footer. Drives the Attendance matrix.
+- **Legend** — compact key for grids that encode meaning in cell colour. Mandatory alongside PivotGrid.
+
+Notably absent, because the source has no counterpart: breadcrumbs, drawers, tooltips, radio and checkbox groups, batch/bulk actions, inline editing, and collapsible panels. **ImLate has no dark mode** — do not add one.
 
 ---
 
@@ -187,7 +197,7 @@ Read this before building anything for ImLate.
 3. **Respect the three colour layers.** Brand navy/orange belongs to the dashboard. Blue is interaction. Semantic colours carry the fixed status mapping. Never use orange for a primary action inside a CRUD screen, and never re-map a semantic colour.
 4. **One primary action per card.** Everything else is a default, plain or text button. Destructive actions are `danger`, and every one of them passes through `ConfirmDialog` first.
 5. **CRUD screens use the two-column pattern.** Table left, edit panel right (380px / 400px), row click loads the form, a Reset button clears it. Do not introduce modal editing or a separate edit route.
-6. **Filters live in their own card above the data**, in a `FilterBar` with 220px controls, debounced 300ms, resetting to page 1. Active state is an inline `Tag` ("Single grade mode" / "Multi grade mode"), not a removable chip list.
+6. **Filters live in their own card above the data**, in a `FilterBar` with 220px controls, resetting to page 1 on apply. Two behaviours are legitimate: the shipped app auto-applies on a 300ms debounce (fine up to ~3 controls), and the Reports workspace uses an explicit draft/applied model with `FilterChip` summaries and an `Apply filters` button (use this from ~4 controls up, or whenever a date range is involved). `Tag` mode hints ("Single grade mode" / "Multi grade mode") describe the draft; chips describe what is applied.
 7. **Feedback is a top-centred `Message`.** Every mutation fires one, using the exact copy formulas above. Do not add inline success banners.
 8. **Loading has two modes**: `Skeleton` shaped like the incoming content on first load, and a spinner/overlay with the table still mounted on refetch.
 9. **Layout is fixed.** 180px sidebar, 36px topbar, one scrolling main, `--il-surface-page` behind content, white on the dashboard. Text-only nav items in the exact order Visitors, Admin Users, Reports, Settings.

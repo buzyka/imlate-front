@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"ImLateDesignSystem_9c9b6f","components":[{"name":"Avatar","sourcePath":"components/core/Avatar.jsx"},{"name":"AVATAR_PLACEHOLDER","sourcePath":"components/core/Avatar.jsx"},{"name":"Button","sourcePath":"components/core/Button.jsx"},{"name":"Card","sourcePath":"components/core/Card.jsx"},{"name":"CardSubtitle","sourcePath":"components/core/Card.jsx"},{"name":"Divider","sourcePath":"components/core/Divider.jsx"},{"name":"Icon","sourcePath":"components/core/Icon.jsx"},{"name":"Tag","sourcePath":"components/core/Tag.jsx"},{"name":"DataTable","sourcePath":"components/data/DataTable.jsx"},{"name":"KpiStat","sourcePath":"components/data/KpiStat.jsx"},{"name":"Pagination","sourcePath":"components/data/Pagination.jsx"},{"name":"SkeletonItem","sourcePath":"components/data/Skeleton.jsx"},{"name":"Skeleton","sourcePath":"components/data/Skeleton.jsx"},{"name":"StatusTag","sourcePath":"components/data/StatusTag.jsx"},{"name":"SIGN_STATUS_ORDER","sourcePath":"components/data/StatusTag.jsx"},{"name":"Dialog","sourcePath":"components/feedback/Dialog.jsx"},{"name":"ConfirmDialog","sourcePath":"components/feedback/Dialog.jsx"},{"name":"Message","sourcePath":"components/feedback/Message.jsx"},{"name":"MessageStack","sourcePath":"components/feedback/Message.jsx"},{"name":"Popover","sourcePath":"components/feedback/Popover.jsx"},{"name":"FileUploadRow","sourcePath":"components/forms/FileUploadRow.jsx"},{"name":"FormField","sourcePath":"components/forms/FormField.jsx"},{"name":"FormActions","sourcePath":"components/forms/FormField.jsx"},{"name":"Input","sourcePath":"components/forms/Input.jsx"},{"name":"InputNumber","sourcePath":"components/forms/InputNumber.jsx"},{"name":"Select","sourcePath":"components/forms/Select.jsx"},{"name":"Switch","sourcePath":"components/forms/Switch.jsx"},{"name":"Textarea","sourcePath":"components/forms/Textarea.jsx"},{"name":"PageHeader","sourcePath":"components/navigation/PageHeader.jsx"},{"name":"SectionTitle","sourcePath":"components/navigation/PageHeader.jsx"},{"name":"SidebarMenu","sourcePath":"components/navigation/SidebarMenu.jsx"},{"name":"SidebarFooterButton","sourcePath":"components/navigation/SidebarMenu.jsx"},{"name":"Tabs","sourcePath":"components/navigation/Tabs.jsx"},{"name":"Topbar","sourcePath":"components/navigation/Topbar.jsx"},{"name":"ActionChoiceCard","sourcePath":"components/patterns/ActionChoiceCard.jsx"},{"name":"AssetSlotCard","sourcePath":"components/patterns/AssetSlotCard.jsx"},{"name":"FeatureCard","sourcePath":"components/patterns/FeatureCard.jsx"},{"name":"FilterBar","sourcePath":"components/patterns/FilterBar.jsx"},{"name":"FilterItem","sourcePath":"components/patterns/FilterBar.jsx"},{"name":"HelpPanel","sourcePath":"components/patterns/HelpPanel.jsx"},{"name":"PillButton","sourcePath":"components/patterns/PillButton.jsx"}],"sourceHashes":{"components/core/Avatar.jsx":"6de5b3232e1f","components/core/Button.jsx":"7dae53d84d56","components/core/Card.jsx":"b63fd9fb3fc8","components/core/Divider.jsx":"564ced184dff","components/core/Icon.jsx":"d4ce599dc096","components/core/Tag.jsx":"2e18e5bd195d","components/data/DataTable.jsx":"ac14cf02ede7","components/data/KpiStat.jsx":"f1e0681fc866","components/data/Pagination.jsx":"5d18971dda04","components/data/Skeleton.jsx":"7ce9e27d4379","components/data/StatusTag.jsx":"1b0965a31612","components/feedback/Dialog.jsx":"c41a898f2410","components/feedback/Message.jsx":"a3ccecec35df","components/feedback/Popover.jsx":"e4270ce2e7c5","components/forms/FileUploadRow.jsx":"2ab90e4f9452","components/forms/FormField.jsx":"c7adeea59672","components/forms/Input.jsx":"46be790a569a","components/forms/InputNumber.jsx":"364745385a1d","components/forms/Select.jsx":"a9f1947bcd4d","components/forms/Switch.jsx":"cfad45f206dd","components/forms/Textarea.jsx":"d456cb319c8d","components/navigation/PageHeader.jsx":"9a4d0ea04c62","components/navigation/SidebarMenu.jsx":"46f87ff6ad8a","components/navigation/Tabs.jsx":"776a37e29ae0","components/navigation/Topbar.jsx":"a4fe63ba7a33","components/patterns/ActionChoiceCard.jsx":"57dbbcb2b2e3","components/patterns/AssetSlotCard.jsx":"df36198ff50b","components/patterns/FeatureCard.jsx":"b6fffc0597f5","components/patterns/FilterBar.jsx":"bb302f317808","components/patterns/HelpPanel.jsx":"1e7633995427","components/patterns/PillButton.jsx":"f9a157bd0ee1","ui_kits/admin/AdminUsersScreen.jsx":"85b8c7e38d55","ui_kits/admin/AppShell.jsx":"bb8157bbd88a","ui_kits/admin/DashboardScreen.jsx":"854992107403","ui_kits/admin/LoginScreen.jsx":"c116c0dc003a","ui_kits/admin/ProfileScreen.jsx":"0fe38906ecfb","ui_kits/admin/ReportsScreen.jsx":"503cd552cc4f","ui_kits/admin/SettingsScreen.jsx":"6a9e4d7b5b9a","ui_kits/admin/VisitorsScreen.jsx":"20bfcbd4c428","ui_kits/admin/data.js":"e38447228c46"},"inlinedExternals":[],"unexposedExports":[]} */
+/* @ds-bundle: {"format":4,"namespace":"ImLateDesignSystem_9c9b6f","components":[{"name":"Avatar","sourcePath":"components/core/Avatar.jsx"},{"name":"AVATAR_PLACEHOLDER","sourcePath":"components/core/Avatar.jsx"},{"name":"Button","sourcePath":"components/core/Button.jsx"},{"name":"Card","sourcePath":"components/core/Card.jsx"},{"name":"CardSubtitle","sourcePath":"components/core/Card.jsx"},{"name":"Divider","sourcePath":"components/core/Divider.jsx"},{"name":"Icon","sourcePath":"components/core/Icon.jsx"},{"name":"Tag","sourcePath":"components/core/Tag.jsx"},{"name":"DataTable","sourcePath":"components/data/DataTable.jsx"},{"name":"KpiStat","sourcePath":"components/data/KpiStat.jsx"},{"name":"Legend","sourcePath":"components/data/Legend.jsx"},{"name":"MiniBar","sourcePath":"components/data/MiniBar.jsx"},{"name":"Pagination","sourcePath":"components/data/Pagination.jsx"},{"name":"PivotGrid","sourcePath":"components/data/PivotGrid.jsx"},{"name":"SkeletonItem","sourcePath":"components/data/Skeleton.jsx"},{"name":"Skeleton","sourcePath":"components/data/Skeleton.jsx"},{"name":"StatusTag","sourcePath":"components/data/StatusTag.jsx"},{"name":"SIGN_STATUS_ORDER","sourcePath":"components/data/StatusTag.jsx"},{"name":"TableToolbar","sourcePath":"components/data/TableToolbar.jsx"},{"name":"Dialog","sourcePath":"components/feedback/Dialog.jsx"},{"name":"ConfirmDialog","sourcePath":"components/feedback/Dialog.jsx"},{"name":"Message","sourcePath":"components/feedback/Message.jsx"},{"name":"MessageStack","sourcePath":"components/feedback/Message.jsx"},{"name":"Popover","sourcePath":"components/feedback/Popover.jsx"},{"name":"DateRangePicker","sourcePath":"components/forms/DateRangePicker.jsx"},{"name":"DATE_PRESETS","sourcePath":"components/forms/DateRangePicker.jsx"},{"name":"FileUploadRow","sourcePath":"components/forms/FileUploadRow.jsx"},{"name":"FormField","sourcePath":"components/forms/FormField.jsx"},{"name":"FormActions","sourcePath":"components/forms/FormField.jsx"},{"name":"Input","sourcePath":"components/forms/Input.jsx"},{"name":"InputNumber","sourcePath":"components/forms/InputNumber.jsx"},{"name":"SegmentedControl","sourcePath":"components/forms/SegmentedControl.jsx"},{"name":"Select","sourcePath":"components/forms/Select.jsx"},{"name":"Switch","sourcePath":"components/forms/Switch.jsx"},{"name":"Textarea","sourcePath":"components/forms/Textarea.jsx"},{"name":"PageHeader","sourcePath":"components/navigation/PageHeader.jsx"},{"name":"SectionTitle","sourcePath":"components/navigation/PageHeader.jsx"},{"name":"SidebarMenu","sourcePath":"components/navigation/SidebarMenu.jsx"},{"name":"SidebarFooterButton","sourcePath":"components/navigation/SidebarMenu.jsx"},{"name":"Tabs","sourcePath":"components/navigation/Tabs.jsx"},{"name":"Topbar","sourcePath":"components/navigation/Topbar.jsx"},{"name":"ActionChoiceCard","sourcePath":"components/patterns/ActionChoiceCard.jsx"},{"name":"AssetSlotCard","sourcePath":"components/patterns/AssetSlotCard.jsx"},{"name":"FeatureCard","sourcePath":"components/patterns/FeatureCard.jsx"},{"name":"FilterBar","sourcePath":"components/patterns/FilterBar.jsx"},{"name":"FilterItem","sourcePath":"components/patterns/FilterBar.jsx"},{"name":"FilterChip","sourcePath":"components/patterns/FilterChip.jsx"},{"name":"HelpPanel","sourcePath":"components/patterns/HelpPanel.jsx"},{"name":"PillButton","sourcePath":"components/patterns/PillButton.jsx"}],"sourceHashes":{"components/core/Avatar.jsx":"6de5b3232e1f","components/core/Button.jsx":"7dae53d84d56","components/core/Card.jsx":"b63fd9fb3fc8","components/core/Divider.jsx":"564ced184dff","components/core/Icon.jsx":"d4ce599dc096","components/core/Tag.jsx":"2e18e5bd195d","components/data/DataTable.jsx":"ac14cf02ede7","components/data/KpiStat.jsx":"f1e0681fc866","components/data/Legend.jsx":"d353c612dccf","components/data/MiniBar.jsx":"6b060b3949ef","components/data/Pagination.jsx":"5d18971dda04","components/data/PivotGrid.jsx":"9a97cb4e2846","components/data/Skeleton.jsx":"7ce9e27d4379","components/data/StatusTag.jsx":"1b0965a31612","components/data/TableToolbar.jsx":"7538041c4b5c","components/feedback/Dialog.jsx":"c41a898f2410","components/feedback/Message.jsx":"a3ccecec35df","components/feedback/Popover.jsx":"e4270ce2e7c5","components/forms/DateRangePicker.jsx":"87213688dc88","components/forms/FileUploadRow.jsx":"2ab90e4f9452","components/forms/FormField.jsx":"c7adeea59672","components/forms/Input.jsx":"46be790a569a","components/forms/InputNumber.jsx":"364745385a1d","components/forms/SegmentedControl.jsx":"dc9535958550","components/forms/Select.jsx":"a9f1947bcd4d","components/forms/Switch.jsx":"cfad45f206dd","components/forms/Textarea.jsx":"d456cb319c8d","components/navigation/PageHeader.jsx":"9a4d0ea04c62","components/navigation/SidebarMenu.jsx":"46f87ff6ad8a","components/navigation/Tabs.jsx":"776a37e29ae0","components/navigation/Topbar.jsx":"a4fe63ba7a33","components/patterns/ActionChoiceCard.jsx":"57dbbcb2b2e3","components/patterns/AssetSlotCard.jsx":"df36198ff50b","components/patterns/FeatureCard.jsx":"b6fffc0597f5","components/patterns/FilterBar.jsx":"bb302f317808","components/patterns/FilterChip.jsx":"58ea70eeb0a3","components/patterns/HelpPanel.jsx":"1e7633995427","components/patterns/PillButton.jsx":"f9a157bd0ee1","ui_kits/admin/AdminUsersScreen.jsx":"85b8c7e38d55","ui_kits/admin/AppShell.jsx":"5800b72cd493","ui_kits/admin/DashboardScreen.jsx":"854992107403","ui_kits/admin/LoginScreen.jsx":"c116c0dc003a","ui_kits/admin/ProfileScreen.jsx":"0fe38906ecfb","ui_kits/admin/ReportsScreen.jsx":"8061e04213f6","ui_kits/admin/SettingsScreen.jsx":"6a9e4d7b5b9a","ui_kits/admin/VisitorsScreen.jsx":"20bfcbd4c428","ui_kits/admin/data.js":"47003018b6f0"},"inlinedExternals":[],"unexposedExports":[{"name":"formatRange","sourcePath":"components/forms/DateRangePicker.jsx"}]} */
 
 (() => {
 
@@ -539,6 +539,107 @@ function KpiStat({
 Object.assign(__ds_scope, { KpiStat });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "components/data/KpiStat.jsx", error: String((e && e.message) || e) }); }
 
+// components/data/Legend.jsx
+try { (() => {
+function Legend({
+  items = [],
+  style
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 18,
+      flexWrap: 'wrap',
+      fontFamily: 'var(--il-font-sans)',
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-text-color-secondary)',
+      ...style
+    }
+  }, items.map((it, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 7,
+      whiteSpace: 'nowrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: it.dot ? 8 : 16,
+      height: it.dot ? 8 : 14,
+      flex: '0 0 auto',
+      borderRadius: it.dot ? '50%' : 3,
+      background: it.swatch || 'transparent',
+      border: it.border ? `1px solid ${it.border}` : it.dot ? 'none' : '1px solid var(--el-border-color-light)'
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--el-text-color-regular)'
+    }
+  }, it.label), it.hint && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--el-text-color-placeholder)'
+    }
+  }, it.hint))));
+}
+Object.assign(__ds_scope, { Legend });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/data/Legend.jsx", error: String((e && e.message) || e) }); }
+
+// components/data/MiniBar.jsx
+try { (() => {
+const COLORS = {
+  success: 'var(--el-color-success)',
+  warning: 'var(--el-color-warning)',
+  danger: 'var(--el-color-danger)',
+  info: 'var(--el-color-info)',
+  primary: 'var(--el-color-primary)'
+};
+function MiniBar({
+  value = 0,
+  max = 100,
+  intent = 'success',
+  label,
+  width = 96,
+  style
+}) {
+  const pct = max > 0 ? Math.max(0, Math.min(100, value / max * 100)) : 0;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8,
+      fontFamily: 'var(--il-font-sans)',
+      ...style
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width,
+      height: 6,
+      background: 'var(--el-border-color-lighter)',
+      borderRadius: 3,
+      overflow: 'hidden',
+      flex: '0 0 auto'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'block',
+      width: pct + '%',
+      height: '100%',
+      background: COLORS[intent] || COLORS.success,
+      borderRadius: 3
+    }
+  })), label && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-text-color-secondary)',
+      whiteSpace: 'nowrap'
+    }
+  }, label));
+}
+Object.assign(__ds_scope, { MiniBar });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/data/MiniBar.jsx", error: String((e && e.message) || e) }); }
+
 // components/data/Pagination.jsx
 try { (() => {
 function Pagination({
@@ -607,6 +708,267 @@ function Pagination({
 }
 Object.assign(__ds_scope, { Pagination });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "components/data/Pagination.jsx", error: String((e && e.message) || e) }); }
+
+// components/data/PivotGrid.jsx
+try { (() => {
+function PivotGrid({
+  rows = [],
+  rowKey = (r, i) => i,
+  fixed = [],
+  columns = [],
+  columnWidth = 62,
+  renderCell,
+  totalColumn,
+  footer,
+  empty = 'No data found',
+  maxHeight,
+  style
+}) {
+  const [hover, setHover] = React.useState(-1);
+  const [sort, setSort] = React.useState({
+    index: null,
+    dir: 1
+  });
+  const offsets = [];
+  let run = 0;
+  fixed.forEach(c => {
+    offsets.push(run);
+    run += c.width || 120;
+  });
+  const fixedWidth = run;
+  const sorted = React.useMemo(() => {
+    const col = sort.index != null ? fixed[sort.index] : null;
+    if (!col || !col.sortValue) return rows;
+    return [...rows].sort((a, b) => {
+      const av = col.sortValue(a),
+        bv = col.sortValue(b);
+      if (av === bv) return 0;
+      return (av > bv ? 1 : -1) * sort.dir;
+    });
+  }, [rows, sort, fixed]);
+  const bgFor = ri => hover === ri ? 'var(--il-surface-row-hover)' : 'var(--el-bg-color)';
+  const fixedCell = (c, i, content, opts = {}) => /*#__PURE__*/React.createElement("td", {
+    key: 'f' + i,
+    style: {
+      position: 'sticky',
+      left: offsets[i],
+      zIndex: 2,
+      width: c.width,
+      minWidth: c.width,
+      maxWidth: c.width,
+      padding: '0 10px',
+      height: 38,
+      boxSizing: 'border-box',
+      textAlign: c.align || 'left',
+      background: opts.background || bgFor(opts.ri),
+      color: 'var(--el-text-color-regular)',
+      borderBottom: '1px solid var(--el-border-color-lighter)',
+      borderRight: i === fixed.length - 1 ? '1px solid var(--el-border-color)' : 'none',
+      boxShadow: i === fixed.length - 1 ? 'var(--il-shadow-sticky-left)' : 'none',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      transition: 'background-color var(--il-dur-base) ease'
+    }
+  }, content);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflow: 'auto',
+      maxHeight,
+      border: '1px solid var(--el-border-color-lighter)',
+      borderRadius: 'var(--il-radius-card)',
+      background: 'var(--el-bg-color)',
+      ...style
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: 'separate',
+      borderSpacing: 0,
+      tableLayout: 'fixed',
+      fontFamily: 'var(--il-font-sans)',
+      fontSize: 'var(--el-font-size-base)',
+      minWidth: fixedWidth + columns.length * columnWidth + (totalColumn ? totalColumn.width || 84 : 0)
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, fixed.map((c, i) => /*#__PURE__*/React.createElement("th", {
+    key: 'h' + i,
+    onClick: () => c.sortValue && setSort(s => ({
+      index: i,
+      dir: s.index === i ? -s.dir : 1
+    })),
+    style: {
+      position: 'sticky',
+      left: offsets[i],
+      top: 0,
+      zIndex: 4,
+      width: c.width,
+      minWidth: c.width,
+      maxWidth: c.width,
+      padding: '0 10px',
+      height: 46,
+      boxSizing: 'border-box',
+      textAlign: c.align || 'left',
+      verticalAlign: 'middle',
+      background: 'var(--il-surface-table-head)',
+      color: '#475569',
+      fontWeight: 'var(--il-fw-semibold)',
+      borderBottom: '1px solid var(--el-border-color-lighter)',
+      borderRight: i === fixed.length - 1 ? '1px solid var(--el-border-color)' : 'none',
+      boxShadow: i === fixed.length - 1 ? 'var(--il-shadow-sticky-left)' : 'none',
+      cursor: c.sortValue ? 'pointer' : 'default',
+      userSelect: 'none',
+      whiteSpace: 'nowrap'
+    }
+  }, c.label, c.sortValue && /*#__PURE__*/React.createElement("span", {
+    style: {
+      marginLeft: 6,
+      fontSize: 10,
+      color: sort.index === i ? 'var(--el-color-primary)' : 'var(--el-text-color-placeholder)'
+    }
+  }, sort.index === i && sort.dir === -1 ? '▼' : '▲'))), columns.map(col => /*#__PURE__*/React.createElement("th", {
+    key: col.key,
+    style: {
+      position: 'sticky',
+      top: 0,
+      zIndex: 3,
+      width: columnWidth,
+      minWidth: columnWidth,
+      padding: '4px 2px',
+      height: 46,
+      boxSizing: 'border-box',
+      textAlign: 'center',
+      verticalAlign: 'middle',
+      background: col.muted ? 'var(--el-fill-color-lighter)' : 'var(--il-surface-table-head)',
+      borderBottom: '1px solid var(--el-border-color-lighter)',
+      borderRight: '1px solid var(--el-border-color-lighter)',
+      fontWeight: 'var(--il-fw-regular)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: 'var(--el-text-color-secondary)',
+      lineHeight: 1.3
+    }
+  }, col.top), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 600,
+      color: col.muted ? 'var(--el-text-color-secondary)' : '#475569',
+      lineHeight: 1.3
+    }
+  }, col.label))), totalColumn && /*#__PURE__*/React.createElement("th", {
+    style: {
+      position: 'sticky',
+      right: 0,
+      top: 0,
+      zIndex: 4,
+      width: totalColumn.width || 84,
+      minWidth: totalColumn.width || 84,
+      padding: '0 10px',
+      height: 46,
+      boxSizing: 'border-box',
+      textAlign: 'right',
+      background: 'var(--il-surface-table-head)',
+      color: '#475569',
+      fontWeight: 'var(--il-fw-semibold)',
+      borderBottom: '1px solid var(--el-border-color-lighter)',
+      borderLeft: '1px solid var(--el-border-color)',
+      boxShadow: 'var(--il-shadow-sticky-right)',
+      whiteSpace: 'nowrap'
+    }
+  }, totalColumn.label))), /*#__PURE__*/React.createElement("tbody", null, sorted.length === 0 && /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: fixed.length + columns.length + (totalColumn ? 1 : 0),
+    style: {
+      padding: 40,
+      textAlign: 'center',
+      color: 'var(--el-text-color-secondary)'
+    }
+  }, empty)), sorted.map((row, ri) => /*#__PURE__*/React.createElement("tr", {
+    key: rowKey(row, ri),
+    onMouseEnter: () => setHover(ri),
+    onMouseLeave: () => setHover(-1)
+  }, fixed.map((c, i) => fixedCell(c, i, c.render ? c.render(row, ri) : row[c.prop], {
+    ri
+  })), columns.map(col => {
+    const out = renderCell ? renderCell(row, col) : null;
+    const node = out && out.content !== undefined ? out.content : out;
+    const tint = out && out.tint;
+    return /*#__PURE__*/React.createElement("td", {
+      key: col.key,
+      title: out && out.title,
+      style: {
+        width: columnWidth,
+        minWidth: columnWidth,
+        height: 38,
+        padding: '0 4px',
+        boxSizing: 'border-box',
+        textAlign: 'center',
+        background: tint || (col.muted ? 'var(--el-fill-color-lighter)' : 'transparent'),
+        borderBottom: '1px solid var(--el-border-color-lighter)',
+        borderRight: '1px solid var(--el-border-color-lighter)',
+        color: 'var(--el-text-color-regular)',
+        fontSize: 'var(--el-font-size-extra-small)'
+      }
+    }, node);
+  }), totalColumn && /*#__PURE__*/React.createElement("td", {
+    style: {
+      position: 'sticky',
+      right: 0,
+      zIndex: 2,
+      width: totalColumn.width || 84,
+      minWidth: totalColumn.width || 84,
+      padding: '0 10px',
+      height: 38,
+      boxSizing: 'border-box',
+      textAlign: 'right',
+      background: bgFor(ri),
+      color: 'var(--el-text-color-primary)',
+      fontWeight: 600,
+      borderBottom: '1px solid var(--el-border-color-lighter)',
+      borderLeft: '1px solid var(--el-border-color)',
+      boxShadow: 'var(--il-shadow-sticky-right)',
+      transition: 'background-color var(--il-dur-base) ease'
+    }
+  }, totalColumn.render(row))))), footer && sorted.length > 0 && /*#__PURE__*/React.createElement("tfoot", null, /*#__PURE__*/React.createElement("tr", null, fixed.map((c, i) => fixedCell(c, i, i === 0 ? '' : footer.label, {
+    ri: -2,
+    background: 'var(--il-surface-table-head)'
+  })), columns.map(col => /*#__PURE__*/React.createElement("td", {
+    key: col.key,
+    style: {
+      width: columnWidth,
+      minWidth: columnWidth,
+      height: 38,
+      padding: '0 4px',
+      boxSizing: 'border-box',
+      textAlign: 'center',
+      background: 'var(--il-surface-table-head)',
+      color: 'var(--el-text-color-primary)',
+      fontWeight: 600,
+      fontSize: 'var(--el-font-size-extra-small)',
+      borderTop: '1px solid var(--el-border-color)',
+      borderRight: '1px solid var(--el-border-color-lighter)'
+    }
+  }, footer.render(col, sorted))), totalColumn && /*#__PURE__*/React.createElement("td", {
+    style: {
+      position: 'sticky',
+      right: 0,
+      zIndex: 2,
+      width: totalColumn.width || 84,
+      minWidth: totalColumn.width || 84,
+      padding: '0 10px',
+      height: 38,
+      boxSizing: 'border-box',
+      textAlign: 'right',
+      background: 'var(--il-surface-table-head)',
+      color: 'var(--el-text-color-primary)',
+      fontWeight: 700,
+      borderTop: '1px solid var(--el-border-color)',
+      borderLeft: '1px solid var(--el-border-color)',
+      boxShadow: 'var(--il-shadow-sticky-right)'
+    }
+  }, footer.total ? footer.total(sorted) : '')))));
+}
+Object.assign(__ds_scope, { PivotGrid });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/data/PivotGrid.jsx", error: String((e && e.message) || e) }); }
 
 // components/data/Skeleton.jsx
 try { (() => {
@@ -1020,6 +1382,293 @@ function Popover({
 Object.assign(__ds_scope, { Popover });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "components/feedback/Popover.jsx", error: String((e && e.message) || e) }); }
 
+// components/forms/DateRangePicker.jsx
+try { (() => {
+const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const iso = d => d ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` : '';
+const same = (a, b) => a && b && iso(a) === iso(b);
+const addMonths = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, 1);
+function monthGrid(base) {
+  const first = new Date(base.getFullYear(), base.getMonth(), 1);
+  const offset = (first.getDay() + 6) % 7;
+  const cells = [];
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(base.getFullYear(), base.getMonth(), 1 - offset + i);
+    cells.push({
+      date: d,
+      outside: d.getMonth() !== base.getMonth()
+    });
+  }
+  return cells;
+}
+function DateRangePicker({
+  from,
+  to,
+  onChange,
+  placeholder = 'Start date  —  End date',
+  clearable = true,
+  iconBase,
+  style
+}) {
+  const [open, setOpen] = React.useState(false);
+  const [hover, setHover] = React.useState(false);
+  const [left, setLeft] = React.useState(() => new Date((from || new Date()).getFullYear(), (from || new Date()).getMonth(), 1));
+  const [anchor, setAnchor] = React.useState(null);
+  const [preview, setPreview] = React.useState(null);
+  const wrap = React.useRef(null);
+  React.useEffect(() => {
+    if (!open) return;
+    const away = e => {
+      if (wrap.current && !wrap.current.contains(e.target)) {
+        setOpen(false);
+        setAnchor(null);
+      }
+    };
+    document.addEventListener('mousedown', away);
+    return () => document.removeEventListener('mousedown', away);
+  }, [open]);
+  const start = anchor ? preview && preview < anchor ? preview : anchor : from;
+  const end = anchor ? preview && preview < anchor ? anchor : preview : to;
+  const pick = d => {
+    if (!anchor) {
+      setAnchor(d);
+      setPreview(d);
+      return;
+    }
+    const a = d < anchor ? d : anchor;
+    const b = d < anchor ? anchor : d;
+    onChange && onChange({
+      from: a,
+      to: b
+    });
+    setAnchor(null);
+    setPreview(null);
+    setOpen(false);
+  };
+  const label = from && to ? `${iso(from)}  —  ${iso(to)}` : '';
+  const cell = c => {
+    const inRange = start && end && c.date >= start && c.date <= end;
+    const isEnd = same(c.date, start) || same(c.date, end);
+    const today = same(c.date, new Date());
+    return /*#__PURE__*/React.createElement("button", {
+      key: iso(c.date),
+      type: "button",
+      onClick: () => pick(c.date),
+      onMouseEnter: () => anchor && setPreview(c.date),
+      style: {
+        height: 30,
+        border: 'none',
+        padding: 0,
+        cursor: 'pointer',
+        background: isEnd ? 'var(--el-color-primary)' : inRange ? 'var(--el-color-primary-light-9)' : 'transparent',
+        color: isEnd ? '#fff' : c.outside ? 'var(--el-text-color-placeholder)' : today ? 'var(--el-color-primary)' : 'var(--el-text-color-regular)',
+        fontFamily: 'var(--il-font-sans)',
+        fontSize: 'var(--el-font-size-extra-small)',
+        fontWeight: isEnd || today ? 700 : 400,
+        borderRadius: isEnd ? 'var(--el-border-radius-base)' : 0,
+        transition: 'background-color var(--il-dur-base) ease'
+      }
+    }, c.date.getDate());
+  };
+  const panel = (base, canNav) => /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 224
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      height: 30,
+      marginBottom: 4
+    }
+  }, canNav === 'left' ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setLeft(addMonths(left, -1)),
+    "aria-label": "Previous month",
+    style: {
+      border: 'none',
+      background: 'none',
+      cursor: 'pointer',
+      padding: 0,
+      display: 'flex'
+    }
+  }, /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+    name: "arrow-left",
+    size: 12,
+    color: "var(--el-text-color-secondary)",
+    base: iconBase
+  })) : /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 12
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--el-font-size-base)',
+      fontWeight: 500,
+      color: 'var(--el-text-color-primary)'
+    }
+  }, MONTHS[base.getMonth()], " ", base.getFullYear()), canNav === 'right' ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setLeft(addMonths(left, 1)),
+    "aria-label": "Next month",
+    style: {
+      border: 'none',
+      background: 'none',
+      cursor: 'pointer',
+      padding: 0,
+      display: 'flex'
+    }
+  }, /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+    name: "arrow-right",
+    size: 12,
+    color: "var(--el-text-color-secondary)",
+    base: iconBase
+  })) : /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 12
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(7,1fr)'
+    }
+  }, DAYS.map(d => /*#__PURE__*/React.createElement("span", {
+    key: d,
+    style: {
+      height: 26,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 'var(--el-font-size-extra-small)',
+      color: 'var(--el-text-color-secondary)'
+    }
+  }, d)), monthGrid(base).map(cell)));
+  return /*#__PURE__*/React.createElement("div", {
+    ref: wrap,
+    style: {
+      position: 'relative',
+      ...style
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    role: "button",
+    tabIndex: 0,
+    onClick: () => setOpen(!open),
+    onMouseEnter: () => setHover(true),
+    onMouseLeave: () => setHover(false),
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8,
+      width: '100%',
+      height: 32,
+      padding: '1px 11px',
+      boxSizing: 'border-box',
+      background: 'var(--el-fill-color-blank)',
+      borderRadius: 'var(--il-radius-input)',
+      boxShadow: open ? 'var(--il-ring-input-focus)' : hover ? 'var(--il-ring-input-hover)' : '0 0 0 1px var(--el-border-color) inset',
+      cursor: 'pointer',
+      transition: 'all var(--il-dur-base) ease',
+      fontFamily: 'var(--il-font-sans)',
+      fontSize: 'var(--el-font-size-base)',
+      color: label ? 'var(--el-text-color-regular)' : 'var(--el-text-color-placeholder)'
+    }
+  }, /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+    name: "calendar",
+    size: 14,
+    color: "var(--el-text-color-placeholder)",
+    base: iconBase
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    }
+  }, label || placeholder), clearable && label && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": "Clear range",
+    onClick: e => {
+      e.stopPropagation();
+      onChange && onChange({
+        from: null,
+        to: null
+      });
+    },
+    style: {
+      border: 'none',
+      background: 'none',
+      padding: 0,
+      cursor: 'pointer',
+      display: 'flex'
+    }
+  }, /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+    name: "circle-close",
+    size: 14,
+    color: "var(--el-text-color-placeholder)",
+    base: iconBase
+  }))), open && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      zIndex: 40,
+      top: 'calc(100% + 6px)',
+      left: 0,
+      background: 'var(--el-bg-color)',
+      border: '1px solid var(--el-border-color-light)',
+      borderRadius: 'var(--el-border-radius-base)',
+      boxShadow: 'var(--el-box-shadow-light)',
+      padding: 12,
+      display: 'flex',
+      gap: 16
+    }
+  }, panel(left, 'left'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 1,
+      background: 'var(--el-border-color-lighter)'
+    }
+  }), panel(addMonths(left, 1), 'right')));
+}
+const DATE_PRESETS = {
+  day: () => {
+    const t = new Date();
+    return {
+      from: t,
+      to: t
+    };
+  },
+  week: () => {
+    const t = new Date();
+    const s = new Date(t);
+    s.setDate(t.getDate() - (t.getDay() + 6) % 7);
+    const e = new Date(s);
+    e.setDate(s.getDate() + 6);
+    return {
+      from: s,
+      to: e
+    };
+  },
+  month: () => {
+    const t = new Date();
+    return {
+      from: new Date(t.getFullYear(), t.getMonth(), 1),
+      to: new Date(t.getFullYear(), t.getMonth() + 1, 0)
+    };
+  }
+};
+const formatRange = ({
+  from,
+  to
+}) => from && to ? `${iso(from)} — ${iso(to)}` : '';
+
+/* Exposed on the component so it is reachable through the design-system namespace
+   (only capitalised exports land on window.<Namespace>). */
+DateRangePicker.format = formatRange;
+DateRangePicker.iso = iso;
+DateRangePicker.PRESETS = DATE_PRESETS;
+Object.assign(__ds_scope, { DateRangePicker, DATE_PRESETS, formatRange });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/forms/DateRangePicker.jsx", error: String((e && e.message) || e) }); }
+
 // components/forms/FileUploadRow.jsx
 try { (() => {
 function FileUploadRow({
@@ -1240,6 +1889,72 @@ function Input({
 Object.assign(__ds_scope, { Input });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "components/forms/Input.jsx", error: String((e && e.message) || e) }); }
 
+// components/data/TableToolbar.jsx
+try { (() => {
+function TableToolbar({
+  query,
+  onQueryChange,
+  placeholder = 'Search within results',
+  count,
+  countLabel = 'rows',
+  actions,
+  onExportCsv,
+  onExportPdf,
+  iconBase,
+  style
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+      flexWrap: 'wrap',
+      padding: '10px 12px',
+      borderBottom: '1px solid var(--el-border-color-lighter)',
+      fontFamily: 'var(--il-font-sans)',
+      ...style
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 240
+    }
+  }, /*#__PURE__*/React.createElement(__ds_scope.Input, {
+    value: query,
+    onChange: onQueryChange,
+    placeholder: placeholder,
+    prefixIcon: "search",
+    clearable: true,
+    iconBase: iconBase
+  })), count != null && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-text-color-secondary)'
+    }
+  }, count, " ", countLabel), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }), actions, onExportCsv && /*#__PURE__*/React.createElement(__ds_scope.Button, {
+    size: "small",
+    onClick: onExportCsv,
+    icon: /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+      name: "download",
+      size: 12,
+      base: iconBase
+    })
+  }, "CSV"), onExportPdf && /*#__PURE__*/React.createElement(__ds_scope.Button, {
+    size: "small",
+    onClick: onExportPdf,
+    icon: /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+      name: "document",
+      size: 12,
+      base: iconBase
+    })
+  }, "PDF"));
+}
+Object.assign(__ds_scope, { TableToolbar });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/data/TableToolbar.jsx", error: String((e && e.message) || e) }); }
+
 // components/forms/InputNumber.jsx
 try { (() => {
 function InputNumber({
@@ -1319,6 +2034,71 @@ function InputNumber({
 }
 Object.assign(__ds_scope, { InputNumber });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "components/forms/InputNumber.jsx", error: String((e && e.message) || e) }); }
+
+// components/forms/SegmentedControl.jsx
+try { (() => {
+function SegmentedControl({
+  value,
+  onChange,
+  options = [],
+  size = 'default',
+  disabled = false,
+  style
+}) {
+  const [hover, setHover] = React.useState(null);
+  const height = size === 'small' ? 24 : size === 'large' ? 40 : 32;
+  const pad = size === 'small' ? '0 11px' : '0 15px';
+  const font = size === 'small' ? 'var(--el-font-size-extra-small)' : 'var(--el-font-size-base)';
+  return /*#__PURE__*/React.createElement("div", {
+    role: "radiogroup",
+    style: {
+      display: 'inline-flex',
+      ...style
+    }
+  }, options.map((o, i) => {
+    const active = o.value === value;
+    const first = i === 0,
+      last = i === options.length - 1;
+    return /*#__PURE__*/React.createElement("button", {
+      key: String(o.value),
+      type: "button",
+      role: "radio",
+      "aria-checked": active,
+      disabled: disabled,
+      onClick: () => !disabled && onChange && onChange(o.value),
+      onMouseEnter: () => setHover(o.value),
+      onMouseLeave: () => setHover(null),
+      style: {
+        height,
+        padding: pad,
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        background: active ? 'var(--el-color-primary)' : 'var(--el-fill-color-blank)',
+        color: active ? '#fff' : hover === o.value && !disabled ? 'var(--el-color-primary)' : 'var(--el-text-color-regular)',
+        borderStyle: 'solid',
+        borderColor: active ? 'var(--el-color-primary)' : 'var(--el-border-color)',
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderLeftWidth: first ? 1 : 0,
+        borderRadius: first ? 'var(--el-border-radius-base) 0 0 var(--el-border-radius-base)' : last ? '0 var(--el-border-radius-base) var(--el-border-radius-base) 0' : 0,
+        fontFamily: 'var(--il-font-sans)',
+        fontSize: font,
+        fontWeight: 'var(--el-font-weight-primary)',
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.5 : 1,
+        transition: 'background-color var(--il-dur-base) ease, color var(--il-dur-base) ease, border-color var(--il-dur-base) ease'
+      }
+    }, o.icon, o.label);
+  }));
+}
+Object.assign(__ds_scope, { SegmentedControl });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/forms/SegmentedControl.jsx", error: String((e && e.message) || e) }); }
 
 // components/forms/Select.jsx
 try { (() => {
@@ -2029,6 +2809,66 @@ function FilterItem({
 Object.assign(__ds_scope, { FilterBar, FilterItem });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "components/patterns/FilterBar.jsx", error: String((e && e.message) || e) }); }
 
+// components/patterns/FilterChip.jsx
+try { (() => {
+function FilterChip({
+  label,
+  value,
+  onRemove,
+  iconBase,
+  style
+}) {
+  const [hover, setHover] = React.useState(false);
+  return /*#__PURE__*/React.createElement("span", {
+    onMouseEnter: () => setHover(true),
+    onMouseLeave: () => setHover(false),
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 6,
+      height: 24,
+      padding: '0 8px 0 9px',
+      background: 'var(--el-color-info-light-9)',
+      border: `1px solid ${hover ? 'var(--el-border-color)' : 'var(--el-color-info-light-7)'}`,
+      borderRadius: 'var(--el-border-radius-base)',
+      fontFamily: 'var(--il-font-sans)',
+      fontSize: 'var(--el-font-size-extra-small)',
+      color: 'var(--el-text-color-regular)',
+      whiteSpace: 'nowrap',
+      transition: 'border-color var(--il-dur-base) ease',
+      ...style
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--el-text-color-secondary)'
+    }
+  }, label, ":"), /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--el-text-color-primary)'
+    }
+  }, value), onRemove && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": `Remove ${label} filter`,
+    onClick: onRemove,
+    style: {
+      border: 'none',
+      background: 'none',
+      padding: 0,
+      cursor: 'pointer',
+      display: 'flex',
+      marginLeft: 1
+    }
+  }, /*#__PURE__*/React.createElement(__ds_scope.Icon, {
+    name: "close",
+    size: 11,
+    color: "var(--el-text-color-secondary)",
+    base: iconBase
+  })));
+}
+Object.assign(__ds_scope, { FilterChip });
+})(); } catch (e) { __ds_ns.__errors.push({ path: "components/patterns/FilterChip.jsx", error: String((e && e.message) || e) }); }
+
 // components/patterns/HelpPanel.jsx
 try { (() => {
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
@@ -2492,10 +3332,31 @@ const MENU = [{
   index: '/settings',
   label: 'Settings'
 }];
+
+/* Deep link: #/reports, #/users, … opens that screen directly (skips the login step). */
+const hashRoute = () => {
+  const h = (window.location.hash || '').replace(/^#/, '');
+  return h && h.startsWith('/') ? h : null;
+};
 function App() {
-  const [authed, setAuthed] = React.useState(false);
+  const [authed, setAuthed] = React.useState(!!hashRoute());
   const [userName, setUserName] = React.useState('admin');
-  const [route, setRoute] = React.useState('/');
+  const [route, setRoute] = React.useState(hashRoute() || '/');
+  React.useEffect(() => {
+    const sync = () => {
+      const h = hashRoute();
+      if (h) {
+        setRoute(h);
+        setAuthed(true);
+      }
+    };
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
+  const go = r => {
+    setRoute(r);
+    window.location.hash = r;
+  };
   const [help, setHelp] = React.useState(false);
   const [messages, setMessages] = React.useState([]);
   const notify = (type, text) => {
@@ -2518,7 +3379,7 @@ function App() {
       onLogin: u => {
         setUserName(u || 'admin');
         setAuthed(true);
-        setRoute('/');
+        go('/');
       }
     }), /*#__PURE__*/React.createElement(MessageStack, {
       messages: messages,
@@ -2534,7 +3395,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(SidebarMenu, {
     logoSrc: "../../assets/logo.png",
     active: route,
-    onSelect: setRoute,
+    onSelect: go,
     items: MENU,
     footer: /*#__PURE__*/React.createElement(Popover, {
       open: help,
@@ -2582,7 +3443,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement(Topbar, {
     userName: userName,
-    onProfile: () => setRoute('/profile'),
+    onProfile: () => go('/profile'),
     onLogout: () => {
       setAuthed(false);
       setHelp(false);
@@ -2600,7 +3461,9 @@ function App() {
     notify: notify
   }), route === '/admin-users' && /*#__PURE__*/React.createElement(AdminUsersScreen, {
     notify: notify
-  }), route === '/reports' && /*#__PURE__*/React.createElement(ReportsScreen, null), route === '/settings' && /*#__PURE__*/React.createElement(SettingsScreen, {
+  }), route === '/reports' && /*#__PURE__*/React.createElement(ReportsScreen, {
+    notify: notify
+  }), route === '/settings' && /*#__PURE__*/React.createElement(SettingsScreen, {
     notify: notify
   }), route === '/profile' && /*#__PURE__*/React.createElement(ProfileScreen, {
     userName: userName,
@@ -2962,48 +3825,631 @@ try { (() => {
 const {
   Card,
   CardSubtitle,
+  Button,
+  Input,
   Select,
   Tag,
+  SegmentedControl,
+  DateRangePicker,
+  DATE_PRESETS,
   FilterBar,
   FilterItem,
+  FilterChip,
   DataTable,
+  PivotGrid,
+  Legend,
+  TableToolbar,
   StatusTag,
   Pagination,
   SectionTitle,
+  PageHeader,
   KpiStat,
-  Skeleton
+  Skeleton,
+  Tabs,
+  Icon
 } = window.ImLateDesignSystem_9c9b6f;
 const IB = '../../assets/icons';
+const iso = d => d ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` : '';
+const formatRange = DateRangePicker.format || (({
+  from,
+  to
+}) => from && to ? `${iso(from)} — ${iso(to)}` : '');
+const PRESETS = DATE_PRESETS || DateRangePicker.PRESETS;
 const GRADES = Array.from({
   length: 12
 }, (_, i) => ({
   label: 'Grade ' + (i + 1),
   value: i + 1
 }));
-const ORDER = {
+const TYPE_OPTS = [{
+  label: 'All visitors',
+  value: null
+}, {
+  label: 'Students',
+  value: true
+}, {
+  label: 'Teachers',
+  value: false
+}];
+const STATUS_OPTS = [{
+  label: 'Signed in',
+  value: 'signed_in'
+}, {
+  label: 'Signed out',
+  value: 'signed_out'
+}, {
+  label: 'Not signed',
+  value: 'not_signed'
+}];
+const SIGN_ORDER = {
   signed_in: 1,
   signed_out: 2,
   not_signed: 3
 };
-function ReportsScreen() {
-  const [isStudent, setIsStudent] = React.useState(null);
-  const [status, setStatus] = React.useState(null);
-  const [grades, setGrades] = React.useState([]);
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+/* Cell tints: light-9 / fill tokens only, and absence is never tinted. */
+const CELL_TINT = {
+  active: 'var(--el-color-success-light-9)',
+  late: 'var(--el-color-warning-light-9)',
+  complete: 'var(--el-fill-color-light)',
+  weekend: 'var(--el-fill-color-lighter)',
+  future: 'transparent',
+  absent: 'transparent'
+};
+const LEGEND = [{
+  label: 'Signed in',
+  swatch: 'var(--el-color-success-light-9)',
+  border: 'var(--el-color-success-light-5)',
+  hint: 'still in the building'
+}, {
+  label: 'Completed',
+  swatch: 'var(--el-fill-color-light)',
+  hint: 'hours present'
+}, {
+  label: 'Late arrival',
+  swatch: 'var(--el-color-warning-light-9)',
+  border: 'var(--el-color-warning-light-5)',
+  hint: 'after 09:00'
+}, {
+  label: 'Absent',
+  hint: 'blank cell'
+}, {
+  label: 'Weekend / not yet',
+  swatch: 'var(--el-fill-color-lighter)'
+}];
+const EMPTY = {
+  type: null,
+  status: null,
+  grades: [],
+  surname: '',
+  range: PRESETS.week()
+};
+const sameFilters = (a, b) => a.type === b.type && a.status === b.status && a.surname.trim() === b.surname.trim() && a.grades.join(',') === b.grades.join(',') && formatRange(a.range) === formatRange(b.range);
+function ReportsScreen({
+  notify
+}) {
+  const [report, setReport] = React.useState('fire');
+  const [draft, setDraft] = React.useState(EMPTY);
+  const [applied, setApplied] = React.useState(EMPTY);
+  const [preset, setPreset] = React.useState('week');
   const [page, setPage] = React.useState(1);
+  const [query, setQuery] = React.useState('');
   const [loading, setLoading] = React.useState(true);
+  const dirty = !sameFilters(draft, applied);
   React.useEffect(() => {
     setLoading(true);
-    const t = setTimeout(() => setLoading(false), 700);
+    const t = setTimeout(() => setLoading(false), 550);
     return () => clearTimeout(t);
-  }, [isStudent, status, grades.join(','), page]);
+  }, [report, applied, page]);
   React.useEffect(() => {
-    if (isStudent !== true) setGrades([]);
-  }, [isStudent]);
-  const rows = window.IL_DATA.visitors.filter(v => isStudent === null || v.is_student === isStudent).filter(v => !status || v.sign_status === status).filter(v => grades.length === 0 || grades.includes(v.grade)).map(v => ({
+    if (draft.type !== true && draft.grades.length) setDraft(d => ({
+      ...d,
+      grades: []
+    }));
+  }, [draft.type]);
+  const set = patch => setDraft(d => ({
+    ...d,
+    ...patch
+  }));
+  const apply = () => {
+    setApplied(draft);
+    setPage(1);
+  };
+  const resetAll = () => {
+    setDraft(EMPTY);
+    setApplied(EMPTY);
+    setPreset('week');
+    setQuery('');
+    setPage(1);
+  };
+  const clearOne = key => {
+    const next = {
+      ...applied,
+      ...(key === 'grades' ? {
+        grades: []
+      } : key === 'range' ? {
+        range: EMPTY.range
+      } : {
+        [key]: key === 'surname' ? '' : null
+      })
+    };
+    setApplied(next);
+    setDraft(next);
+    setPage(1);
+    if (key === 'range') setPreset('week');
+  };
+  const usePreset = p => {
+    setPreset(p);
+    if (p !== 'custom') set({
+      range: PRESETS[p]()
+    });
+  };
+
+  /* ── applied-filter chips ── */
+  const chips = [];
+  if (applied.type !== null) chips.push({
+    key: 'type',
+    label: 'Visitor type',
+    value: applied.type ? 'Students' : 'Teachers'
+  });
+  if (applied.status) chips.push({
+    key: 'status',
+    label: 'Status',
+    value: (STATUS_OPTS.find(o => o.value === applied.status) || {}).label
+  });
+  if (applied.grades.length) chips.push({
+    key: 'grades',
+    label: applied.grades.length > 1 ? 'Grades' : 'Grade',
+    value: applied.grades.slice().sort((a, b) => a - b).join(', ')
+  });
+  if (report === 'fire' && applied.surname.trim()) chips.push({
+    key: 'surname',
+    label: 'Last name',
+    value: applied.surname.trim()
+  });
+  if (report === 'attendance') chips.push({
+    key: 'range',
+    label: 'Range',
+    value: formatRange(applied.range)
+  });
+
+  /* ── row sets ── */
+  const base = list => list.filter(v => applied.type === null || v.is_student === applied.type).filter(v => applied.grades.length === 0 || applied.grades.includes(v.grade));
+  const searched = list => {
+    const q = query.trim().toLowerCase();
+    if (!q) return list;
+    return list.filter(r => (r.name + ' ' + r.surname).toLowerCase().includes(q));
+  };
+  const fireRows = searched(base(window.IL_DATA.visitors).filter(v => !applied.status || v.sign_status === applied.status).filter(v => !applied.surname.trim() || v.surname.toLowerCase().includes(applied.surname.trim().toLowerCase())).map(v => ({
     ...v,
     visit_date: new Date(v.updated_at).toLocaleString('en-GB')
-  })).sort((a, b) => ORDER[a.sign_status] - ORDER[b.sign_status]);
-  const count = s => rows.filter(r => r.sign_status === s).length;
+  })).sort((a, b) => SIGN_ORDER[a.sign_status] - SIGN_ORDER[b.sign_status]));
+  const attRows = searched(base(window.IL_DATA.attendance));
+  const rows = report === 'fire' ? fireRows : attRows;
+  const fireColumns = [{
+    label: '#',
+    width: 56,
+    align: 'center',
+    render: (r, i) => (page - 1) * 20 + i + 1
+  }, {
+    label: 'Name',
+    prop: 'name',
+    sortable: true
+  }, {
+    label: 'Surname',
+    prop: 'surname',
+    sortable: true
+  }, {
+    label: 'Last activity',
+    prop: 'visit_date',
+    width: 170,
+    sortable: true
+  }, {
+    label: 'Student',
+    prop: 'is_student',
+    width: 96,
+    sortable: true,
+    render: r => String(r.is_student)
+  }, {
+    label: 'Status',
+    width: 130,
+    render: r => /*#__PURE__*/React.createElement(StatusTag, {
+      status: r.sign_status,
+      soft: true
+    })
+  }];
+
+  /* ── matrix: one generated column per day in the applied range ── */
+  const days = window.IL_DATA.eachDay(applied.range.from, applied.range.to);
+  const capped = days.length >= 45;
+  const dayColumns = days.map(d => {
+    const dow = d.getDay();
+    return {
+      key: window.IL_DATA.iso(d),
+      date: d,
+      top: WEEKDAYS_SHORT[dow],
+      label: d.getDate() === 1 || d.getDate() === days[0].getDate() ? String(d.getDate()).padStart(2, '0') + ' ' + MONTHS_SHORT[d.getMonth()] : String(d.getDate()).padStart(2, '0'),
+      muted: dow === 0 || dow === 6
+    };
+  });
+  const cells = React.useMemo(() => {
+    const map = new Map();
+    attRows.forEach(p => {
+      const perPerson = {};
+      dayColumns.forEach(col => {
+        perPerson[col.key] = window.IL_DATA.attendanceDay(p, col.date);
+      });
+      map.set(p.id, perPerson);
+    });
+    return map;
+  }, [attRows, applied.range.from && applied.range.from.getTime(), applied.range.to && applied.range.to.getTime()]);
+  const cellOf = (row, col) => (cells.get(row.id) || {})[col.key] || {
+    state: 'absent'
+  };
+  const renderCell = (row, col) => {
+    const c = cellOf(row, col);
+    if (c.state === 'active') {
+      return {
+        tint: CELL_TINT.active,
+        title: row.surname + ' — signed in ' + c.checkInLabel + ', still in the building',
+        content: /*#__PURE__*/React.createElement("span", {
+          style: {
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
+            color: 'var(--el-color-success-dark-2)',
+            fontWeight: 600
+          }
+        }, /*#__PURE__*/React.createElement("span", {
+          style: {
+            width: 6,
+            height: 6,
+            borderRadius: '50%',
+            background: 'var(--el-color-success)'
+          }
+        }), "In")
+      };
+    }
+    if (c.state === 'complete' || c.state === 'late') {
+      return {
+        tint: CELL_TINT[c.state],
+        title: row.surname + ' — ' + c.checkInLabel + ' to ' + c.checkOutLabel + (c.state === 'late' ? ' (late arrival)' : ''),
+        content: /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontWeight: c.state === 'late' ? 600 : 400,
+            color: c.state === 'late' ? 'var(--el-color-warning-dark-2)' : 'var(--el-text-color-regular)'
+          }
+        }, c.hours.toFixed(1))
+      };
+    }
+    if (c.state === 'weekend' || c.state === 'future') {
+      return {
+        tint: CELL_TINT[c.state],
+        content: null
+      };
+    }
+    return {
+      tint: 'transparent',
+      title: row.surname + ' — no check-in recorded',
+      content: /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: 'var(--el-text-color-disabled)'
+        }
+      }, "\u2014")
+    };
+  };
+  const rowHours = row => dayColumns.reduce((a, col) => a + (cellOf(row, col).hours || 0), 0);
+  const dayPresent = col => attRows.filter(p => ['complete', 'late', 'active'].includes(cellOf(p, col).state)).length;
+  /* A day with nothing recorded yet is not a day of zero attendance — weekends and
+     future dates both report "—" rather than asserting a count. */
+  const columnElapsed = col => !col.muted && attRows.length > 0 && attRows.some(p => cellOf(p, col).state !== 'future');
+  const elapsedColumns = dayColumns.filter(columnElapsed);
+  const count = s => fireRows.filter(r => r.sign_status === s).length;
+  const workdays = dayColumns.filter(c => !c.muted);
+  const allCells = attRows.flatMap(p => dayColumns.map(col => cellOf(p, col)));
+  const doneCells = allCells.filter(c => c.hours);
+  const avgHours = doneCells.length ? doneCells.reduce((a, c) => a + c.hours, 0) / doneCells.length : 0;
+  const lateCount = allCells.filter(c => c.state === 'late').length;
+  const absentCount = allCells.filter(c => c.state === 'absent').length;
+
+  /* ── filter panel per report ── */
+  const filters = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FilterBar, null, /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Select, {
+    value: draft.type,
+    onChange: v => set({
+      type: v
+    }),
+    clearable: true,
+    placeholder: "Visitor type",
+    options: TYPE_OPTS,
+    iconBase: IB
+  })), /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Select, {
+    value: draft.status,
+    onChange: v => set({
+      status: v
+    }),
+    clearable: true,
+    placeholder: "Status",
+    options: STATUS_OPTS,
+    iconBase: IB
+  })), /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Select, {
+    multiple: true,
+    value: draft.grades,
+    onChange: v => set({
+      grades: v
+    }),
+    disabled: draft.type !== true,
+    placeholder: "Select grade(s)",
+    options: GRADES,
+    iconBase: IB
+  })), report === 'fire' && /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Input, {
+    value: draft.surname,
+    onChange: v => set({
+      surname: v
+    }),
+    placeholder: "Last name",
+    prefixIcon: "search",
+    clearable: true,
+    iconBase: IB
+  })), draft.grades.length === 1 && /*#__PURE__*/React.createElement(Tag, {
+    type: "success"
+  }, "Single grade mode"), draft.grades.length > 1 && /*#__PURE__*/React.createElement(Tag, {
+    type: "warning"
+  }, "Multi grade mode")), report === 'attendance' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 12,
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement(SegmentedControl, {
+    value: preset,
+    onChange: usePreset,
+    options: [{
+      label: 'Day',
+      value: 'day'
+    }, {
+      label: 'Week',
+      value: 'week'
+    }, {
+      label: 'Month',
+      value: 'month'
+    }, {
+      label: 'Custom',
+      value: 'custom'
+    }]
+  }), /*#__PURE__*/React.createElement(DateRangePicker, {
+    from: draft.range.from,
+    to: draft.range.to,
+    style: {
+      width: 260
+    },
+    iconBase: IB,
+    onChange: r => {
+      set({
+        range: r
+      });
+      setPreset('custom');
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8,
+      flexWrap: 'wrap',
+      marginTop: 16,
+      paddingTop: 14,
+      borderTop: '1px solid var(--el-border-color-lighter)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--il-text-mute)',
+      textTransform: 'uppercase',
+      letterSpacing: 'var(--il-tracking-label)',
+      fontWeight: 'var(--il-fw-semibold)',
+      marginRight: 2
+    }
+  }, "Applied"), chips.length === 0 ? /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-text-color-placeholder)'
+    }
+  }, "No filters \u2014 showing all visitors") : chips.map(c => /*#__PURE__*/React.createElement(FilterChip, {
+    key: c.key,
+    label: c.label,
+    value: c.value,
+    onRemove: () => clearOne(c.key),
+    iconBase: IB
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }), dirty && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-color-warning)'
+    }
+  }, "Unapplied changes"), /*#__PURE__*/React.createElement(Button, {
+    size: "small",
+    onClick: resetAll
+  }, "Reset"), /*#__PURE__*/React.createElement(Button, {
+    size: "small",
+    type: "primary",
+    disabled: !dirty,
+    onClick: apply
+  }, "Apply filters")));
+  const grid = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3,1fr)',
+      gap: 16
+    }
+  }, report === 'fire' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(KpiStat, {
+    label: "Signed in",
+    value: count('signed_in'),
+    intent: "success",
+    hint: "Currently in the building"
+  }), /*#__PURE__*/React.createElement(KpiStat, {
+    label: "Signed out",
+    value: count('signed_out'),
+    intent: "warning",
+    hint: "Left today"
+  }), /*#__PURE__*/React.createElement(KpiStat, {
+    label: "Not signed",
+    value: count('not_signed'),
+    intent: "info",
+    hint: "No event recorded"
+  })) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(KpiStat, {
+    label: "Avg hours / day",
+    value: avgHours.toFixed(1),
+    intent: "neutral",
+    hint: elapsedColumns.length + ' of ' + workdays.length + ' working days elapsed'
+  }), /*#__PURE__*/React.createElement(KpiStat, {
+    label: "Late arrivals",
+    value: lateCount,
+    intent: "warning",
+    hint: "After 09:00"
+  }), /*#__PURE__*/React.createElement(KpiStat, {
+    label: "Absences",
+    value: absentCount,
+    intent: "info",
+    hint: "Working days with no check-in"
+  }))), /*#__PURE__*/React.createElement(SectionTitle, null, report === 'fire' ? 'Fire list' : 'Attendance ' + formatRange(applied.range)), /*#__PURE__*/React.createElement(Card, {
+    bodyStyle: {
+      padding: 0
+    }
+  }, /*#__PURE__*/React.createElement(TableToolbar, {
+    query: query,
+    onQueryChange: setQuery,
+    count: rows.length,
+    countLabel: rows.length === 1 ? 'row' : 'rows',
+    iconBase: IB,
+    onExportCsv: () => notify && notify('success', 'Export started — CSV'),
+    onExportPdf: () => notify && notify('success', 'Export started — PDF')
+  }), report === 'attendance' && !loading && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 16,
+      flexWrap: 'wrap',
+      padding: '10px 12px',
+      borderBottom: '1px solid var(--el-border-color-lighter)'
+    }
+  }, /*#__PURE__*/React.createElement(Legend, {
+    items: LEGEND
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }), elapsedColumns.length < workdays.length && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-text-color-secondary)'
+    }
+  }, "Totals cover ", elapsedColumns.length, " of ", workdays.length, " working days \u2014 the rest have not occurred yet"), capped && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-color-warning)'
+    }
+  }, "Showing the first 45 days of the range")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 4
+    }
+  }, loading ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 8
+    }
+  }, /*#__PURE__*/React.createElement(Skeleton, {
+    rows: 6,
+    columns: report === 'fire' ? [50, 120, 120, 160, 90, 120] : [50, 210, 62, 62, 62, 62, 62, 62, 62]
+  })) : report === 'attendance' ? /*#__PURE__*/React.createElement(PivotGrid, {
+    rows: attRows,
+    rowKey: r => r.id,
+    columnWidth: 62,
+    columns: dayColumns,
+    renderCell: renderCell,
+    fixed: [{
+      label: '#',
+      width: 52,
+      align: 'center',
+      render: (r, i) => i + 1
+    }, {
+      label: 'Surname & First Name',
+      width: 210,
+      sortValue: r => r.surname.toLowerCase(),
+      render: r => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", {
+        style: {
+          fontWeight: 600,
+          color: 'var(--el-text-color-primary)'
+        }
+      }, r.surname), ' ', /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: 'var(--el-text-color-regular)'
+        }
+      }, r.name))
+    }],
+    totalColumn: {
+      label: 'Total hrs',
+      width: 88,
+      render: r => rowHours(r).toFixed(1)
+    },
+    footer: {
+      label: 'Present / day',
+      render: col => columnElapsed(col) ? dayPresent(col) : /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: 'var(--el-text-color-disabled)'
+        }
+      }, "\u2014"),
+      total: () => attRows.reduce((a, p) => a + rowHours(p), 0).toFixed(1)
+    },
+    empty: chips.length || query ? 'No visitors match these filters.' : 'No visitor activity in this period.'
+  }) : /*#__PURE__*/React.createElement(DataTable, {
+    data: rows,
+    columns: fireColumns,
+    rowClass: r => r.sign_status.replace(/_/g, '-'),
+    empty: /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'grid',
+        gap: 8,
+        justifyItems: 'center'
+      }
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "filter",
+      size: 22,
+      color: "var(--el-text-color-disabled)",
+      base: IB
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: 'var(--el-text-color-regular)'
+      }
+    }, "No data found"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 'var(--il-fs-meta)',
+        color: 'var(--el-text-color-secondary)'
+      }
+    }, chips.length || query ? 'Try widening the filters or clearing the search.' : 'No visitor activity in this period.'))
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      gap: 12
+    }
+  }, report === 'attendance' && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 'var(--il-fs-meta)',
+      color: 'var(--el-text-color-secondary)'
+    }
+  }, attRows.length, " visitors \xD7 ", dayColumns.length, " days"), /*#__PURE__*/React.createElement(Pagination, {
+    page: page,
+    total: report === 'fire' ? 140 : 96,
+    pageSize: 20,
+    onChange: setPage,
+    iconBase: IB
+  })));
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -3015,128 +4461,26 @@ function ReportsScreen() {
       animation: 'il-fade-up var(--il-dur-enter) var(--il-ease)'
     }
   }, /*#__PURE__*/React.createElement(Card, {
-    header: /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Quick Stats"), /*#__PURE__*/React.createElement(CardSubtitle, null, "Filter and analyze visitor activity"))
-  }, /*#__PURE__*/React.createElement(FilterBar, null, /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Select, {
-    value: isStudent,
-    onChange: setIsStudent,
-    clearable: true,
-    placeholder: "Visitor type",
-    iconBase: IB,
-    options: [{
-      label: 'All visitors',
-      value: null
-    }, {
-      label: 'Students',
-      value: true
-    }, {
-      label: 'Teachers',
-      value: false
-    }]
-  })), /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Select, {
-    value: status,
-    onChange: setStatus,
-    clearable: true,
-    placeholder: "Status",
-    iconBase: IB,
-    options: [{
-      label: 'Signed in',
-      value: 'signed_in'
-    }, {
-      label: 'Signed out',
-      value: 'signed_out'
-    }, {
-      label: 'Not signed',
-      value: 'not_signed'
-    }]
-  })), /*#__PURE__*/React.createElement(FilterItem, null, /*#__PURE__*/React.createElement(Select, {
-    multiple: true,
-    value: grades,
-    onChange: setGrades,
-    disabled: isStudent !== true,
-    placeholder: "Select grade(s)",
-    options: GRADES,
-    iconBase: IB
-  })), grades.length === 1 && /*#__PURE__*/React.createElement(Tag, {
-    type: "success"
-  }, "Single grade mode"), grades.length > 1 && /*#__PURE__*/React.createElement(Tag, {
-    type: "warning"
-  }, "Multi grade mode"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(3,1fr)',
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement(KpiStat, {
-    label: "Signed in",
-    value: count('signed_in'),
-    intent: "success"
-  }), /*#__PURE__*/React.createElement(KpiStat, {
-    label: "Signed out",
-    value: count('signed_out'),
-    intent: "warning"
-  }), /*#__PURE__*/React.createElement(KpiStat, {
-    label: "Not signed",
-    value: count('not_signed'),
-    intent: "info"
-  })), /*#__PURE__*/React.createElement(SectionTitle, null, "Fire report"), /*#__PURE__*/React.createElement(Card, {
+    header: /*#__PURE__*/React.createElement(PageHeader, {
+      title: "Reports",
+      description: "Switch report type, then filter and export visitor activity."
+    }),
     bodyStyle: {
-      padding: 4
+      padding: '0 20px 20px'
     }
-  }, loading ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: 8
-    }
-  }, /*#__PURE__*/React.createElement(Skeleton, {
-    rows: 6,
-    columns: [50, 120, 120, 160, 100, 120]
-  })) : /*#__PURE__*/React.createElement(DataTable, {
-    data: rows,
-    empty: "No data found",
-    rowClass: r => r.sign_status.replace(/_/g, '-'),
-    columns: [{
-      label: '#',
-      width: 62,
-      align: 'center',
-      render: (r, i) => (page - 1) * 20 + i + 1
+  }, /*#__PURE__*/React.createElement(Tabs, {
+    active: report,
+    onChange: setReport,
+    tabs: [{
+      name: 'fire',
+      label: 'Fire List',
+      content: filters
     }, {
-      label: 'Name',
-      prop: 'name',
-      sortable: true
-    }, {
-      label: 'Surname',
-      prop: 'surname',
-      sortable: true
-    }, {
-      label: 'Last activity',
-      prop: 'visit_date',
-      width: 170,
-      sortable: true
-    }, {
-      label: 'Student',
-      prop: 'is_student',
-      width: 110,
-      sortable: true,
-      render: r => String(r.is_student)
-    }, {
-      label: 'Status',
-      width: 130,
-      render: r => /*#__PURE__*/React.createElement(StatusTag, {
-        status: r.sign_status,
-        soft: true
-      })
+      name: 'attendance',
+      label: 'Attendance Report',
+      content: filters
     }]
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'flex-end'
-    }
-  }, /*#__PURE__*/React.createElement(Pagination, {
-    page: page,
-    total: 140,
-    pageSize: 20,
-    onChange: setPage,
-    iconBase: IB
-  })));
+  })), grid);
 }
 Object.assign(window, {
   ReportsScreen
@@ -3848,6 +5192,103 @@ window.IL_DATA = {
     created_at: '2026-03-19T13:10:00Z',
     updated_at: '2026-06-11T09:05:00Z'
   }],
+  attendance: [{
+    id: 101,
+    name: 'Ada',
+    surname: 'Lovelace',
+    is_student: true,
+    grade: 9,
+    check_in: '08:41',
+    check_out: '15:32',
+    hours: 6.85,
+    entry_status: 'on_time',
+    days_present: 19,
+    days_total: 20
+  }, {
+    id: 104,
+    name: 'Katherine',
+    surname: 'Johnson',
+    is_student: true,
+    grade: 7,
+    check_in: '08:12',
+    check_out: '15:30',
+    hours: 7.3,
+    entry_status: 'on_time',
+    days_present: 20,
+    days_total: 20
+  }, {
+    id: 106,
+    name: 'Radia',
+    surname: 'Perlman',
+    is_student: true,
+    grade: 12,
+    check_in: '09:14',
+    check_out: '15:28',
+    hours: 6.23,
+    entry_status: 'late',
+    days_present: 16,
+    days_total: 20
+  }, {
+    id: 103,
+    name: 'Alan',
+    surname: 'Turing',
+    is_student: true,
+    grade: 11,
+    check_in: '09:02',
+    check_out: '12:40',
+    hours: 3.63,
+    entry_status: 'early_leave',
+    days_present: 14,
+    days_total: 20
+  }, {
+    id: 102,
+    name: 'Grace',
+    surname: 'Hopper',
+    is_student: false,
+    grade: null,
+    check_in: '07:58',
+    check_out: '16:44',
+    hours: 8.77,
+    entry_status: 'on_time',
+    days_present: 20,
+    days_total: 20
+  }, {
+    id: 105,
+    name: 'Tim',
+    surname: 'Berners-Lee',
+    is_student: false,
+    grade: null,
+    check_in: '',
+    check_out: '',
+    hours: 0,
+    entry_status: 'absent',
+    days_present: 11,
+    days_total: 20
+  }, {
+    id: 107,
+    name: 'Barbara',
+    surname: 'Liskov',
+    is_student: false,
+    grade: null,
+    check_in: '08:26',
+    check_out: '17:05',
+    hours: 8.65,
+    entry_status: 'on_time',
+    days_present: 18,
+    days_total: 20
+  }, {
+    id: 108,
+    name: 'Margaret',
+    surname: 'Hamilton',
+    is_student: true,
+    grade: 10,
+    check_in: '09:31',
+    check_out: '15:29',
+    hours: 5.97,
+    entry_status: 'late',
+    days_present: 15,
+    days_total: 20
+  }],
   themeSlots: [{
     key: 'favicon',
     label: 'Favicon',
@@ -3882,6 +5323,75 @@ window.IL_DATA = {
     updated_at: ''
   }]
 };
+
+/* Deterministic per-day attendance for the matrix view — same person + same date
+   always yields the same record, so scrolling and refiltering stay stable. */
+(() => {
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const seed = (id, key) => {
+    let h = id * 7919 + 13;
+    for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) % 99991;
+    return h / 99991;
+  };
+  const hm = v => String(Math.floor(v)).padStart(2, '0') + ':' + String(Math.round(v % 1 * 60)).padStart(2, '0');
+  const TODAY = new Date();
+  TODAY.setHours(0, 0, 0, 0);
+  window.IL_DATA.iso = iso;
+  window.IL_DATA.hm = hm;
+
+  /* state: weekend | future | absent | active | late | complete */
+  window.IL_DATA.attendanceDay = (person, date) => {
+    const key = iso(date);
+    const dow = date.getDay();
+    if (dow === 0 || dow === 6) return {
+      state: 'weekend',
+      key
+    };
+    const day = new Date(date);
+    day.setHours(0, 0, 0, 0);
+    if (day > TODAY) return {
+      state: 'future',
+      key
+    };
+    const r = seed(person.id, key);
+    const rate = person.days_present / person.days_total;
+    if (r > rate) return {
+      state: 'absent',
+      key
+    };
+    const checkIn = 8.05 + r * 1.5;
+    const late = checkIn >= 9;
+    if (day.getTime() === TODAY.getTime() && r < 0.55) {
+      return {
+        state: 'active',
+        key,
+        checkIn,
+        checkInLabel: hm(checkIn)
+      };
+    }
+    const hours = 5.6 + r * 3.4;
+    return {
+      state: late ? 'late' : 'complete',
+      key,
+      checkIn,
+      checkInLabel: hm(checkIn),
+      checkOut: checkIn + hours,
+      checkOutLabel: hm(checkIn + hours),
+      hours
+    };
+  };
+  window.IL_DATA.eachDay = (from, to, cap = 45) => {
+    const out = [];
+    if (!from || !to) return out;
+    const d = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+    const end = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+    while (d <= end && out.length < cap) {
+      out.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+    }
+    return out;
+  };
+})();
 })(); } catch (e) { __ds_ns.__errors.push({ path: "ui_kits/admin/data.js", error: String((e && e.message) || e) }); }
 
 __ds_ns.Avatar = __ds_scope.Avatar;
@@ -3904,7 +5414,13 @@ __ds_ns.DataTable = __ds_scope.DataTable;
 
 __ds_ns.KpiStat = __ds_scope.KpiStat;
 
+__ds_ns.Legend = __ds_scope.Legend;
+
+__ds_ns.MiniBar = __ds_scope.MiniBar;
+
 __ds_ns.Pagination = __ds_scope.Pagination;
+
+__ds_ns.PivotGrid = __ds_scope.PivotGrid;
 
 __ds_ns.SkeletonItem = __ds_scope.SkeletonItem;
 
@@ -3913,6 +5429,8 @@ __ds_ns.Skeleton = __ds_scope.Skeleton;
 __ds_ns.StatusTag = __ds_scope.StatusTag;
 
 __ds_ns.SIGN_STATUS_ORDER = __ds_scope.SIGN_STATUS_ORDER;
+
+__ds_ns.TableToolbar = __ds_scope.TableToolbar;
 
 __ds_ns.Dialog = __ds_scope.Dialog;
 
@@ -3924,6 +5442,10 @@ __ds_ns.MessageStack = __ds_scope.MessageStack;
 
 __ds_ns.Popover = __ds_scope.Popover;
 
+__ds_ns.DateRangePicker = __ds_scope.DateRangePicker;
+
+__ds_ns.DATE_PRESETS = __ds_scope.DATE_PRESETS;
+
 __ds_ns.FileUploadRow = __ds_scope.FileUploadRow;
 
 __ds_ns.FormField = __ds_scope.FormField;
@@ -3933,6 +5455,8 @@ __ds_ns.FormActions = __ds_scope.FormActions;
 __ds_ns.Input = __ds_scope.Input;
 
 __ds_ns.InputNumber = __ds_scope.InputNumber;
+
+__ds_ns.SegmentedControl = __ds_scope.SegmentedControl;
 
 __ds_ns.Select = __ds_scope.Select;
 
@@ -3961,6 +5485,8 @@ __ds_ns.FeatureCard = __ds_scope.FeatureCard;
 __ds_ns.FilterBar = __ds_scope.FilterBar;
 
 __ds_ns.FilterItem = __ds_scope.FilterItem;
+
+__ds_ns.FilterChip = __ds_scope.FilterChip;
 
 __ds_ns.HelpPanel = __ds_scope.HelpPanel;
 

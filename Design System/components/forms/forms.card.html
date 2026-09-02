@@ -1,4 +1,4 @@
-<!-- @dsCard group="Components" viewport="700x480" name="Forms" subtitle="Input, Textarea, InputNumber, Select, Switch, FormField, FileUploadRow" -->
+<!-- @dsCard group="Components" viewport="700x600" name="Forms" subtitle="Input, Textarea, InputNumber, Select, Switch, SegmentedControl, DateRangePicker, FormField, FileUploadRow" -->
 <meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
 <style>*{box-sizing:border-box}body{margin:0;padding:18px 20px;font-family:var(--il-font-sans);background:#fff}.grp{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--il-text-mute);width:100%;margin-bottom:-4px}@keyframes il-spin{to{transform:rotate(360deg)}}@keyframes il-skeleton{0%{background-position:100% 50%}100%{background-position:0 50%}}</style>
 <div id="root"></div>
@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../_ds_bundle.js"></script>
 <script type="text/babel">
-const { Input, Textarea, InputNumber, Select, Switch, FormField, FormActions, FileUploadRow, Button } = window.ImLateDesignSystem_9c9b6f;
+const { Input, Textarea, InputNumber, Select, Switch, SegmentedControl, DateRangePicker, DATE_PRESETS, FormField, FormActions, FileUploadRow, Button } = window.ImLateDesignSystem_9c9b6f;
 const IB = '../../assets/icons';
 const GRADES = Array.from({length:6},(_,i)=>({label:'Grade '+(i+1),value:i+1}));
 function Demo() {
@@ -17,6 +17,9 @@ function Demo() {
   const [type, setType] = React.useState(true);
   const [grades, setGrades] = React.useState([2,5]);
   const [on, setOn] = React.useState(true);
+  const [preset, setPreset] = React.useState('week');
+  const PRESETS = DATE_PRESETS || DateRangePicker.PRESETS;
+  const [range, setRange] = React.useState(PRESETS.week());
   return (
     <div>
       <div className="lbl">Input — clearable, prefix icon, password, disabled</div>
@@ -40,6 +43,13 @@ function Demo() {
         <Switch checked={false} onChange={()=>{}} />
         <Switch checked disabled />
         <FileUploadRow fileName="ada-lovelace.png" onChoose={()=>{}} onUpload={()=>{}} style={{marginBottom:0}} />
+      </div>
+      <div className="lbl">SegmentedControl · DateRangePicker</div>
+      <div className="grp" style={{alignItems:'flex-start'}}>
+        <SegmentedControl value={preset} onChange={p => { setPreset(p); if (p !== 'custom') setRange(PRESETS[p]()); }}
+          options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'},{label:'Custom',value:'custom'}]} />
+        <div style={{width:260}}><DateRangePicker from={range.from} to={range.to} onChange={r => { setRange(r); setPreset('custom'); }} iconBase={IB} /></div>
+        <SegmentedControl size="small" value="all" onChange={()=>{}} options={[{label:'All',value:'all'},{label:'Mine',value:'mine'}]} />
       </div>
       <div className="lbl">FormField — left labels, required, error, help</div>
       <div style={{maxWidth:440}}>

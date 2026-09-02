@@ -17,6 +17,8 @@ Login (`admin` / any password) → Dashboard. The sidebar moves between the four
 | `ProfileScreen.jsx` | `src/views/Profile.vue` | Read-only identity card + security card, 560px column |
 | `AppShell.jsx` | `src/App.vue` | 180px sidebar with logo and Help popover, 36px topbar, scrolling main |
 
+Screens are deep-linkable: append `#/reports`, `#/users`, `#/admin-users`, `#/settings` or `#/profile` to the URL to open one directly.
+
 ## Fidelity notes
 
 - All data is local (`data.js`); no network calls.

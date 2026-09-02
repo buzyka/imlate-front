@@ -1,4 +1,4 @@
-<!-- @dsCard group="Components" viewport="700x560" name="Patterns" subtitle="FeatureCard, PillButton, ActionChoiceCard, AssetSlotCard, HelpPanel, FilterBar" -->
+<!-- @dsCard group="Components" viewport="700x610" name="Patterns" subtitle="FeatureCard, PillButton, ActionChoiceCard, AssetSlotCard, HelpPanel, FilterBar, FilterChip" -->
 <meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
 <style>*{box-sizing:border-box}body{margin:0;padding:18px 20px;font-family:var(--il-font-sans);background:#fff}.grp{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--il-text-mute);width:100%;margin-bottom:-4px}@keyframes il-spin{to{transform:rotate(360deg)}}@keyframes il-skeleton{0%{background-position:100% 50%}100%{background-position:0 50%}}</style>
 <div id="root"></div>
@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../_ds_bundle.js"></script>
 <script type="text/babel">
-const { FeatureCard, PillButton, ActionChoiceCard, AssetSlotCard, HelpPanel, FilterBar, FilterItem, Select, Tag, Icon } = window.ImLateDesignSystem_9c9b6f;
+const { FeatureCard, PillButton, ActionChoiceCard, AssetSlotCard, HelpPanel, FilterBar, FilterItem, FilterChip, Select, Tag, Icon } = window.ImLateDesignSystem_9c9b6f;
 const IB = '../../assets/icons';
 function Demo() {
   const [action, setAction] = React.useState('sign_in');
@@ -26,6 +26,13 @@ function Demo() {
           <FilterItem><Select value={null} onChange={()=>{}} clearable placeholder="Status" options={[]} iconBase={IB} /></FilterItem>
           <Tag type="warning">Multi grade mode</Tag>
         </FilterBar>
+      </div>
+      <div className="lbl">FilterChip — applied filters, removable</div>
+      <div className="grp">
+        <FilterChip label="Visitor type" value="Students" onRemove={()=>{}} iconBase={IB} />
+        <FilterChip label="Status" value="Signed in" onRemove={()=>{}} iconBase={IB} />
+        <FilterChip label="Grades" value="9, 11" onRemove={()=>{}} iconBase={IB} />
+        <FilterChip label="Range" value="2026-08-31 — 2026-09-06" iconBase={IB} />
       </div>
       <div className="lbl">ActionChoiceCard</div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:12,maxWidth:440,marginBottom:16}}>

@@ -84,6 +84,10 @@
         "message": "<DataTableColumn> align must be one of 'left' | 'center' | 'right'."
       },
       {
+        "selector": "JSXOpeningElement[name.name='DateRange'] > JSXAttribute > JSXIdentifier[name!=/^(?:from|to|key|ref|className|style|children)$/]",
+        "message": "<DateRange> doesn't accept that prop. Declared props: from, to."
+      },
+      {
         "selector": "JSXOpeningElement[name.name='Dialog'] > JSXAttribute > JSXIdentifier[name!=/^(?:open|title|width|onClose|footer|iconBase|children|key|ref|className|style|children)$/]",
         "message": "<Dialog> doesn't accept that prop. Declared props: open, title, width, onClose, footer, iconBase, children."
       },
@@ -102,6 +106,10 @@
       {
         "selector": "JSXOpeningElement[name.name='FilterBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|style|key|ref|className|style|children)$/]",
         "message": "<FilterBar> doesn't accept that prop. Declared props: children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FilterChip'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|value|onRemove|iconBase|style|key|ref|className|style|children)$/]",
+        "message": "<FilterChip> doesn't accept that prop. Declared props: label, value, onRemove, iconBase, style."
       },
       {
         "selector": "JSXOpeningElement[name.name='FormField'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|required|error|help|labelPosition|labelWidth|children|style|key|ref|className|style|children)$/]",
@@ -144,12 +152,24 @@
         "message": "<KpiStat> intent must be one of 'neutral' | 'success' | 'warning' | 'info' | 'danger'."
       },
       {
+        "selector": "JSXOpeningElement[name.name='LegendItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|swatch|border|dot|hint|key|ref|className|style|children)$/]",
+        "message": "<LegendItem> doesn't accept that prop. Declared props: label, swatch, border, dot, hint."
+      },
+      {
         "selector": "JSXOpeningElement[name.name='Message'] > JSXAttribute > JSXIdentifier[name!=/^(?:type|children|onClose|iconBase|style|key|ref|className|style|children)$/]",
         "message": "<Message> doesn't accept that prop. Declared props: type, children, onClose, iconBase, style."
       },
       {
         "selector": "JSXOpeningElement[name.name='Message'] > JSXAttribute[name.name='type'] > Literal[value!=/^(?:success|warning|error|info)$/]",
         "message": "<Message> type must be one of 'success' | 'warning' | 'error' | 'info'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='MiniBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|max|intent|label|width|style|key|ref|className|style|children)$/]",
+        "message": "<MiniBar> doesn't accept that prop. Declared props: value, max, intent, label, width, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='MiniBar'] > JSXAttribute[name.name='intent'] > Literal[value!=/^(?:success|warning|danger|info|primary)$/]",
+        "message": "<MiniBar> intent must be one of 'success' | 'warning' | 'danger' | 'info' | 'primary'."
       },
       {
         "selector": "JSXOpeningElement[name.name='PageHeader'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|description|actions|style|key|ref|className|style|children)$/]",
@@ -168,12 +188,24 @@
         "message": "<PillButton> variant must be one of 'brand' | 'alt'."
       },
       {
+        "selector": "JSXOpeningElement[name.name='PivotFixedColumn'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|width|align|prop|render|sortValue|key|ref|className|style|children)$/]",
+        "message": "<PivotFixedColumn> doesn't accept that prop. Declared props: label, width, align, prop, render, sortValue."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PivotFixedColumn'] > JSXAttribute[name.name='align'] > Literal[value!=/^(?:left|center|right)$/]",
+        "message": "<PivotFixedColumn> align must be one of 'left' | 'center' | 'right'."
+      },
+      {
         "selector": "JSXOpeningElement[name.name='Popover'] > JSXAttribute > JSXIdentifier[name!=/^(?:open|width|placement|children|content|style|key|ref|className|style|children)$/]",
         "message": "<Popover> doesn't accept that prop. Declared props: open, width, placement, children, content, style."
       },
       {
         "selector": "JSXOpeningElement[name.name='Popover'] > JSXAttribute[name.name='placement'] > Literal[value!=/^(?:right-end|bottom-start)$/]",
         "message": "<Popover> placement must be one of 'right-end' | 'bottom-start'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SegmentedOption'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|value|icon|key|ref|className|style|children)$/]",
+        "message": "<SegmentedOption> doesn't accept that prop. Declared props: label, value, icon."
       },
       {
         "selector": "JSXOpeningElement[name.name='SelectOption'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|value|key|ref|className|style|children)$/]",
@@ -202,6 +234,10 @@
       {
         "selector": "JSXOpeningElement[name.name='Switch'] > JSXAttribute > JSXIdentifier[name!=/^(?:checked|onChange|disabled|style|key|ref|className|style|children)$/]",
         "message": "<Switch> doesn't accept that prop. Declared props: checked, onChange, disabled, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TableToolbar'] > JSXAttribute > JSXIdentifier[name!=/^(?:query|onQueryChange|placeholder|count|countLabel|actions|onExportCsv|onExportPdf|iconBase|style|key|ref|className|style|children)$/]",
+        "message": "<TableToolbar> doesn't accept that prop. Declared props: query, onQueryChange, placeholder, count, countLabel, actions, onExportCsv, onExportPdf, iconBase, style."
       },
       {
         "selector": "JSXOpeningElement[name.name='TabItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|label|content|key|ref|className|style|children)$/]",
@@ -267,6 +303,9 @@
       "DataTableColumn": {
         "replaces": []
       },
+      "DateRange": {
+        "replaces": []
+      },
       "Dialog": {
         "replaces": []
       },
@@ -280,6 +319,9 @@
         "replaces": []
       },
       "FilterBar": {
+        "replaces": []
+      },
+      "FilterChip": {
         "replaces": []
       },
       "FormField": {
@@ -300,7 +342,13 @@
       "KpiStat": {
         "replaces": []
       },
+      "LegendItem": {
+        "replaces": []
+      },
       "Message": {
+        "replaces": []
+      },
+      "MiniBar": {
         "replaces": []
       },
       "PageHeader": {
@@ -312,7 +360,13 @@
       "PillButton": {
         "replaces": []
       },
+      "PivotFixedColumn": {
+        "replaces": []
+      },
       "Popover": {
+        "replaces": []
+      },
+      "SegmentedOption": {
         "replaces": []
       },
       "SelectOption": {
@@ -328,6 +382,9 @@
         "replaces": []
       },
       "Switch": {
+        "replaces": []
+      },
+      "TableToolbar": {
         "replaces": []
       },
       "TabItem": {
@@ -367,14 +424,17 @@
       "--el-color-danger-light-3",
       "--el-color-danger-light-5",
       "--el-color-danger-light-7",
+      "--el-color-danger-light-8",
       "--el-color-danger-light-9",
       "--el-color-error",
+      "--el-color-error-light-8",
       "--el-color-error-light-9",
       "--el-color-info",
       "--el-color-info-dark-2",
       "--el-color-info-light-3",
       "--el-color-info-light-5",
       "--el-color-info-light-7",
+      "--el-color-info-light-8",
       "--el-color-info-light-9",
       "--el-color-primary",
       "--el-color-primary-dark-2",
@@ -388,12 +448,14 @@
       "--el-color-success-light-3",
       "--el-color-success-light-5",
       "--el-color-success-light-7",
+      "--el-color-success-light-8",
       "--el-color-success-light-9",
       "--el-color-warning",
       "--el-color-warning-dark-2",
       "--el-color-warning-light-3",
       "--el-color-warning-light-5",
       "--el-color-warning-light-7",
+      "--el-color-warning-light-8",
       "--el-color-warning-light-9",
       "--el-fill-color",
       "--el-fill-color-blank",
@@ -486,6 +548,8 @@
       "--il-shadow-card-hover",
       "--il-shadow-feature-hover",
       "--il-shadow-link-hover",
+      "--il-shadow-sticky-left",
+      "--il-shadow-sticky-right",
       "--il-side-panel-width",
       "--il-side-panel-width-lg",
       "--il-space-1",
@@ -536,26 +600,31 @@
       "--el-color-success-light-3": "color",
       "--el-color-success-light-5": "color",
       "--el-color-success-light-7": "color",
+      "--el-color-success-light-8": "color",
       "--el-color-success-light-9": "color",
       "--el-color-success-dark-2": "color",
       "--el-color-warning": "color",
       "--el-color-warning-light-3": "color",
       "--el-color-warning-light-5": "color",
       "--el-color-warning-light-7": "color",
+      "--el-color-warning-light-8": "color",
       "--el-color-warning-light-9": "color",
       "--el-color-warning-dark-2": "color",
       "--el-color-danger": "color",
       "--el-color-danger-light-3": "color",
       "--el-color-danger-light-5": "color",
       "--el-color-danger-light-7": "color",
+      "--el-color-danger-light-8": "color",
       "--el-color-danger-light-9": "color",
       "--el-color-danger-dark-2": "color",
       "--el-color-error": "color",
+      "--el-color-error-light-8": "color",
       "--el-color-error-light-9": "color",
       "--el-color-info": "color",
       "--el-color-info-light-3": "color",
       "--el-color-info-light-5": "color",
       "--el-color-info-light-7": "color",
+      "--el-color-info-light-8": "color",
       "--el-color-info-light-9": "color",
       "--el-color-info-dark-2": "color",
       "--el-text-color-primary": "font",
@@ -676,6 +745,8 @@
       "--il-shadow-card-hover": "shadow",
       "--il-shadow-feature-hover": "shadow",
       "--il-shadow-link-hover": "shadow",
+      "--il-shadow-sticky-left": "shadow",
+      "--il-shadow-sticky-right": "shadow",
       "--il-ring-input-hover": "shadow",
       "--il-ring-input-focus": "shadow",
       "--il-ring-success": "shadow",

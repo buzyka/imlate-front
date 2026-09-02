@@ -1,4 +1,4 @@
-<!-- @dsCard group="Components" viewport="700x470" name="Data" subtitle="DataTable, StatusTag, Pagination, Skeleton, KpiStat" -->
+<!-- @dsCard group="Components" viewport="700x800" name="Data" subtitle="DataTable, PivotGrid, Legend, TableToolbar, StatusTag, MiniBar, Pagination, Skeleton, KpiStat" -->
 <meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
 <style>*{box-sizing:border-box}body{margin:0;padding:18px 20px;font-family:var(--il-font-sans);background:#fff}.grp{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--il-text-mute);width:100%;margin-bottom:-4px}@keyframes il-spin{to{transform:rotate(360deg)}}@keyframes il-skeleton{0%{background-position:100% 50%}100%{background-position:0 50%}}</style>
 <div id="root"></div>
@@ -7,13 +7,33 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../_ds_bundle.js"></script>
 <script type="text/babel">
-const { DataTable, StatusTag, Pagination, Skeleton, KpiStat, Avatar, Tag, Button, Icon } = window.ImLateDesignSystem_9c9b6f;
+const { DataTable, PivotGrid, Legend, TableToolbar, StatusTag, MiniBar, Pagination, Skeleton, KpiStat, Avatar, Tag, Button, Icon } = window.ImLateDesignSystem_9c9b6f;
 const IB = '../../assets/icons';
 const ROWS = [
   { id: 12, name: 'Ada', surname: 'Lovelace', is_student: true, grade: 9, sign_status: 'signed_in', updated: '02/09/2026, 08:41' },
   { id: 13, name: 'Grace', surname: 'Hopper', is_student: false, grade: null, sign_status: 'signed_out', updated: '02/09/2026, 07:58' },
   { id: 14, name: 'Alan', surname: 'Turing', is_student: true, grade: 11, sign_status: 'not_signed', updated: '01/09/2026, 16:02' }
 ];
+const DAY_LABELS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAYS = ['31','01','02','03','04','05','06'].map((d,i)=>({key:'d'+d,label:d,top:DAY_LABELS[i],muted:i>=5}));
+const MATRIX = {
+  12: { d31:{state:'complete',hours:7.4}, d01:{state:'late',hours:6.2}, d02:{state:'active'}, d03:{state:'complete',hours:7.8}, d04:{state:'complete',hours:7.1}, d05:{state:'weekend'}, d06:{state:'weekend'} },
+  13: { d31:{state:'complete',hours:8.6}, d01:{state:'complete',hours:8.1}, d02:{state:'complete',hours:8.8}, d03:{state:'absent'}, d04:{state:'complete',hours:8.4}, d05:{state:'weekend'}, d06:{state:'weekend'} },
+  14: { d31:{state:'absent'}, d01:{state:'complete',hours:5.9}, d02:{state:'late',hours:5.4}, d03:{state:'absent'}, d04:{state:'complete',hours:6.6}, d05:{state:'weekend'}, d06:{state:'weekend'} }
+};
+const TINT = {active:'var(--el-color-success-light-9)',late:'var(--el-color-warning-light-9)',complete:'var(--el-fill-color-light)',weekend:'var(--el-fill-color-lighter)',absent:'transparent'};
+const CELL = (row,col) => {
+  const c = MATRIX[row.id][col.key] || {state:'absent'};
+  if (c.state==='active') return {tint:TINT.active,content:(
+    <span style={{display:'inline-flex',alignItems:'center',gap:4,color:'var(--el-color-success-dark-2)',fontWeight:600}}>
+      <span style={{width:6,height:6,borderRadius:'50%',background:'var(--el-color-success)'}} />In</span>)};
+  if (c.state==='complete'||c.state==='late') return {tint:TINT[c.state],content:
+    <span style={{fontWeight:c.state==='late'?600:400,color:c.state==='late'?'var(--el-color-warning-dark-2)':'var(--el-text-color-regular)'}}>{c.hours.toFixed(1)}</span>};
+  if (c.state==='weekend') return {tint:TINT.weekend,content:null};
+  return {tint:'transparent',content:<span style={{color:'var(--el-text-color-disabled)'}}>—</span>};
+};
+const ROW_TOTAL = (r) => DAYS.reduce((a,col)=>a+((MATRIX[r.id][col.key]||{}).hours||0),0);
+
 function Demo() {
   const [page, setPage] = React.useState(2);
   const [cur, setCur] = React.useState(ROWS[0]);
@@ -24,6 +44,16 @@ function Demo() {
         <KpiStat label="Signed in" value="128" intent="success" />
         <KpiStat label="Signed out" value="41" intent="warning" />
         <KpiStat label="Not signed" value="17" intent="info" />
+      </div>
+      <div className="lbl">TableToolbar — search within results, count, export</div>
+      <div style={{border:'1px solid var(--el-border-color-lighter)',borderRadius:'var(--il-radius-card)',marginBottom:16,overflow:'hidden'}}>
+        <TableToolbar query="" onQueryChange={()=>{}} count={3} onExportCsv={()=>{}} onExportPdf={()=>{}} iconBase={IB} />
+      </div>
+      <div className="lbl">MiniBar — in-cell presence summary</div>
+      <div className="grp">
+        <MiniBar value={19} max={20} intent="success" label="19 / 20" />
+        <MiniBar value={14} max={20} intent="warning" label="14 / 20" />
+        <MiniBar value={4} max={20} intent="info" label="4 / 20" />
       </div>
       <div className="lbl">DataTable — avatars, tags, sortable, row actions, status wash</div>
       <DataTable

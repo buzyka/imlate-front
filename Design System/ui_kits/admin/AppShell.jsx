@@ -10,10 +10,24 @@ const MENU = [
   { index: '/settings', label: 'Settings' }
 ];
 
+/* Deep link: #/reports, #/users, … opens that screen directly (skips the login step). */
+const hashRoute = () => {
+  const h = (window.location.hash || '').replace(/^#/, '');
+  return h && h.startsWith('/') ? h : null;
+};
+
 function App() {
-  const [authed, setAuthed] = React.useState(false);
+  const [authed, setAuthed] = React.useState(!!hashRoute());
   const [userName, setUserName] = React.useState('admin');
-  const [route, setRoute] = React.useState('/');
+  const [route, setRoute] = React.useState(hashRoute() || '/');
+
+  React.useEffect(() => {
+    const sync = () => { const h = hashRoute(); if (h) { setRoute(h); setAuthed(true); } };
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
+
+  const go = (r) => { setRoute(r); window.location.hash = r; };
   const [help, setHelp] = React.useState(false);
   const [messages, setMessages] = React.useState([]);
 
@@ -26,7 +40,7 @@ function App() {
   if (!authed) {
     return (
       <div style={{ height: '100vh', overflow: 'auto', background: '#fff' }}>
-        <LoginScreen onLogin={(u) => { setUserName(u || 'admin'); setAuthed(true); setRoute('/'); }} />
+        <LoginScreen onLogin={(u) => { setUserName(u || 'admin'); setAuthed(true); go('/'); }} />
         <MessageStack messages={messages} iconBase={IB} />
       </div>
     );
@@ -34,7 +48,7 @@ function App() {
 
   return (
     <div style={{ height: '100vh', display: 'flex', overflow: 'hidden' }}>
-      <SidebarMenu logoSrc="../../assets/logo.png" active={route} onSelect={setRoute} items={MENU}
+      <SidebarMenu logoSrc="../../assets/logo.png" active={route} onSelect={go} items={MENU}
         footer={
           <Popover open={help} width={320} placement="right-end"
             content={<HelpPanel uiVersion="1.4.0" serverVersion="2.2.1"
@@ -48,12 +62,12 @@ function App() {
         } />
 
       <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-        <Topbar userName={userName} onProfile={() => setRoute('/profile')} onLogout={() => { setAuthed(false); setHelp(false); }} />
+        <Topbar userName={userName} onProfile={() => go('/profile')} onLogout={() => { setAuthed(false); setHelp(false); }} />
         <main style={{ minHeight: 0, flex: 1, overflow: 'auto', background: route === '/' ? '#fff' : 'var(--il-surface-page)' }}>
           {route === '/' && <DashboardScreen userName={userName} />}
           {route === '/users' && <VisitorsScreen notify={notify} />}
           {route === '/admin-users' && <AdminUsersScreen notify={notify} />}
-          {route === '/reports' && <ReportsScreen />}
+          {route === '/reports' && <ReportsScreen notify={notify} />}
           {route === '/settings' && <SettingsScreen notify={notify} />}
           {route === '/profile' && <ProfileScreen userName={userName} notify={notify} />}
         </main>
