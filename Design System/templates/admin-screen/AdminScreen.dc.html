@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Admin screen" description="ImLate admin shell — 180px sidebar, 36px topbar, and a table + edit-panel CRUD view." -->
+<helmet><script src="./ds-base.js"></script><style>@keyframes il-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes il-spin{to{transform:rotate(360deg)}}body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#303133}</style></helmet>
+<div style="height:100vh;display:flex;overflow:hidden;background:#fff">
+<aside style="width:180px;flex:0 0 auto;display:flex;flex-direction:column;height:100%;background:#fff;border-right:1px solid #eee">
+<a href="#" style="padding:16px 10px 10px;display:flex;justify-content:center;text-decoration:none"><img src="../../assets/logo.png" alt="ImLate" style="width:100%;height:auto;display:block"></a>
+<nav style="display:flex;flex-direction:column">
+<a href="#" style="display:flex;align-items:center;height:56px;padding:0 20px;text-decoration:none;font-size:14px;color:#409eff;border-right:2px solid #409eff;background:#ecf5ff">Visitors</a>
+<a href="#" style="display:flex;align-items:center;height:56px;padding:0 20px;text-decoration:none;font-size:14px;color:#303133;border-right:2px solid transparent" style-hover="background:#ecf5ff">Admin Users</a>
+<a href="#" style="display:flex;align-items:center;height:56px;padding:0 20px;text-decoration:none;font-size:14px;color:#303133;border-right:2px solid transparent" style-hover="background:#ecf5ff">Reports</a>
+<a href="#" style="display:flex;align-items:center;height:56px;padding:0 20px;text-decoration:none;font-size:14px;color:#303133;border-right:2px solid transparent" style-hover="background:#ecf5ff">Settings</a>
+</nav>
+<div style="flex:1"></div>
+<button style="display:flex;align-items:center;gap:8px;width:100%;padding:12px 20px;cursor:pointer;color:#606266;font-size:14px;font-family:inherit;background:none;border:none;border-top:1px solid #eee" style-hover="background:#f5f7fa">Help</button>
+</aside>
+<div style="flex:1;min-width:0;min-height:0;display:flex;flex-direction:column">
+<header style="display:flex;align-items:center;gap:12px;height:36px;padding:0 12px;border-bottom:1px solid #eee;background:#fff;flex:0 0 auto">
+<div style="flex:1"></div>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Button" size="small" text="{{ true }}" hint-size="90px,24px">admin</x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Button" size="small" hint-size="70px,24px">Logout</x-import>
+</header>
+<main style="flex:1;min-height:0;overflow:auto;background:#f6f8fc">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;padding:20px;min-height:100%;animation:il-fade-up .35s ease">
+
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Card" header="{{ listHeader }}" hint-size="100%,420px">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:12px">
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Input" placeholder="Search by name or surname" clearable="{{ true }}" icon-base="../../assets/icons" hint-size="100%,32px"></x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Input" placeholder="Search by name" clearable="{{ true }}" icon-base="../../assets/icons" hint-size="100%,32px"></x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Input" placeholder="Search by grade" clearable="{{ true }}" icon-base="../../assets/icons" hint-size="100%,32px"></x-import>
+</div>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.DataTable" columns="{{ columns }}" data="{{ rows }}" empty="No data found" hint-size="100%,240px"></x-import>
+</x-import>
+
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Card" header="{{ formHeader }}" hint-size="100%,420px">
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Avatar" size="{{ 120 }}" style="margin-bottom:8px" hint-size="120px,120px"></x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.FormField" label="Name" required="{{ true }}" hint-size="100%,50px">
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Input" icon-base="../../assets/icons" hint-size="100%,32px"></x-import>
+</x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.FormField" label="Surname" required="{{ true }}" hint-size="100%,50px">
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Input" icon-base="../../assets/icons" hint-size="100%,32px"></x-import>
+</x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.FormField" label="Is Student" hint-size="100%,50px">
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Switch" hint-size="40px,20px"></x-import>
+</x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.FormActions" hint-size="100%,32px">
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Button" type="primary" hint-size="80px,32px">Create</x-import>
+<x-import component-from-global-scope="ImLateDesignSystem_9c9b6f.Button" hint-size="70px,32px">Reset</x-import>
+</x-import>
+</x-import>
+
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const NS = window.ImLateDesignSystem_9c9b6f || {};
+    const { Tag, Avatar, Button, Icon } = NS;
+    const el = React.createElement;
+    const rows = [
+      { id: 101, name: 'Ada', surname: 'Lovelace', is_student: true, grade: 9, keys: 2, updated: '02/09/2026, 08:41' },
+      { id: 102, name: 'Grace', surname: 'Hopper', is_student: false, grade: '', keys: 1, updated: '02/09/2026, 07:58' },
+      { id: 103, name: 'Alan', surname: 'Turing', is_student: true, grade: 11, keys: 0, updated: '01/09/2026, 16:02' },
+      { id: 104, name: 'Katherine', surname: 'Johnson', is_student: true, grade: 7, keys: 1, updated: '02/09/2026, 08:12' }
+    ];
+    const IB = '../../assets/icons';
+    const columns = [
+      { label: '', width: 60, render: () => Avatar && el(Avatar, { size: 40 }) },
+      { label: 'ID', prop: 'id', width: 62 },
+      { label: 'Name', prop: 'name', width: 110 },
+      { label: 'Surname', prop: 'surname', width: 130 },
+      { label: 'RFID Count', prop: 'keys', width: 96 },
+      { label: 'Student', width: 84, render: (r) => Tag && el(Tag, { type: r.is_student ? 'success' : 'info', size: 'small' }, r.is_student ? 'Yes' : 'No') },
+      { label: 'Grade', prop: 'grade', width: 68 },
+      { label: 'Updated', prop: 'updated', width: 150 },
+      { label: '', width: 56, align: 'center', render: () => Button && el(Button, { type: 'primary', circle: true, size: 'small', icon: Icon && el(Icon, { name: 'location', size: 12, base: IB, color: '#fff' }) }) },
+      { label: '', width: 56, align: 'center', render: () => Button && el(Button, { type: 'danger', circle: true, size: 'small', icon: Icon && el(Icon, { name: 'delete', size: 12, base: IB, color: '#fff' }) }) }
+    ];
+    return {
+      rows, columns,
+      listHeader: React.createElement('b', null, 'Visitors'),
+      formHeader: React.createElement('b', null, 'Create Visitor')
+    };
+  }
+}
+</script>
+</body>
+</html>

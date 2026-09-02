@@ -1,0 +1,19 @@
+:root{
+--el-border-radius-small:2px;--el-border-radius-base:4px;--el-border-radius-round:20px;--el-border-radius-circle:100%;
+--il-radius-input:10px;--il-radius-tag:8px;--il-radius-card:12px;--il-radius-card-lg:16px;
+--il-radius-dialog-card:14px;--il-radius-pill:999px;--il-radius-avatar:50%;
+
+--el-box-shadow-lighter:0 0 6px rgba(0,0,0,.12);
+--el-box-shadow-light:0 0 12px rgba(0,0,0,.12);
+--el-box-shadow:0 12px 32px 4px rgba(0,0,0,.04),0 8px 20px rgba(0,0,0,.08);
+--il-shadow-card:0 6px 18px rgba(15,23,42,.06);
+--il-shadow-card-hover:0 10px 26px rgba(15,23,42,.1);
+--il-shadow-feature-hover:0 8px 24px rgba(27,42,74,.12);
+--il-shadow-link-hover:0 2px 8px rgba(64,158,255,.15);
+
+/* Focus / selection rings */
+--il-ring-input-hover:0 0 0 1px #c7d2fe;
+--il-ring-input-focus:0 0 0 2px #a5b4fc;
+--il-ring-success:0 0 0 3px rgba(103,194,58,.15);
+--il-ring-danger:0 0 0 3px rgba(245,108,108,.15);
+}

@@ -1,0 +1,15 @@
+:root{
+--el-transition-duration:.3s; /* @kind other */
+--el-transition-duration-fast:.2s; /* @kind other */
+--il-dur-fast:.18s; /* @kind other */
+--il-dur-base:.2s; /* @kind other */
+--il-dur-slow:.25s; /* @kind other */
+--il-dur-enter:.35s; /* @kind other */
+--il-ease:ease; /* @kind other */
+--il-ease-el:cubic-bezier(.645,.045,.355,1); /* @kind other */
+--il-transition-card:all .25s ease; /* @kind other */
+--il-lift-card:translateY(-2px); /* @kind other */
+--il-lift-feature:translateY(-3px); /* @kind other */
+--il-lift-nudge:translateY(-1px); /* @kind other */
+}
+@keyframes il-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}

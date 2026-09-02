@@ -1,0 +1,19 @@
+:root{
+/* 4px base; the admin uses 4/8/12/16/18/20/24/28/32/48 */
+--il-space-1:4px;--il-space-2:8px;--il-space-3:12px;--il-space-4:16px;--il-space-5:18px;
+--il-space-6:20px;--il-space-7:24px;--il-space-8:28px;--il-space-9:32px;--il-space-12:48px;
+
+/* Layout */
+--il-aside-width:180px;--il-header-height:36px;
+--il-page-padding:20px;--il-page-padding-x:32px;
+--il-content-max:1180px;--il-form-max:560px;
+--il-form-label-width:120px;--il-form-label-width-lg:160px;
+--il-side-panel-width:380px;--il-side-panel-width-lg:400px;
+--il-filter-item-width:220px;
+--il-grid-gap:16px;--il-card-gap:18px;
+
+/* Breakpoints (media-query reference values) */
+--il-bp-sm:700px; /* @kind other */
+--il-bp-md:768px; /* @kind other */
+--il-bp-lg:900px; /* @kind other */
+}

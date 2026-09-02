@@ -1,0 +1,29 @@
+:root{
+/* No webfonts ship with ImLate — the admin runs on the Element Plus system stack. */
+--el-font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; /* @kind font */
+--il-font-sans:var(--el-font-family);
+--il-font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+--el-font-size-extra-large:20px;--el-font-size-large:18px;--el-font-size-medium:16px;
+--el-font-size-base:14px;--el-font-size-small:13px;--el-font-size-extra-small:12px;
+
+/* Admin type scale in use */
+--il-fs-hero:clamp(2.2rem,4vw,3.5rem); /* @kind font */--il-fs-h2:22px;--il-fs-section:18px;--il-fs-card-title:17px;
+--il-fs-card-header:15px;--il-fs-body:14px;--il-fs-help:13px;--il-fs-meta:12px;
+--il-fs-eyebrow:.86rem; /* @kind font */
+
+--el-font-weight-primary:500;
+--il-fw-regular:400; /* @kind font */
+--il-fw-medium:500; /* @kind font */
+--il-fw-semibold:600; /* @kind font */
+--il-fw-bold:700; /* @kind font */
+
+--il-lh-hero:1.05; /* @kind font */
+--il-lh-tight:1.2; /* @kind font */
+--il-lh-snug:1.4; /* @kind font */
+--il-lh-body:1.5; /* @kind font */
+--il-lh-relaxed:1.7; /* @kind font */
+
+--il-tracking-eyebrow:.08em; /* @kind font */
+--il-tracking-label:.04em; /* @kind font */
+}

@@ -1,0 +1,42 @@
+:root{
+/* ── Brand ─────────────────────────── */
+--il-navy:#1b2a4a;--il-navy-light:#253a63;--il-navy-05:rgba(27,42,74,.05);--il-navy-10:rgba(27,42,74,.1);
+--il-orange:#f5a623;--il-orange-dark:#e8961e;
+
+/* ── Element Plus primary (interaction blue) ── */
+--el-color-primary:#409eff;
+--el-color-primary-light-3:#79bbff;--el-color-primary-light-5:#a0cfff;--el-color-primary-light-7:#c6e2ff;
+--el-color-primary-light-8:#d9ecff;--el-color-primary-light-9:#ecf5ff;--el-color-primary-dark-2:#337ecc;
+
+/* ── Semantic status ─────────────────── */
+--el-color-success:#67c23a;--el-color-success-light-3:#95d475;--el-color-success-light-5:#b3e19d;--el-color-success-light-7:#d1edc4;--el-color-success-light-9:#f0f9eb;--el-color-success-dark-2:#529b2e;
+--el-color-warning:#e6a23c;--el-color-warning-light-3:#eebe77;--el-color-warning-light-5:#f3d19e;--el-color-warning-light-7:#f8e3c5;--el-color-warning-light-9:#fdf6ec;--el-color-warning-dark-2:#b88230;
+--el-color-danger:#f56c6c;--el-color-danger-light-3:#f89898;--el-color-danger-light-5:#fab6b6;--el-color-danger-light-7:#fcd3d3;--el-color-danger-light-9:#fef0f0;--el-color-danger-dark-2:#c45656;
+--el-color-error:#f56c6c;--el-color-error-light-9:#fef0f0;
+--el-color-info:#909399;--el-color-info-light-3:#b1b3b8;--el-color-info-light-5:#c8c9cc;--el-color-info-light-7:#dedfe0;--el-color-info-light-9:#f4f4f5;--el-color-info-dark-2:#73767a;
+
+/* ── Text ───────────────────────────── */
+--el-text-color-primary:#303133;--el-text-color-regular:#606266;--el-text-color-secondary:#909399;
+--el-text-color-placeholder:#a8abb2;--el-text-color-disabled:#c0c4cc;
+--il-text-slate:#0f172a;--il-text-body:#2c3e50;--il-text-mute:#94a3b8;--il-text-dialog:#1f2937;--il-text-dialog-soft:#6b7280;
+
+/* ── Borders ────────────────────────── */
+--el-border-color-darker:#cdd0d6;--el-border-color-dark:#d4d7de;--el-border-color:#dcdfe6;
+--el-border-color-light:#e4e7ed;--el-border-color-lighter:#ebeef5;--el-border-color-extra-light:#f2f6fc;
+--il-border-hairline:#eee;--il-border-card:#eef2f7;--il-border-dialog:#d1d5db;
+
+/* ── Fills & surfaces ───────────────── */
+--el-fill-color-darker:#e6e8eb;--el-fill-color-dark:#ebedf0;--el-fill-color:#f0f2f5;
+--el-fill-color-light:#f5f7fa;--el-fill-color-lighter:#fafafa;--el-fill-color-blank:#ffffff;
+--el-bg-color:#ffffff;--el-bg-color-page:#f2f3f5;--el-bg-color-overlay:rgba(255,255,255,.8);
+--il-surface-page:#f6f8fc;--il-surface-card:#ffffff;--il-surface-table-head:#f8fafc;--il-surface-row-hover:#f1f5f9;
+--il-surface-soft:#f7f8fa;--il-surface-asset:linear-gradient(135deg,#f7f9fc 0%,#eef3f9 100%);
+
+/* ── Row status washes (report/fire list) ── */
+--il-row-signed-in:#ecfdf5;--il-row-signed-out:#fffbeb;--il-row-not-signed:#f8fafc;
+
+/* ── Aliases ────────────────────────── */
+--text-heading:var(--il-navy);--text-body:var(--el-text-color-regular);--text-caption:var(--el-text-color-secondary);
+--surface-page:var(--il-surface-page);--surface-card:var(--il-surface-card);
+--accent-brand:var(--il-orange);--accent-action:var(--el-color-primary);
+}

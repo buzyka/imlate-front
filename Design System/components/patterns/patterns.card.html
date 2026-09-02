@@ -1,0 +1,56 @@
+<!-- @dsCard group="Components" viewport="700x560" name="Patterns" subtitle="FeatureCard, PillButton, ActionChoiceCard, AssetSlotCard, HelpPanel, FilterBar" -->
+<meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>*{box-sizing:border-box}body{margin:0;padding:18px 20px;font-family:var(--il-font-sans);background:#fff}.grp{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--il-text-mute);width:100%;margin-bottom:-4px}@keyframes il-spin{to{transform:rotate(360deg)}}@keyframes il-skeleton{0%{background-position:100% 50%}100%{background-position:0 50%}}</style>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { FeatureCard, PillButton, ActionChoiceCard, AssetSlotCard, HelpPanel, FilterBar, FilterItem, Select, Tag, Icon } = window.ImLateDesignSystem_9c9b6f;
+const IB = '../../assets/icons';
+function Demo() {
+  const [action, setAction] = React.useState('sign_in');
+  return (
+    <div>
+      <div className="lbl">PillButton — brand hero CTAs</div>
+      <div className="grp">
+        <PillButton variant="brand">Getting Started</PillButton>
+        <PillButton variant="alt">Documentation</PillButton>
+      </div>
+      <div className="lbl">FilterBar</div>
+      <div style={{marginBottom:16}}>
+        <FilterBar>
+          <FilterItem><Select value={true} onChange={()=>{}} clearable placeholder="Visitor type" iconBase={IB}
+            options={[{label:'Students',value:true},{label:'Teachers',value:false}]} /></FilterItem>
+          <FilterItem><Select value={null} onChange={()=>{}} clearable placeholder="Status" options={[]} iconBase={IB} /></FilterItem>
+          <Tag type="warning">Multi grade mode</Tag>
+        </FilterBar>
+      </div>
+      <div className="lbl">ActionChoiceCard</div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:12,maxWidth:440,marginBottom:16}}>
+        <ActionChoiceCard badge="Sign In" title="Register arrival" intent="success" active={action==='sign_in'} onClick={()=>setAction('sign_in')} />
+        <ActionChoiceCard badge="Sign Out" title="Register departure" intent="danger" active={action==='sign_out'} onClick={()=>setAction('sign_out')} />
+      </div>
+      <div className="lbl">FeatureCard</div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:18,marginBottom:16}}>
+        <FeatureCard title="Getting Started" description="Open the quickest path to setup, first steps, and the main ImLate workflow." icon={<Icon name="document" size={30} base={IB} color="var(--il-orange)" />} />
+        <FeatureCard title="Admin Panel" description="Manage visitors, admin users, profile details, branding, and system settings." icon={<Icon name="setting" size={30} base={IB} color="var(--il-orange)" />} />
+        <FeatureCard title="Tracking point" description="Read how the public tracking part works, including the RFID reader flow." icon={<Icon name="data-analysis" size={30} base={IB} color="var(--il-orange)" />} />
+      </div>
+      <div className="lbl">AssetSlotCard · HelpPanel</div>
+      <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+        <AssetSlotCard style={{flex:'0 0 300px'}} label="Logo background" help="Large background image shown on the welcome screen."
+          previewSrc="../../assets/logo.png" accepted="PNG, JPEG, WEBP" isCustom onUpload={()=>{}} onReset={()=>{}} />
+        <div style={{flex:1,border:'1px solid var(--el-border-color-light)',borderRadius:4,boxShadow:'var(--el-box-shadow-light)',padding:12}}>
+          <HelpPanel uiVersion="1.4.0" serverVersion="2.2.1"
+            description="Student attendance and visitor registration system. Track who enters and leaves the building with RFID keys, manage visitors, and generate reports."
+            links={[{label:'Documentation',href:'#',icon:<Icon name="document" size={18} base={IB} color="var(--el-color-primary)" />},
+                    {label:'Getting Started',href:'#',icon:<Icon name="compass" size={18} base={IB} color="var(--el-color-primary)" />}]} />
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>

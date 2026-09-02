@@ -1,0 +1,52 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Feedback" subtitle="Dialog, ConfirmDialog, Message, Popover" -->
+<meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>*{box-sizing:border-box}body{margin:0;padding:18px 20px;font-family:var(--il-font-sans);background:#fff}.grp{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--il-text-mute);width:100%;margin-bottom:-4px}@keyframes il-spin{to{transform:rotate(360deg)}}@keyframes il-skeleton{0%{background-position:100% 50%}100%{background-position:0 50%}}</style>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Message, Popover, HelpPanel, SidebarFooterButton, Icon, Button, Tag, Textarea } = window.ImLateDesignSystem_9c9b6f;
+const IB = '../../assets/icons';
+function Demo() {
+  return (
+    <div>
+      <div className="lbl">Message — the only success/error channel</div>
+      <div style={{display:'grid',gap:10,marginBottom:16,maxWidth:420}}>
+        <Message type="success" iconBase={IB}>Visitor updated</Message>
+        <Message type="error" iconBase={IB}>Failed to load visitors</Message>
+        <Message type="warning" iconBase={IB}>RFID already assigned</Message>
+        <Message type="info" iconBase={IB}>Server: unavailable</Message>
+      </div>
+      <div className="lbl">Dialog · Confirm — inline previews at true geometry</div>
+      <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+        <div style={{width:330,background:'#fff',borderRadius:4,boxShadow:'var(--el-box-shadow)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',padding:'16px 16px 10px',fontSize:16,color:'var(--el-text-color-primary)'}}>
+            <span>Track Visit</span><Icon name="close" size={16} base={IB} color="var(--el-text-color-placeholder)" />
+          </div>
+          <div style={{padding:'0 16px',display:'grid',gap:10}}>
+            <Tag type="success" effect="dark" round>Sign In</Tag>
+            <div style={{fontSize:16,fontWeight:700,color:'#1f2937'}}>Ada Lovelace</div>
+            <Textarea value="" onChange={()=>{}} rows={2} placeholder="Example: Visitor arrived at reception and forgot to scan." />
+          </div>
+          <div style={{display:'flex',justifyContent:'flex-end',gap:12,padding:'20px 16px 16px'}}>
+            <Button>Cancel</Button><Button type="success" disabled>Sign In Visitor</Button>
+          </div>
+        </div>
+        <div style={{width:280,background:'#fff',borderRadius:4,boxShadow:'var(--el-box-shadow)',padding:16}}>
+          <div style={{fontSize:16,color:'var(--el-text-color-primary)',marginBottom:10}}>Confirm</div>
+          <div style={{display:'flex',gap:8,fontSize:14,color:'var(--el-text-color-regular)',lineHeight:1.5}}>
+            <Icon name="warning-filled" size={18} base={IB} color="var(--el-color-warning)" />
+            <span>Delete visitor "Ada Lovelace"?</span>
+          </div>
+          <div style={{display:'flex',justifyContent:'flex-end',gap:12,marginTop:24}}>
+            <Button>Cancel</Button><Button type="primary">Delete</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
