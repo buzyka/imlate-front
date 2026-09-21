@@ -48,8 +48,18 @@
       </el-popover>
     </el-aside>
     <el-container class="app-content">
-      <el-header height="36px" class="app-header" v-if="isAuthed">
+      <el-header
+        height="36px"
+        class="app-header"
+        :class="{ 'app-header--alarm': fireAlarm.enabled }"
+        v-if="isAuthed"
+      >
+        <div class="alarm-banner" v-if="fireAlarm.enabled">
+          <el-icon :size="14"><WarningFilled /></el-icon>
+          <span>{{ FIRE_ALARM_BANNER_TEXT }}</span>
+        </div>
         <div class="spacer"></div>
+        <FireAlarmControl />
         <el-button size="small" text @click="$router.push('/profile')">{{ auth.userName }}</el-button>
         <el-button size="small" @click="logout">Logout</el-button>
       </el-header>
@@ -62,19 +72,31 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { QuestionFilled, Document, Compass } from '@element-plus/icons-vue'
+import { QuestionFilled, Document, Compass, WarningFilled } from '@element-plus/icons-vue'
 import { useAuthStore } from './stores/auth.js'
+import { useFireAlarmStore } from './stores/fireAlarm.js'
+import { FIRE_ALARM_BANNER_TEXT } from './features/fire-alarm.js'
+import FireAlarmControl from './components/FireAlarmControl.vue'
 import api from './services/api.js'
 
 const auth = useAuthStore()
 const route = useRoute()
+const fireAlarm = useFireAlarmStore()
 const isAuthed = computed(() => !!auth.token)
 const logout = () => {
+  fireAlarm.stopPolling()
   auth.logout()
   window.location.href = '/admin/'
 }
+
+watch(isAuthed, (authed) => {
+  if (authed) fireAlarm.startPolling()
+  else fireAlarm.reset()
+}, { immediate: true })
+
+onUnmounted(() => fireAlarm.stopPolling())
 
 const uiVersion = import.meta.env.VITE_APP_VERSION
 const backendVersion = ref('')
@@ -118,6 +140,29 @@ async function fetchBackendVersion() {
   top: 0;
   z-index: 10;
 }
+.app-header--alarm {
+  background: var(--el-color-danger);
+  border-bottom-color: var(--el-color-danger-dark-2);
+}
+.alarm-banner {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+}
+/* the bar is only 36px tall, truncate instead of wrapping */
+.alarm-banner span {
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.alarm-banner .el-icon { flex:none }
+/* the username button is transparent, it needs contrast on the red bar */
+.app-header--alarm :deep(.el-button.is-text) { color:#fff }
+.app-header--alarm :deep(.el-button.is-text:hover) { background:rgba(255,255,255,.15); color:#fff }
 .spacer { flex:1 }
 .app-aside {
   border-right: 1px solid #eee;
