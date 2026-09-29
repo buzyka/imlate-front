@@ -44,9 +44,14 @@
               <el-option label="Not signed" value="not_signed" />
             </el-select>
 
-            <el-select v-model="gradeFilter" multiple :disabled="isStudentFilter !== true" placeholder="Select grade(s)"
+            <el-select v-model="gradeFilter" multiple :disabled="isGradeDisabled" placeholder="Select grade(s)"
               class="filter-item">
               <el-option v-for="g in grades" :key="g.value" :label="g.label" :value="g.value" />
+            </el-select>
+
+            <el-select v-model="formGroupFilter" multiple clearable :disabled="isFormGroupDisabled"
+              placeholder="All form groups" class="filter-item">
+              <el-option v-for="fg in formGroupOptions" :key="fg" :label="fg" :value="fg" />
             </el-select>
 
             <el-tag v-if="gradeFilter.length === 1" type="success">
@@ -56,6 +61,8 @@
             <el-tag v-else-if="gradeFilter.length > 1" type="warning">
               Multi grade mode
             </el-tag>
+
+            <span v-if="filterHint" class="filter-hint">{{ filterHint }}</span>
           </template>
         </el-skeleton>
       </div>
@@ -91,6 +98,11 @@
             </el-table-column>
             <el-table-column prop="name" label="Name" sortable />
             <el-table-column prop="surname" label="Surname" sortable />
+            <el-table-column prop="form_group" label="Form group" width="130" sortable>
+              <template #default="scope">
+                {{ formatFormGroup(scope.row.form_group) }}
+              </template>
+            </el-table-column>
             <el-table-column prop="visit_date" label="Last activity" width="180" sortable />
             <el-table-column prop="is_student" label="Student" width="120" sortable />
 
@@ -122,7 +134,9 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import { buildReportsQuery, getReportsDateRange } from '../features/reports-query.js'
+import { ElMessage } from 'element-plus'
+import { buildReportsRequestBody, getReportsDateRange } from '../features/reports-query.js'
+import { formatFormGroup, getFormGroupOptions } from '../features/form-groups.js'
 import api from '../services/api.js'
 
 // ===== STATE =====
@@ -137,6 +151,25 @@ const grades = Array.from({ length: 12 }, (_, i) =>  //list of Grades
   value: i + 1
 }))
 
+// ===== FORM GROUP =====
+// there is no endpoint for form groups, the options are derived from the visitors
+const formGroupFilter = ref([]) // multiple select
+const visitors = ref([])
+const formGroupOptions = computed(() => getFormGroupOptions(visitors.value, isStudentFilter.value))
+
+// grade and form group are mutually exclusive: "6 A" already implies grade 6
+const isGradeDisabledByFormGroup = computed(() => formGroupFilter.value.length > 0)
+const isGradeDisabled = computed(() => isStudentFilter.value !== true || isGradeDisabledByFormGroup.value)
+// staff can have a form group too, so this one is not tied to the visitor type
+const isFormGroupDisabled = computed(() => gradeFilter.value.length > 0)
+
+// only one of the two can be blocked by the other at a time
+const filterHint = computed(() => {
+  if (isGradeDisabledByFormGroup.value) return 'Clear the form group filter to filter by grade'
+  if (isFormGroupDisabled.value) return 'Clear the grade filter to filter by form group'
+  return ''
+})
+
 // =====Server-side pagination
 const page = ref(1)
 const limit = ref(20)
@@ -146,10 +179,10 @@ const isFirstLoad = ref(true)
 
 // ===== LOAD DATA FUNCTION =====
 
-const buildParams = () => {
+const buildBody = () => {
   const { from, to } = getReportsDateRange()
 
-  return buildReportsQuery({
+  return buildReportsRequestBody({
     from,
     to,
     page: page.value,
@@ -157,16 +190,15 @@ const buildParams = () => {
     isStudentFilter: isStudentFilter.value,
     statusFilter: statusFilter.value,
     gradeFilter: gradeFilter.value,
+    formGroupFilter: formGroupFilter.value,
   })
 }
-
-const buildQueryString = () => buildParams().toString()
 
 const loadVisits = async () => {
   try {
     loading.value = true
 
-    const response = await api.get(`/reports/visits?${buildQueryString()}`)
+    const response = await api.post('/reports/visits', buildBody())
 
     visits.value = response.data.data
     total.value = response.data.total
@@ -174,6 +206,15 @@ const loadVisits = async () => {
   } finally {
     loading.value = false
     isFirstLoad.value = false
+  }
+}
+
+const loadVisitors = async () => {
+  try {
+    const { data } = await api.get('/visitors')
+    visitors.value = data
+  } catch {
+    ElMessage.error('Failed to load form groups')
   }
 }
 
@@ -194,6 +235,22 @@ watch(isStudentFilter, (val) => {
   if (val !== true) {
     gradeFilter.value = []
   }
+
+  // a class of the other visitor type would only ever return an empty report
+  const available = new Set(formGroupOptions.value)
+  formGroupFilter.value = formGroupFilter.value.filter((formGroup) => available.has(formGroup))
+})
+
+watch(() => formGroupFilter.value.length, (length) => {
+  if (length > 0 && gradeFilter.value.length) {
+    gradeFilter.value = []
+  }
+})
+
+watch(() => gradeFilter.value.length, (length) => {
+  if (length > 0 && formGroupFilter.value.length) {
+    formGroupFilter.value = []
+  }
 })
 
 watch(statusFilter, (val) => {
@@ -206,7 +263,7 @@ watch(statusFilter, (val) => {
 let timeout
 
 
-watch([isStudentFilter, statusFilter, () => gradeFilter.value.slice()], () => {
+watch([isStudentFilter, statusFilter, () => gradeFilter.value.slice(), () => formGroupFilter.value.slice()], () => {
   clearTimeout(timeout)
   timeout = setTimeout(() => {
     page.value = 1
@@ -215,7 +272,10 @@ watch([isStudentFilter, statusFilter, () => gradeFilter.value.slice()], () => {
 })
 
 // ===== ON MOUNT =====
-onMounted(() => loadVisits())
+onMounted(() => {
+  loadVisits()
+  loadVisitors()
+})
 
 // ===== COMPUTED: LAST VISIT PER USER =====
 const latestVisits = computed(() => {
@@ -276,5 +336,11 @@ const notSigned = computed(() => sortedVisits.value.filter(u => u.sign_status ==
 .reports-pagination {
   display: flex;
   justify-content: flex-end;
+}
+
+.filter-hint {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: #909399;
 }
 </style>

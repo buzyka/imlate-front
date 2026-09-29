@@ -18,7 +18,17 @@ export function getReportsDateRange(now = new Date()) {
   }
 }
 
-export function buildReportsQuery({
+function toList(value) {
+  return Array.isArray(value) ? value : []
+}
+
+function normalizeFormGroups(formGroupFilter) {
+  return toList(formGroupFilter)
+    .map((value) => (typeof value === 'string' ? value.trim() : ''))
+    .filter(Boolean)
+}
+
+export function buildReportsRequestBody({
   from,
   to,
   page,
@@ -26,25 +36,30 @@ export function buildReportsQuery({
   isStudentFilter,
   statusFilter,
   gradeFilter,
+  formGroupFilter,
 }) {
-  const params = new URLSearchParams()
-
-  params.append('from', from)
-  params.append('to', to)
-  params.append('page', String(page))
-  params.append('limit', String(limit))
+  const filters = {}
 
   if (typeof isStudentFilter === 'boolean') {
-    params.append('is_student', String(isStudentFilter))
+    filters.is_student = isStudentFilter
   }
 
+  // the backend expects a list here, even for the single status the UI offers
   if (VALID_SIGN_STATUSES.has(statusFilter)) {
-    params.append('sign_status', statusFilter)
+    filters.sign_status = [statusFilter]
   }
 
-  gradeFilter.forEach((grade) => {
-    params.append('year_group', String(grade))
-  })
+  // year group and form group are mutually exclusive: a form group such as "6 A"
+  // already implies its year group, so sending both can only contradict itself.
+  // If a restored state carries both, form group wins.
+  const formGroups = normalizeFormGroups(formGroupFilter)
+  const grades = toList(gradeFilter)
 
-  return params
+  if (formGroups.length) {
+    filters.form_group = formGroups
+  } else if (grades.length) {
+    filters.year_group = grades.map(Number)
+  }
+
+  return { from, to, page, limit, filters }
 }
