@@ -1,94 +1,96 @@
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
+import { buildLoginRedirect, createAuthSession } from '../features/auth-session.js'
 
 const api = axios.create({
   baseURL: '/admin-api' // proxied to BACKEND_URL/admin-api in vite.config.js
 })
 
-// attach token
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token')
+const TRANSIENT_TOAST_INTERVAL_MS = 30_000
+let lastTransientToastAt = 0
+
+function redirectToLogin() {
+  if (window.location.pathname.startsWith('/admin/login')) return
+  window.location.href = buildLoginRedirect(window.location)
+}
+
+function notifyTransientRefreshError() {
+  const now = Date.now()
+  if (now - lastTransientToastAt < TRANSIENT_TOAST_INTERVAL_MS) return
+  lastTransientToastAt = now
+  ElMessage.warning({ message: 'Connection problem. Retrying…', grouping: true })
+}
+
+// /refresh and /logout go through plain axios so they bypass the interceptors below
+export const authSession = createAuthSession({
+  storage: window.localStorage,
+  http: axios,
+  locks: typeof navigator !== 'undefined' && navigator.locks?.request ? navigator.locks : null,
+  onSessionEnded: redirectToLogin,
+  onTransientError: notifyTransientRefreshError
+})
+
+// attach token, refreshing first if it has already expired
+api.interceptors.request.use(async (config) => {
+  const token = await authSession.getValidAccessToken()
   if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })
 
-/* ── Token refresh logic ── */
-let isRefreshing = false
-let failedQueue = []
-
-function processQueue(error, token = null) {
-  failedQueue.forEach(({ resolve, reject }) => {
-    if (error) reject(error)
-    else resolve(token)
-  })
-  failedQueue = []
-}
-
-function forceLogout() {
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('refresh_token')
-  localStorage.removeItem('user')
-  window.location.href = '/admin/login'
-}
-
+// safety net: a 401 still triggers refresh → retry once
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
 
     // Only handle 401 and avoid infinite retry loops
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    if (error.response?.status !== 401 || !originalRequest || originalRequest._retry) {
       return Promise.reject(error)
     }
 
-    const refreshToken = localStorage.getItem('refresh_token')
-    if (!refreshToken) {
-      forceLogout()
+    if (!authSession.getRefreshToken()) {
+      authSession.endSession()
       return Promise.reject(error)
-    }
-
-    // If a refresh is already in progress, queue this request
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject })
-      }).then((token) => {
-        originalRequest.headers.Authorization = `Bearer ${token}`
-        return api(originalRequest)
-      })
     }
 
     originalRequest._retry = true
-    isRefreshing = true
 
-    try {
-      // RFC 6749 compliant refresh request
-      const { data } = await axios.post('/refresh',
-        new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: refreshToken
-        }),
-        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-      )
+    // Another tab (or an earlier refresh) may already have replaced the token
+    const current = authSession.getAccessToken()
+    const token = current && originalRequest.headers.Authorization !== `Bearer ${current}`
+      ? current
+      : await authSession.refresh({ force: true })
 
-      const newToken = data.access_token
-      const newRefreshToken = data.refresh_token
-
-      localStorage.setItem('access_token', newToken)
-      if (newRefreshToken) {
-        localStorage.setItem('refresh_token', newRefreshToken)
-      }
-
-      processQueue(null, newToken)
-
-      originalRequest.headers.Authorization = `Bearer ${newToken}`
-      return api(originalRequest)
-    } catch (refreshError) {
-      processQueue(refreshError, null)
-      forceLogout()
-      return Promise.reject(refreshError)
-    } finally {
-      isRefreshing = false
-    }
+    originalRequest.headers.Authorization = `Bearer ${token}`
+    return api(originalRequest)
   }
 )
+
+let lifecycleInstalled = false
+
+/** Proactive refresh on tab focus / reconnect and cross-tab sync via the storage event. */
+export function installAuthLifecycle() {
+  if (lifecycleInstalled) return
+  lifecycleInstalled = true
+
+  const refreshIfNeeded = () => {
+    authSession.ensureFresh().catch(() => {})
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') refreshIfNeeded()
+  })
+  window.addEventListener('focus', refreshIfNeeded)
+  window.addEventListener('online', refreshIfNeeded)
+  window.addEventListener('storage', (event) => {
+    if (event.storageArea && event.storageArea !== window.localStorage) return
+    authSession.handleStorageEvent(event)
+  })
+
+  if (authSession.getRefreshToken()) {
+    authSession.schedule()
+    refreshIfNeeded()
+  }
+}
 
 export default api

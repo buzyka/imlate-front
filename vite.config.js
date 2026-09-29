@@ -29,6 +29,11 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false
         },
+        '/logout': {
+          target: BACKEND_URL,
+          changeOrigin: true,
+          secure: false
+        },
         '/assets': {
           target: BACKEND_URL,
           changeOrigin: true,
