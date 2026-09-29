@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { buildReportsQuery, getReportsDateRange } from './reports-query.js'
+import { buildReportsRequestBody, getReportsDateRange } from './reports-query.js'
 
 test('returns today and tomorrow for a mid-month local date', () => {
   assert.deepEqual(
@@ -24,8 +24,27 @@ test('rolls over to the next year when today is the last day of the year', () =>
   )
 })
 
+test('carries the date range and pagination into the request body', () => {
+  const body = buildReportsRequestBody({
+    from: '2026-04-08',
+    to: '2026-04-09',
+    page: 2,
+    limit: 20,
+    statusFilter: null,
+    isStudentFilter: null,
+    gradeFilter: [],
+    formGroupFilter: [],
+  })
+
+  assert.equal(body.from, '2026-04-08')
+  assert.equal(body.to, '2026-04-09')
+  assert.equal(body.page, 2)
+  assert.equal(body.limit, 20)
+  assert.deepEqual(body.filters, {})
+})
+
 test('omits sign_status when statusFilter is undefined', () => {
-  const query = buildReportsQuery({
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -33,13 +52,14 @@ test('omits sign_status when statusFilter is undefined', () => {
     statusFilter: undefined,
     isStudentFilter: null,
     gradeFilter: [],
+    formGroupFilter: [],
   })
 
-  assert.equal(query.get('sign_status'), null)
+  assert.equal('sign_status' in body.filters, false)
 })
 
 test('omits sign_status when statusFilter is null', () => {
-  const query = buildReportsQuery({
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -47,13 +67,14 @@ test('omits sign_status when statusFilter is null', () => {
     statusFilter: null,
     isStudentFilter: null,
     gradeFilter: [],
+    formGroupFilter: [],
   })
 
-  assert.equal(query.get('sign_status'), null)
+  assert.equal('sign_status' in body.filters, false)
 })
 
 test('includes sign_status when statusFilter is selected', () => {
-  const query = buildReportsQuery({
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -61,13 +82,14 @@ test('includes sign_status when statusFilter is selected', () => {
     statusFilter: 'signed_in',
     isStudentFilter: null,
     gradeFilter: [],
+    formGroupFilter: [],
   })
 
-  assert.equal(query.get('sign_status'), 'signed_in')
+  assert.deepEqual(body.filters.sign_status, ['signed_in'])
 })
 
 test('omits is_student when isStudentFilter is undefined', () => {
-  const query = buildReportsQuery({
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -75,13 +97,14 @@ test('omits is_student when isStudentFilter is undefined', () => {
     statusFilter: null,
     isStudentFilter: undefined,
     gradeFilter: [],
+    formGroupFilter: [],
   })
 
-  assert.equal(query.get('is_student'), null)
+  assert.equal('is_student' in body.filters, false)
 })
 
 test('omits is_student when isStudentFilter is null', () => {
-  const query = buildReportsQuery({
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -89,13 +112,14 @@ test('omits is_student when isStudentFilter is null', () => {
     statusFilter: null,
     isStudentFilter: null,
     gradeFilter: [],
+    formGroupFilter: [],
   })
 
-  assert.equal(query.get('is_student'), null)
+  assert.equal('is_student' in body.filters, false)
 })
 
 test('includes is_student when isStudentFilter is false', () => {
-  const query = buildReportsQuery({
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -103,13 +127,14 @@ test('includes is_student when isStudentFilter is false', () => {
     statusFilter: null,
     isStudentFilter: false,
     gradeFilter: [],
+    formGroupFilter: [],
   })
 
-  assert.equal(query.get('is_student'), 'false')
+  assert.equal(body.filters.is_student, false)
 })
 
-test('appends repeated year_group params for selected grades', () => {
-  const query = buildReportsQuery({
+test('sends year_group as numbers when only grades are selected', () => {
+  const body = buildReportsRequestBody({
     from: '2026-04-08',
     to: '2026-04-09',
     page: 1,
@@ -117,7 +142,70 @@ test('appends repeated year_group params for selected grades', () => {
     statusFilter: null,
     isStudentFilter: true,
     gradeFilter: [3, 5],
+    formGroupFilter: [],
   })
 
-  assert.deepEqual(query.getAll('year_group'), ['3', '5'])
+  assert.deepEqual(body.filters.year_group, [3, 5])
+  assert.equal('form_group' in body.filters, false)
+})
+
+test('sends form_group when only form groups are selected', () => {
+  const body = buildReportsRequestBody({
+    from: '2026-04-08',
+    to: '2026-04-09',
+    page: 1,
+    limit: 20,
+    statusFilter: null,
+    isStudentFilter: true,
+    gradeFilter: [],
+    formGroupFilter: ['6 A', '6 B'],
+  })
+
+  assert.deepEqual(body.filters.form_group, ['6 A', '6 B'])
+  assert.equal('year_group' in body.filters, false)
+})
+
+test('form group wins when a restored state carries both filters', () => {
+  const body = buildReportsRequestBody({
+    from: '2026-04-08',
+    to: '2026-04-09',
+    page: 1,
+    limit: 20,
+    statusFilter: null,
+    isStudentFilter: true,
+    gradeFilter: [5],
+    formGroupFilter: ['6 A'],
+  })
+
+  assert.deepEqual(body.filters.form_group, ['6 A'])
+  assert.equal('year_group' in body.filters, false)
+})
+
+test('drops blank form groups and falls back to grades when none survive', () => {
+  const body = buildReportsRequestBody({
+    from: '2026-04-08',
+    to: '2026-04-09',
+    page: 1,
+    limit: 20,
+    statusFilter: null,
+    isStudentFilter: true,
+    gradeFilter: [5],
+    formGroupFilter: ['   ', ''],
+  })
+
+  assert.equal('form_group' in body.filters, false)
+  assert.deepEqual(body.filters.year_group, [5])
+})
+
+test('tolerates missing filter lists', () => {
+  const body = buildReportsRequestBody({
+    from: '2026-04-08',
+    to: '2026-04-09',
+    page: 1,
+    limit: 20,
+    statusFilter: null,
+    isStudentFilter: null,
+  })
+
+  assert.deepEqual(body.filters, {})
 })
