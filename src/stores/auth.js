@@ -1,12 +1,22 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import api from '../services/api.js'
+import api, { authSession } from '../services/api.js'
+
+function readUser() {
+  try {
+    return JSON.parse(localStorage.getItem('user') || 'null')
+  } catch {
+    return null
+  }
+}
+
+let unsubscribeSession = null
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('access_token') || '',
     refreshToken: localStorage.getItem('refresh_token') || '',
-    user: JSON.parse(localStorage.getItem('user') || 'null')
+    user: readUser()
   }),
   getters: {
     userName: (state) => {
@@ -23,11 +33,9 @@ export const useAuthStore = defineStore('auth', {
       const { data } = await axios.post('/login', { username, password }, {
         headers: { 'Content-Type': 'application/json' }
       })
-      this.token = data.access_token
-      this.refreshToken = data.refresh_token
-      localStorage.setItem('access_token', this.token)
-      localStorage.setItem('refresh_token', this.refreshToken)
-      
+      authSession.saveTokens(data)
+      this.syncFromStorage()
+
       // Store username from login
       this.user = { username }
       localStorage.setItem('user', JSON.stringify(this.user))
@@ -46,13 +54,20 @@ export const useAuthStore = defineStore('auth', {
         // /current-user endpoint may not exist, keep username from login
       }
     },
-    logout() {
-      this.token = ''
-      this.refreshToken = ''
-      this.user = null
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
-      localStorage.removeItem('user')
+    // Keep state in sync with tokens rotated by refresh or changed in another tab
+    startSessionSync() {
+      if (unsubscribeSession) return
+      unsubscribeSession = authSession.subscribe(() => this.syncFromStorage())
+    },
+    syncFromStorage() {
+      this.token = localStorage.getItem('access_token') || ''
+      this.refreshToken = localStorage.getItem('refresh_token') || ''
+      this.user = readUser()
+    },
+    // Revokes the refresh token on the server; local state is cleared even if that fails
+    async logout() {
+      await authSession.logout()
+      this.syncFromStorage()
     }
   }
 })

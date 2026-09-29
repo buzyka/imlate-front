@@ -27,6 +27,7 @@ import { reactive, ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 import { ElMessage } from 'element-plus'
+import { sanitizeRedirect } from '../features/auth-session.js'
 
 const usernameInput = ref()
 
@@ -66,7 +67,7 @@ const submit = async () => {
     }
     loading.value = true
     await auth.login(form.username, form.password)
-    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+    const redirect = sanitizeRedirect(route.query.redirect)
     router.push(redirect)
   } catch (error) {
     // Element Plus may reject with `false` on validation failure; don't treat that as a login error

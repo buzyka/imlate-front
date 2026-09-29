@@ -85,10 +85,10 @@ const auth = useAuthStore()
 const route = useRoute()
 const fireAlarm = useFireAlarmStore()
 const isAuthed = computed(() => !!auth.token)
-const logout = () => {
+const logout = async () => {
   fireAlarm.stopPolling()
-  auth.logout()
-  window.location.href = '/admin/'
+  await auth.logout()
+  window.location.href = '/admin/login'
 }
 
 watch(isAuthed, (authed) => {

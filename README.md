@@ -71,7 +71,7 @@ make build BACKEND_URL=https://isb.buzyka.com
 
 ## Backend Configuration
 
-The dev server proxies API requests (`/login`, `/refresh`, `/admin-api`, `/assets`) to the backend.
+The dev server proxies API requests (`/login`, `/refresh`, `/logout`, `/admin-api`, `/assets`) to the backend.
 
 ### For local development
 
