@@ -75,6 +75,7 @@ import {
   buildFormGroupSuggestions,
   findFormGroupMatch,
   formatFormGroupHint,
+  getFormGroupFilterOptions,
   normalizeFormGroupInput,
   normalizeFormGroupList,
 } from './form-groups.js'
@@ -155,4 +156,27 @@ test('form group match ignores case and surrounding spaces', () => {
   assert.equal(findFormGroupMatch(FORM_GROUPS, ' y4-a '), FORM_GROUPS[2])
   assert.equal(findFormGroupMatch(FORM_GROUPS, 'Y6-A'), null)
   assert.equal(findFormGroupMatch(FORM_GROUPS, ''), null)
+})
+
+test('reports filter options list all form groups when no visitor type is selected', () => {
+  assert.deepEqual(getFormGroupFilterOptions(FORM_GROUPS, null), ['Nursery', 'Staff', 'Y4-A', 'Y4-B', 'Y5-A'])
+  assert.deepEqual(getFormGroupFilterOptions(null, null), [])
+})
+
+test('reports filter options infer students from a positive grade', () => {
+  assert.deepEqual(getFormGroupFilterOptions(FORM_GROUPS, true), ['Y4-A', 'Y4-B', 'Y5-A'])
+})
+
+test('reports filter options treat groups without a positive grade as staff', () => {
+  assert.deepEqual(getFormGroupFilterOptions(FORM_GROUPS, false), ['Nursery', 'Staff'])
+})
+
+test('reports filter options dedupe case-insensitively across grades', () => {
+  assert.deepEqual(
+    getFormGroupFilterOptions([
+      { form_group: 'Y4-A', grade: 4, visitors_count: 20 },
+      { form_group: 'y4-a', grade: 5, visitors_count: 1 },
+    ], null),
+    ['Y4-A'],
+  )
 })

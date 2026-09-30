@@ -134,10 +134,10 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import { ElMessage } from 'element-plus'
 import { buildReportsRequestBody, getReportsDateRange } from '../features/reports-query.js'
-import { formatFormGroup, getFormGroupOptions } from '../features/form-groups.js'
+import { formatFormGroup, getFormGroupFilterOptions } from '../features/form-groups.js'
 import api from '../services/api.js'
+import { loadFormGroups } from '../services/form-groups.js'
 
 // ===== STATE =====
 const visits = ref([])
@@ -152,10 +152,10 @@ const grades = Array.from({ length: 12 }, (_, i) =>  //list of Grades
 }))
 
 // ===== FORM GROUP =====
-// there is no endpoint for form groups, the options are derived from the visitors
+// shared with the visitor form; cached for the session
 const formGroupFilter = ref([]) // multiple select
-const visitors = ref([])
-const formGroupOptions = computed(() => getFormGroupOptions(visitors.value, isStudentFilter.value))
+const formGroups = ref([])
+const formGroupOptions = computed(() => getFormGroupFilterOptions(formGroups.value, isStudentFilter.value))
 
 // grade and form group are mutually exclusive: "6 A" already implies grade 6
 const isGradeDisabledByFormGroup = computed(() => formGroupFilter.value.length > 0)
@@ -209,13 +209,9 @@ const loadVisits = async () => {
   }
 }
 
-const loadVisitors = async () => {
-  try {
-    const { data } = await api.get('/visitors')
-    visitors.value = data
-  } catch {
-    ElMessage.error('Failed to load form groups')
-  }
+// failures resolve to [] so the report still works without the filter
+const loadFormGroupOptions = async () => {
+  formGroups.value = await loadFormGroups()
 }
 
 //===== Pagination handler
@@ -274,7 +270,7 @@ watch([isStudentFilter, statusFilter, () => gradeFilter.value.slice(), () => for
 // ===== ON MOUNT =====
 onMounted(() => {
   loadVisits()
-  loadVisitors()
+  loadFormGroupOptions()
 })
 
 // ===== COMPUTED: LAST VISIT PER USER =====

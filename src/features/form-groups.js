@@ -88,6 +88,30 @@ export function buildFormGroupSuggestions(list, query, grade = null) {
     }))
 }
 
+// the form-groups endpoint has no is_student, so the visitor type is inferred
+// from the grade: students have a positive grade, staff have none (or <= 0)
+function matchesGradeScope(entry, isStudentFilter) {
+  if (typeof isStudentFilter !== 'boolean') return true
+  const isStudentGroup = Number.isFinite(entry.grade) && entry.grade > 0
+  return isStudentGroup === isStudentFilter
+}
+
+/** Distinct form group names from GET /visitors/form-groups for the reports filter. */
+export function getFormGroupFilterOptions(list, isStudentFilter) {
+  if (!Array.isArray(list)) return []
+
+  const byKey = new Map()
+  list.forEach((entry) => {
+    if (!matchesGradeScope(entry, isStudentFilter)) return
+    const key = entry.form_group.toLowerCase()
+    if (!byKey.has(key)) byKey.set(key, entry.form_group)
+  })
+
+  return [...byKey.values()].sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }),
+  )
+}
+
 /** Existing form group equal to `value` ignoring case, or null. */
 export function findFormGroupMatch(list, value) {
   const key = typeof value === 'string' ? value.trim().toLowerCase() : ''
