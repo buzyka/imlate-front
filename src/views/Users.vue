@@ -69,6 +69,19 @@
           </template>
         </el-table-column>
 
+        <el-table-column
+          prop="form_group"
+          label="Form group"
+          width="130"
+          sortable
+          :filters="formGroupFilters"
+          :filter-method="filterByFormGroup"
+        >
+          <template #default="scope">
+            {{ formatFormGroup(scope.row.form_group) }}
+          </template>
+        </el-table-column>
+
         <el-table-column label="Updated" width="160">
           <template #default="scope">
             {{ formatDate(scope.row.updated_at) }}
@@ -241,6 +254,27 @@
           <el-input-number v-model="form.grade" :min="0" :disabled="isImported" controls-position="right" style="width:100%" />
         </el-form-item>
 
+        <el-form-item label="Form group" prop="form_group" :error="formGroupError">
+          <el-autocomplete
+            v-model="form.form_group"
+            :fetch-suggestions="fetchFormGroupSuggestions"
+            :maxlength="FORM_GROUP_MAX_LENGTH"
+            :disabled="isImported"
+            trigger-on-focus
+            clearable
+            style="width:100%"
+            @input="formGroupError = ''"
+          >
+            <template #default="{ item }">
+              <div class="fg-option">
+                <span>{{ item.value }}</span>
+                <span class="fg-hint">{{ item.hint }}</span>
+              </div>
+            </template>
+          </el-autocomplete>
+          <div v-if="formGroupNotice" class="fg-notice">{{ formGroupNotice }}</div>
+        </el-form-item>
+
         <template v-if="form.id">
           <el-form-item label="RFID Add">
             <el-row :gutter="8" style="width:100%">
@@ -296,6 +330,15 @@ import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Location } from '@element-plus/icons-vue'
 import api from '../services/api.js'
+import { loadFormGroups } from '../services/form-groups.js'
+import {
+  FORM_GROUP_MAX_LENGTH,
+  buildFormGroupSuggestions,
+  findFormGroupMatch,
+  formatFormGroup,
+  getFormGroupOptions,
+  normalizeFormGroupInput,
+} from '../features/form-groups.js'
 import {
   MANUAL_TRACK_ACTIONS,
   getManualTrackActionMeta,
@@ -327,6 +370,7 @@ const emptyForm = () => ({
   surname: '',
   is_student: false,
   grade: 0,
+  form_group: '',
   keys: [],
   image: ''
 })
@@ -336,7 +380,47 @@ const newKey = ref('')
 /* FORM RULES */
 const formRules = {
   name: [{ required: true, message: 'Name is required', trigger: 'blur' }],
-  surname: [{ required: true, message: 'Surname is required', trigger: 'blur' }]
+  surname: [{ required: true, message: 'Surname is required', trigger: 'blur' }],
+  form_group: [{ max: FORM_GROUP_MAX_LENGTH, message: `Max ${FORM_GROUP_MAX_LENGTH} characters`, trigger: 'blur' }]
+}
+
+/* FORM GROUPS (autocomplete) */
+const formGroups = ref([])
+const formGroupError = ref('')
+
+async function loadFormGroupSuggestions(force = false) {
+  formGroups.value = await loadFormGroups({ force })
+}
+
+function fetchFormGroupSuggestions(query, cb) {
+  const grade = form.value.is_student ? form.value.grade : null
+  cb(buildFormGroupSuggestions(formGroups.value, query, grade))
+}
+
+// Warn about new values so near-duplicates (y4-a vs Y4-A) get noticed
+const formGroupNotice = computed(() => {
+  const value = normalizeFormGroupInput(form.value.form_group)
+  if (!value || !formGroups.value.length) return ''
+  const match = findFormGroupMatch(formGroups.value, value)
+  if (!match) return 'New form group'
+  if (match.form_group !== value) return `Similar to existing "${match.form_group}"`
+  return ''
+})
+
+const formGroupFilters = computed(() =>
+  getFormGroupOptions(visitors.value, null).map(value => ({ text: value, value }))
+)
+
+function filterByFormGroup(value, row) {
+  return (row.form_group || '').trim().toLowerCase() === value.toLowerCase()
+}
+
+function isFormGroupError(err) {
+  const data = err.response?.data
+  if (err.response?.status !== 400 || !data) return false
+  if (data.field === 'form_group' || data.errors?.form_group) return true
+  const message = String(data.error || data.message || '')
+  return /form[_ ]group/i.test(message)
 }
 
 /* SEARCH */
@@ -361,7 +445,7 @@ const filtered = computed(() => {
       .filter(Boolean)
 
     list = list.filter(v => {
-      const searchString = (v.name + v.surname + v.grade).toLowerCase().replace(/\s+/g, '')
+      const searchString = (v.name + v.surname + v.grade + (v.form_group || '')).toLowerCase().replace(/\s+/g, '')
       return searchWords.every(word => searchString.includes(word))
     })
   }
@@ -392,7 +476,10 @@ function formatDate(str) {
 }
 
 /* LOAD VISITORS */
-onMounted(refresh)
+onMounted(() => {
+  refresh()
+  loadFormGroupSuggestions()
+})
 async function refresh() {
   loading.value = true
   try {
@@ -409,6 +496,7 @@ async function refresh() {
 function selectRow(row) {
   if (!row) return
   clearFileSelection()
+  formGroupError.value = ''
   isImported.value = !!row.imported_from_isams
   form.value = {
     id: row.id,
@@ -416,6 +504,7 @@ function selectRow(row) {
     surname: row.surname,
     is_student: row.is_student,
     grade: row.grade || 0,
+    form_group: row.form_group || '',
     keys: [...(row.keys || [])],
     image: row.image || ''
   }
@@ -465,9 +554,11 @@ async function save() {
     name: form.value.name,
     surname: form.value.surname,
     is_student: form.value.is_student,
-    grade: form.value.is_student ? form.value.grade : null
+    grade: form.value.is_student ? form.value.grade : null,
+    form_group: normalizeFormGroupInput(form.value.form_group)
   }
 
+  formGroupError.value = ''
   saving.value = true
   try {
     if (form.value.id) {
@@ -478,9 +569,11 @@ async function save() {
       ElMessage.success('Visitor created')
     }
     reset()
-    await refresh()
+    await Promise.all([refresh(), loadFormGroupSuggestions(true)])
   } catch (err) {
-    ElMessage.error(err.response?.data?.error || err.response?.data?.message || 'Failed to save visitor')
+    const message = err.response?.data?.error || err.response?.data?.message || 'Failed to save visitor'
+    if (isFormGroupError(err)) formGroupError.value = message
+    else ElMessage.error(message)
   } finally {
     saving.value = false
   }
@@ -597,6 +690,7 @@ function reset() {
   form.value = emptyForm()
   newKey.value = ''
   isImported.value = false
+  formGroupError.value = ''
   clearFileSelection()
   formRef.value?.resetFields()
 }
@@ -605,6 +699,9 @@ function reset() {
 <style scoped>
 .grid { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
 .mb-2 { margin-bottom: 12px; }
+.fg-option { display: flex; justify-content: space-between; gap: 12px; }
+.fg-hint { color: var(--el-text-color-secondary); font-size: 12px; }
+.fg-notice { width: 100%; color: var(--el-color-warning); font-size: 12px; line-height: 1.4; margin-top: 4px; }
 .qr-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
 .track-dialog-shell { display: grid; gap: 20px; }
 .track-hero {
