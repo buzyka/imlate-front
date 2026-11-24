@@ -4,8 +4,8 @@ Vue.js administration panel for the ISB project.
 
 ## Requirements
 
-- **Node.js** 22+ and **npm** — for local development (the version is pinned in `.nvmrc`)
-- **Docker** — only needed if building via `make build` (uses standard `node:22-alpine` image)
+- **Node.js** 24+ and **npm** — for local development (the version is pinned in `.nvmrc`)
+- **Docker** — only needed if building via `make build` (uses standard `node:24-alpine` image)
 - Access to the backend service (e.g. `https://isb.buzyka.com`)
 
 ### Installing Node.js
@@ -13,13 +13,13 @@ Vue.js administration panel for the ISB project.
 **macOS** (via Homebrew):
 
 ```bash
-brew install node@22
+brew install node@24
 ```
 
 If `node` is not found after install, add it to PATH:
 
 ```bash
-echo 'export PATH="/opt/homebrew/opt/node@22/bin:$PATH"' >> ~/.zshrc
+echo 'export PATH="/opt/homebrew/opt/node@24/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ```
 

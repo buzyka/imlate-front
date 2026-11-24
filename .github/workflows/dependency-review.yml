@@ -14,8 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       # fails when the PR adds a dependency with a known high/critical vulnerability
-      # or under a copyleft licence we cannot ship in a closed deployment
+      # or under a licence outside the permissive list below (covers the whole current lockfile)
       - uses: actions/dependency-review-action@bbc44d14a204704ccc493733616cd1e93a0321ec # v5.0.1
         with:
           fail-on-severity: high
-          deny-licenses: GPL-3.0-only, GPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later
+          allow-licenses: >-
+            MIT, MIT-0, ISC, Apache-2.0, BSD-2-Clause, BSD-3-Clause, 0BSD,
+            BlueOak-1.0.0, CC0-1.0, Python-2.0
+          # scorecards of transitive dev packages are not actionable and only add noise
+          show-openssf-scorecard: false
