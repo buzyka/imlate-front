@@ -1,4 +1,4 @@
-import test from 'node:test'
+import { test } from 'vitest'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 
@@ -21,6 +21,8 @@ test('header places the Fire Alarm control right before the user name', () => {
 
 test('header turns into an alarm banner while Fire Alarm is enabled', () => {
   assert.match(appSource, /:class="\{ 'app-header--alarm': fireAlarm\.enabled \}"/)
-  assert.match(appSource, /<div class="alarm-banner" v-if="fireAlarm\.enabled">/)
+  // attribute order is not significant, match the opening tag as a whole
+  const banner = appSource.match(/<div[^>]*class="alarm-banner"[^>]*>/)?.[0] ?? ''
+  assert.match(banner, /v-if="fireAlarm\.enabled"/)
   assert.match(appSource, /\.app-header--alarm\s*\{[\s\S]*background:\s*var\(--el-color-danger\);/)
 })

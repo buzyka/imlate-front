@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 import { buildLoginRedirect, createAuthSession } from '../features/auth-session.js'
 
 const api = axios.create({
-  baseURL: '/admin-api' // proxied to BACKEND_URL/admin-api in vite.config.js
+  baseURL: '/admin-api', // proxied to BACKEND_URL/admin-api in vite.config.js
 })
 
 const TRANSIENT_TOAST_INTERVAL_MS = 30_000
@@ -27,7 +27,7 @@ export const authSession = createAuthSession({
   http: axios,
   locks: typeof navigator !== 'undefined' && navigator.locks?.request ? navigator.locks : null,
   onSessionEnded: redirectToLogin,
-  onTransientError: notifyTransientRefreshError
+  onTransientError: notifyTransientRefreshError,
 })
 
 // attach token, refreshing first if it has already expired
@@ -57,13 +57,14 @@ api.interceptors.response.use(
 
     // Another tab (or an earlier refresh) may already have replaced the token
     const current = authSession.getAccessToken()
-    const token = current && originalRequest.headers.Authorization !== `Bearer ${current}`
-      ? current
-      : await authSession.refresh({ force: true })
+    const token =
+      current && originalRequest.headers.Authorization !== `Bearer ${current}`
+        ? current
+        : await authSession.refresh({ force: true })
 
     originalRequest.headers.Authorization = `Bearer ${token}`
     return api(originalRequest)
-  }
+  },
 )
 
 let lifecycleInstalled = false

@@ -14,12 +14,7 @@
       <el-tabs v-model="activeTab">
         <el-tab-pane label="Theme" name="theme">
           <div class="theme-grid">
-            <el-card
-              v-for="slot in slotDefinitions"
-              :key="slot.key"
-              class="asset-card"
-              shadow="hover"
-            >
+            <el-card v-for="slot in slotDefinitions" :key="slot.key" class="asset-card" shadow="hover">
               <template #header>
                 <div class="asset-card-header">
                   <div>
@@ -33,16 +28,14 @@
               </template>
 
               <div class="asset-preview-wrap">
-                <img
-                  :src="assetState(slot.key).current_url"
-                  :alt="slot.label"
-                  class="asset-preview"
-                >
+                <img :src="assetState(slot.key).current_url" :alt="slot.label" class="asset-preview" />
               </div>
 
               <div class="asset-meta">
                 <span>Accepted: {{ slot.acceptLabel }}</span>
-                <span v-if="assetState(slot.key).updated_at">Updated: {{ formatDate(assetState(slot.key).updated_at) }}</span>
+                <span v-if="assetState(slot.key).updated_at"
+                  >Updated: {{ formatDate(assetState(slot.key).updated_at) }}</span
+                >
               </div>
 
               <input
@@ -51,12 +44,10 @@
                 :accept="slot.accept"
                 class="hidden-input"
                 @change="onFileSelected(slot.key, $event)"
-              >
+              />
 
               <div class="asset-actions">
-                <el-button :loading="uploading[slot.key]" @click="openFilePicker(slot.key)">
-                  Upload
-                </el-button>
+                <el-button :loading="uploading[slot.key]" @click="openFilePicker(slot.key)"> Upload </el-button>
                 <el-button
                   type="danger"
                   plain
@@ -106,9 +97,7 @@
               </el-form-item>
 
               <el-form-item>
-                <el-button type="primary" :loading="savingSettings" @click="saveSettings">
-                  Save timings
-                </el-button>
+                <el-button type="primary" :loading="savingSettings" @click="saveSettings"> Save timings </el-button>
               </el-form-item>
             </el-form>
           </el-card>
@@ -128,7 +117,7 @@ import {
   fetchTheme as fetchThemeRequest,
   resetThemeAsset,
   saveThemeSettings,
-  uploadThemeAsset
+  uploadThemeAsset,
 } from '../services/theme.js'
 
 const activeTab = ref('theme')
@@ -137,7 +126,7 @@ const savingSettings = ref(false)
 const welcomeSeconds = ref(1.8)
 const goodbyeSeconds = ref(1.8)
 const theme = ref({
-  ...createDefaultTheme()
+  ...createDefaultTheme(),
 })
 
 const uploading = ref({})
@@ -149,16 +138,18 @@ const slotDefinitions = THEME_SLOTS.map((slot) => ({
   label: slot.label,
   help: slot.description,
   accept: slot.accept,
-  acceptLabel: slot.accept.replaceAll('image/', '').toUpperCase().replaceAll(',', ', ')
+  acceptLabel: slot.accept.replaceAll('image/', '').toUpperCase().replaceAll(',', ', '),
 }))
 
 function assetState(slot) {
-  return theme.value.assets?.[slot] || {
-    current_url: '',
-    default_url: '',
-    is_custom: false,
-    updated_at: ''
-  }
+  return (
+    theme.value.assets?.[slot] || {
+      current_url: '',
+      default_url: '',
+      is_custom: false,
+      updated_at: '',
+    }
+  )
 }
 
 function setThemePayload(data) {
@@ -200,11 +191,11 @@ async function onFileSelected(slot, event) {
 
 async function resetAsset(slot) {
   try {
-    await ElMessageBox.confirm(
-      `Reset ${slot.replaceAll('_', ' ')} to the default asset?`,
-      'Confirm reset',
-      { type: 'warning', confirmButtonText: 'Reset', cancelButtonText: 'Cancel' }
-    )
+    await ElMessageBox.confirm(`Reset ${slot.replaceAll('_', ' ')} to the default asset?`, 'Confirm reset', {
+      type: 'warning',
+      confirmButtonText: 'Reset',
+      cancelButtonText: 'Cancel',
+    })
   } catch {
     return
   }
@@ -223,10 +214,12 @@ async function resetAsset(slot) {
 async function saveSettings() {
   savingSettings.value = true
   try {
-    setThemePayload(await saveThemeSettings({
-      welcome_duration_ms: secondsToMs(welcomeSeconds.value),
-      goodbye_duration_ms: secondsToMs(goodbyeSeconds.value)
-    }))
+    setThemePayload(
+      await saveThemeSettings({
+        welcome_duration_ms: secondsToMs(welcomeSeconds.value),
+        goodbye_duration_ms: secondsToMs(goodbyeSeconds.value),
+      }),
+    )
     ElMessage.success('Animation timings saved')
   } catch (err) {
     ElMessage.error(err.response?.data?.error || 'Failed to save animation timings')

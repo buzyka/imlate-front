@@ -5,8 +5,8 @@
         <p class="eyebrow">ImLate Administration</p>
         <h1 class="hero-title">Registration system.</h1>
         <p class="hero-text">
-          Welcome back, {{ userName }}. ImLate gives your team one clear place to
-          manage visitors, follow attendance activity, and keep access workflows organized.
+          Welcome back, {{ userName }}. ImLate gives your team one clear place to manage visitors, follow attendance
+          activity, and keep access workflows organized.
         </p>
         <div class="hero-actions">
           <a
@@ -17,47 +17,28 @@
           >
             Getting Started
           </a>
-          <a
-            href="https://imlate.buzyka.com/"
-            target="_blank"
-            rel="noopener"
-            class="hero-action hero-action--alt"
-          >
+          <a href="https://imlate.buzyka.com/" target="_blank" rel="noopener" class="hero-action hero-action--alt">
             Documentation
           </a>
         </div>
       </div>
 
       <div class="hero-visual" aria-hidden="true">
-        <img :src="heroLogo" alt="" class="hero-logo">
+        <img :src="heroLogo" alt="" class="hero-logo" />
       </div>
     </section>
 
     <section class="feature-grid">
-      <a
-        href="https://imlate.buzyka.com/getting-started.html"
-        target="_blank"
-        rel="noopener"
-        class="feature-card"
-      >
+      <a href="https://imlate.buzyka.com/getting-started.html" target="_blank" rel="noopener" class="feature-card">
         <div class="feature-icon">📖</div>
         <h2 class="feature-title">Getting Started</h2>
-        <p class="feature-details">
-          Open the quickest path to setup, first steps, and the main ImLate workflow.
-        </p>
+        <p class="feature-details">Open the quickest path to setup, first steps, and the main ImLate workflow.</p>
       </a>
 
-      <a
-        href="https://imlate.buzyka.com/admin/index.html"
-        target="_blank"
-        rel="noopener"
-        class="feature-card"
-      >
+      <a href="https://imlate.buzyka.com/admin/index.html" target="_blank" rel="noopener" class="feature-card">
         <div class="feature-icon">⚙️</div>
         <h2 class="feature-title">Admin Panel</h2>
-        <p class="feature-details">
-          Manage visitors, admin users, profile details, branding, and system settings.
-        </p>
+        <p class="feature-details">Manage visitors, admin users, profile details, branding, and system settings.</p>
       </a>
 
       <a
@@ -154,7 +135,10 @@ const userName = computed(() => auth.userName)
   border: 1px solid transparent;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .hero-action--brand {
@@ -205,7 +189,9 @@ const userName = computed(() => auth.userName)
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .feature-card:hover {
@@ -264,5 +250,3 @@ const userName = computed(() => auth.userName)
   }
 }
 </style>
-
-

@@ -10,7 +10,7 @@ export const useFireAlarmStore = defineStore('fireAlarm', {
     remainingSeconds: 0,
     startedAt: null,
     loading: false,
-    pollTimer: null
+    pollTimer: null,
   }),
   actions: {
     applyState(state) {
@@ -71,6 +71,6 @@ export const useFireAlarmStore = defineStore('fireAlarm', {
       this.stopPolling()
       this.applyState(createDefaultFireAlarmState())
       this.loading = false
-    }
-  }
+    },
+  },
 })

@@ -1,9 +1,7 @@
 <template>
   <div class="reports-page">
-
     <!-- FILTER CARD  )-->
     <el-card class="card">
-
       <template #header>
         <div class="card-header">
           <div>
@@ -11,8 +9,8 @@
             <!-- SKELETON HEADER -->
             <el-skeleton v-else animated>
               <template #template>
-                <el-skeleton-item variant="h3" style="width: 120px;" />
-                <el-skeleton-item variant="text" style="width: 200px; margin-top: 6px;" />
+                <el-skeleton-item variant="h3" style="width: 120px" />
+                <el-skeleton-item variant="text" style="width: 200px; margin-top: 6px" />
               </template>
             </el-skeleton>
 
@@ -22,12 +20,11 @@
       </template>
       <!-- FILTERS -->
       <div class="filters">
-
         <el-skeleton :loading="isFirstLoad" animated>
           <template #template>
-            <div style="display:flex; gap:12px;">
-              <el-skeleton-item variant="rect" style="width: 180px; height: 32px;" />
-              <el-skeleton-item variant="rect" style="width: 180px; height: 32px;" />
+            <div style="display: flex; gap: 12px">
+              <el-skeleton-item variant="rect" style="width: 180px; height: 32px" />
+              <el-skeleton-item variant="rect" style="width: 180px; height: 32px" />
             </div>
           </template>
 
@@ -44,29 +41,35 @@
               <el-option label="Not signed" value="not_signed" />
             </el-select>
 
-            <el-select v-model="gradeFilter" multiple :disabled="isGradeDisabled" placeholder="Select grade(s)"
-              class="filter-item">
+            <el-select
+              v-model="gradeFilter"
+              multiple
+              :disabled="isGradeDisabled"
+              placeholder="Select grade(s)"
+              class="filter-item"
+            >
               <el-option v-for="g in grades" :key="g.value" :label="g.label" :value="g.value" />
             </el-select>
 
-            <el-select v-model="formGroupFilter" multiple clearable :disabled="isFormGroupDisabled"
-              placeholder="All form groups" class="filter-item">
+            <el-select
+              v-model="formGroupFilter"
+              multiple
+              clearable
+              :disabled="isFormGroupDisabled"
+              placeholder="All form groups"
+              class="filter-item"
+            >
               <el-option v-for="fg in formGroupOptions" :key="fg" :label="fg" :value="fg" />
             </el-select>
 
-            <el-tag v-if="gradeFilter.length === 1" type="success">
-              Single grade mode
-            </el-tag>
+            <el-tag v-if="gradeFilter.length === 1" type="success"> Single grade mode </el-tag>
 
-            <el-tag v-else-if="gradeFilter.length > 1" type="warning">
-              Multi grade mode
-            </el-tag>
+            <el-tag v-else-if="gradeFilter.length > 1" type="warning"> Multi grade mode </el-tag>
 
             <span v-if="filterHint" class="filter-hint">{{ filterHint }}</span>
           </template>
         </el-skeleton>
       </div>
-
     </el-card>
 
     <!-- TITLE -->
@@ -77,20 +80,24 @@
       <el-skeleton :loading="loading" animated>
         <template #template>
           <!-- TABLE SKELETON -->
-          <div v-for="i in 8" :key="i" style="display:flex; gap:12px; padding:12px;">
-            <el-skeleton-item variant="text" style="width: 50px;" />
-            <el-skeleton-item variant="text" style="width: 120px;" />
-            <el-skeleton-item variant="text" style="width: 120px;" />
-            <el-skeleton-item variant="text" style="width: 160px;" />
-            <el-skeleton-item variant="text" style="width: 100px;" />
-            <el-skeleton-item variant="text" style="width: 120px;" />
+          <div v-for="i in 8" :key="i" style="display: flex; gap: 12px; padding: 12px">
+            <el-skeleton-item variant="text" style="width: 50px" />
+            <el-skeleton-item variant="text" style="width: 120px" />
+            <el-skeleton-item variant="text" style="width: 120px" />
+            <el-skeleton-item variant="text" style="width: 160px" />
+            <el-skeleton-item variant="text" style="width: 100px" />
+            <el-skeleton-item variant="text" style="width: 120px" />
           </div>
         </template>
         <template #default>
-
-          <el-table :data="sortedVisits" border highlight-current-row class="modern-table"
-            v-loading="loading && !isFirstLoad" element-loading-text="Loading...">
-
+          <el-table
+            v-loading="loading && !isFirstLoad"
+            :data="sortedVisits"
+            border
+            highlight-current-row
+            class="modern-table"
+            element-loading-text="Loading..."
+          >
             <el-table-column label="#" width="70" align="center" fixed>
               <template #default="scope">
                 {{ (page - 1) * limit + scope.$index + 1 }}
@@ -115,19 +122,24 @@
             </el-table-column>
             <!-- 🔥 EMPTY STATE -->
             <template #empty>
-              <div style="padding: 40px; text-align: center;">
+              <div style="padding: 40px; text-align: center">
                 <p>No data found</p>
               </div>
             </template>
           </el-table>
         </template>
-
       </el-skeleton>
     </el-card>
 
     <div class="reports-pagination">
-      <el-pagination background layout="prev, pager, next" :page-size="limit" :total="total" :current-page="page"
-        @current-change="handlePageChange" />
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="limit"
+        :total="total"
+        :current-page="page"
+        @current-change="handlePageChange"
+      />
     </div>
   </div>
 </template>
@@ -145,11 +157,13 @@ const isStudentFilter = ref(null) // true | false | null
 const statusFilter = ref(null) // 'signed_in' | 'signed_out' | 'not_signed' | null
 
 const gradeFilter = ref([]) // multiple select
-const grades = Array.from({ length: 12 }, (_, i) =>  //list of Grades
-({
-  label: `Grade ${i + 1}`,
-  value: i + 1
-}))
+const grades = Array.from({ length: 12 }, (_, i) =>
+  //list of Grades
+  ({
+    label: `Grade ${i + 1}`,
+    value: i + 1,
+  }),
+)
 
 // ===== FORM GROUP =====
 // shared with the visitor form; cached for the session
@@ -202,7 +216,6 @@ const loadVisits = async () => {
 
     visits.value = response.data.data
     total.value = response.data.total
-
   } finally {
     loading.value = false
     isFirstLoad.value = false
@@ -237,17 +250,23 @@ watch(isStudentFilter, (val) => {
   formGroupFilter.value = formGroupFilter.value.filter((formGroup) => available.has(formGroup))
 })
 
-watch(() => formGroupFilter.value.length, (length) => {
-  if (length > 0 && gradeFilter.value.length) {
-    gradeFilter.value = []
-  }
-})
+watch(
+  () => formGroupFilter.value.length,
+  (length) => {
+    if (length > 0 && gradeFilter.value.length) {
+      gradeFilter.value = []
+    }
+  },
+)
 
-watch(() => gradeFilter.value.length, (length) => {
-  if (length > 0 && formGroupFilter.value.length) {
-    formGroupFilter.value = []
-  }
-})
+watch(
+  () => gradeFilter.value.length,
+  (length) => {
+    if (length > 0 && formGroupFilter.value.length) {
+      formGroupFilter.value = []
+    }
+  },
+)
 
 watch(statusFilter, (val) => {
   if (val === undefined) {
@@ -257,7 +276,6 @@ watch(statusFilter, (val) => {
 
 // ===== WATCH FILTERS =====
 let timeout
-
 
 watch([isStudentFilter, statusFilter, () => gradeFilter.value.slice(), () => formGroupFilter.value.slice()], () => {
   clearTimeout(timeout)
@@ -276,7 +294,7 @@ onMounted(() => {
 // ===== COMPUTED: LAST VISIT PER USER =====
 const latestVisits = computed(() => {
   const latestByUser = {}
-  visits.value.forEach(v => {
+  visits.value.forEach((v) => {
     const id = v.visitor_id
     if (!latestByUser[id] || new Date(v.visit_date) > new Date(latestByUser[id].visit_date)) {
       latestByUser[id] = v
@@ -301,7 +319,7 @@ const getStatusText = (status) => {
 const STATUS_ORDER = {
   signed_in: 1,
   signed_out: 2,
-  not_signed: 3
+  not_signed: 3,
 }
 
 const sortByStatus = (a, b) => {
@@ -313,9 +331,12 @@ const sortedVisits = computed(() => {
 })
 
 // ===== COUNTERS =====
-const signedIn = computed(() => sortedVisits.value.filter(u => u.sign_status === 'signed_in').length)
-const signedOut = computed(() => sortedVisits.value.filter(u => u.sign_status === 'signed_out').length)
-const notSigned = computed(() => sortedVisits.value.filter(u => u.sign_status === 'not_signed').length)
+// not rendered yet: issues/12-reports-restyle.md shows them as KPI tiles
+/* eslint-disable no-unused-vars */
+const signedIn = computed(() => sortedVisits.value.filter((u) => u.sign_status === 'signed_in').length)
+const signedOut = computed(() => sortedVisits.value.filter((u) => u.sign_status === 'signed_out').length)
+const notSigned = computed(() => sortedVisits.value.filter((u) => u.sign_status === 'not_signed').length)
+/* eslint-enable no-unused-vars */
 </script>
 
 <style scoped>

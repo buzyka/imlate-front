@@ -22,9 +22,7 @@ export function getFormGroupOptions(visitors, isStudentFilter) {
     if (!byKey.has(key)) byKey.set(key, value)
   })
 
-  return [...byKey.values()].sort((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }),
-  )
+  return [...byKey.values()].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
 }
 
 export function formatFormGroup(value) {
@@ -107,9 +105,7 @@ export function getFormGroupFilterOptions(list, isStudentFilter) {
     if (!byKey.has(key)) byKey.set(key, entry.form_group)
   })
 
-  return [...byKey.values()].sort((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }),
-  )
+  return [...byKey.values()].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
 }
 
 /** Existing form group equal to `value` ignoring case, or null. */

@@ -82,12 +82,7 @@ function normalizeAsset(slotKey, rawAsset = {}) {
     slot: slotKey,
     label: slot.label,
     description: slot.description,
-    current_url:
-      rawAsset.current_url ||
-      rawAsset.url ||
-      rawAsset.path ||
-      rawAsset.asset_url ||
-      slot.default_url,
+    current_url: rawAsset.current_url || rawAsset.url || rawAsset.path || rawAsset.asset_url || slot.default_url,
     default_url: slot.default_url,
     is_custom: Boolean(rawAsset.is_custom),
     content_type: rawAsset.content_type || rawAsset.mime_type || null,

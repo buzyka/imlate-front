@@ -4,7 +4,7 @@
 
 # Variables
 DIST_DIR       = dist
-NODE_IMAGE     = node:20-alpine
+NODE_IMAGE     = node:22-alpine
 BACKEND_URL   ?=
 
 # Reusable Docker run for Node operations (mounts project, preserves node_modules in named volume)

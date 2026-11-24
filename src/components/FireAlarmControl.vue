@@ -6,7 +6,8 @@
     :class="{ 'fire-alarm-btn--active': store.enabled }"
     :loading="store.loading"
     @click="onClick"
-  >Fire Alarm</el-button>
+    >Fire Alarm</el-button
+  >
 
   <el-dialog
     v-model="dialogVisible"
@@ -16,17 +17,14 @@
     append-to-body
   >
     <p class="fire-alarm-hint">Choose how long the alarm mode should stay active.</p>
-    <el-select v-model="selectedDuration" placeholder="Select duration" style="width:100%">
+    <el-select v-model="selectedDuration" placeholder="Select duration" style="width: 100%">
       <el-option v-for="d in FIRE_ALARM_DURATIONS" :key="d.value" :label="d.label" :value="d.value" />
     </el-select>
     <template #footer>
       <el-button @click="dialogVisible = false">Cancel</el-button>
-      <el-button
-        type="danger"
-        :loading="store.loading"
-        :disabled="selectedDuration === null"
-        @click="confirmActivate"
-      >Activate Fire Alarm</el-button>
+      <el-button type="danger" :loading="store.loading" :disabled="selectedDuration === null" @click="confirmActivate"
+        >Activate Fire Alarm</el-button
+      >
     </template>
   </el-dialog>
 </template>
@@ -64,7 +62,7 @@ async function confirmActivate() {
   background: var(--el-color-danger-dark-2);
   border-color: var(--el-color-danger-dark-2);
   color: #fff;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 .fire-alarm-hint {
   margin: 0 0 12px;
