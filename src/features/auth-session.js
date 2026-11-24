@@ -135,10 +135,7 @@ export function createAuthSession({
     if (!getRefreshToken()) return
     const expiresAt = getExpiresAt()
     if (expiresAt === null) return
-    const delay = Math.min(
-      Math.max(expiresAt - REFRESH_LEAD_MS - now(), MIN_REFRESH_DELAY_MS),
-      MAX_TIMEOUT_MS,
-    )
+    const delay = Math.min(Math.max(expiresAt - REFRESH_LEAD_MS - now(), MIN_REFRESH_DELAY_MS), MAX_TIMEOUT_MS)
     timerId = setTimer(() => {
       timerId = null
       refresh().catch(() => {})

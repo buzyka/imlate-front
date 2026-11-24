@@ -7,7 +7,8 @@ let cached = null
 export function loadFormGroups({ force = false } = {}) {
   if (force) cached = null
   if (!cached) {
-    cached = api.get('/visitors/form-groups')
+    cached = api
+      .get('/visitors/form-groups')
       .then(({ data }) => normalizeFormGroupList(data))
       .catch(() => {
         // Suggestions are optional: the field keeps working as plain text

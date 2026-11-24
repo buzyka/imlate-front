@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('access_token') || '',
     refreshToken: localStorage.getItem('refresh_token') || '',
-    user: readUser()
+    user: readUser(),
   }),
   getters: {
     userName: (state) => {
@@ -26,23 +26,27 @@ export const useAuthStore = defineStore('auth', {
       return state.user?.name || state.user?.username || 'User'
     },
     userRole: (state) => state.user?.role || null,
-    isAdmin: (state) => state.user?.role === 'admin'
+    isAdmin: (state) => state.user?.role === 'admin',
   },
   actions: {
     async login(username, password) {
-      const { data } = await axios.post('/login', { username, password }, {
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const { data } = await axios.post(
+        '/login',
+        { username, password },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
       authSession.saveTokens(data)
       this.syncFromStorage()
 
       // Store username from login
       this.user = { username }
       localStorage.setItem('user', JSON.stringify(this.user))
-      
+
       // Try to fetch full user profile
       await this.fetchUserProfile()
-      
+
       return true
     },
     async fetchUserProfile() {
@@ -50,7 +54,7 @@ export const useAuthStore = defineStore('auth', {
         const { data } = await api.get('/current-user')
         this.user = data
         localStorage.setItem('user', JSON.stringify(this.user))
-      } catch (e) {
+      } catch {
         // /current-user endpoint may not exist, keep username from login
       }
     },
@@ -68,6 +72,6 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       await authSession.logout()
       this.syncFromStorage()
-    }
-  }
+    },
+  },
 })

@@ -1,4 +1,4 @@
-import test from 'node:test'
+import { test } from 'vitest'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 
@@ -7,7 +7,7 @@ const reportsViewSource = readFileSync(new URL('./Reports.vue', import.meta.url)
 test('reports keeps pagination inside the page container', () => {
   assert.match(
     reportsViewSource,
-    /<div class="reports-page">[\s\S]*<div class="reports-pagination">[\s\S]*<\/div>\s*<\/div>\s*<\/template>/
+    /<div class="reports-page">[\s\S]*<div class="reports-pagination">[\s\S]*<\/div>\s*<\/div>\s*<\/template>/,
   )
 })
 
@@ -27,16 +27,22 @@ test('form group filter sits after the grade filter', () => {
 })
 
 test('grade and form group filters disable each other with a hint', () => {
-  assert.match(reportsViewSource, /<el-select v-model="gradeFilter"[\s\S]*?:disabled="isGradeDisabled"/)
-  assert.match(reportsViewSource, /<el-select v-model="formGroupFilter"[\s\S]*?:disabled="isFormGroupDisabled"/)
+  assert.match(reportsViewSource, /<el-select\s+v-model="gradeFilter"[\s\S]*?:disabled="isGradeDisabled"/)
+  assert.match(reportsViewSource, /<el-select\s+v-model="formGroupFilter"[\s\S]*?:disabled="isFormGroupDisabled"/)
   assert.match(reportsViewSource, /isGradeDisabledByFormGroup = computed\(\(\) => formGroupFilter\.value\.length > 0\)/)
   assert.match(reportsViewSource, /isFormGroupDisabled = computed\(\(\) => gradeFilter\.value\.length > 0\)/)
-  assert.match(reportsViewSource, /isGradeDisabledByFormGroup\.value\) return 'Clear the form group filter to filter by grade'/)
-  assert.match(reportsViewSource, /isFormGroupDisabled\.value\) return 'Clear the grade filter to filter by form group'/)
+  assert.match(
+    reportsViewSource,
+    /isGradeDisabledByFormGroup\.value\) return 'Clear the form group filter to filter by grade'/,
+  )
+  assert.match(
+    reportsViewSource,
+    /isFormGroupDisabled\.value\) return 'Clear the grade filter to filter by form group'/,
+  )
 })
 
 test('results table shows a form group column after surname', () => {
-  const table = reportsViewSource.match(/<el-table [\s\S]*?<\/el-table>/)[0]
+  const table = reportsViewSource.match(/<el-table\s[\s\S]*?<\/el-table>/)[0]
   const surnameAt = table.indexOf('prop="surname"')
   const formGroupAt = table.indexOf('prop="form_group"')
 

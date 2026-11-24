@@ -12,7 +12,9 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       'import.meta.env.VITE_BACKEND_URL': JSON.stringify(BACKEND_URL),
-      'import.meta.env.VITE_APP_VERSION': JSON.stringify(env.VITE_APP_VERSION || process.env.VITE_APP_VERSION || '2.0.x-dev'),
+      'import.meta.env.VITE_APP_VERSION': JSON.stringify(
+        env.VITE_APP_VERSION || process.env.VITE_APP_VERSION || '2.0.x-dev',
+      ),
     },
     plugins: [vue()],
     server: {
@@ -22,34 +24,34 @@ export default defineConfig(({ mode }) => {
         '/login': {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
         '/refresh': {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
         '/logout': {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
         '/assets': {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
         '/storage': {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
         '/admin-api': {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: false
-        }
-      }
-    }
+          secure: false,
+        },
+      },
+    },
   }
 })

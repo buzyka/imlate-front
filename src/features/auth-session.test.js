@@ -1,4 +1,4 @@
-import test from 'node:test'
+import { test } from 'vitest'
 import assert from 'node:assert/strict'
 
 import {
@@ -83,11 +83,13 @@ function createLocks({ beforeAcquire } = {}) {
 }
 
 function setup({ storage: initial, http, locks = null, sleep } = {}) {
-  const storage = createStorage(initial ?? {
-    access_token: 'a1',
-    refresh_token: 'r1',
-    [ACCESS_EXPIRES_AT_KEY]: String(NOW + 30_000),
-  })
+  const storage = createStorage(
+    initial ?? {
+      access_token: 'a1',
+      refresh_token: 'r1',
+      [ACCESS_EXPIRES_AT_KEY]: String(NOW + 30_000),
+    },
+  )
   const timers = createTimers()
   const ended = []
   const transient = []
@@ -95,14 +97,20 @@ function setup({ storage: initial, http, locks = null, sleep } = {}) {
   let clock = NOW
   const session = createAuthSession({
     storage,
-    http: http ?? createHttp(async () => ({
-      data: { access_token: 'a2', refresh_token: 'r2', expires_in: 1800 },
-    })),
+    http:
+      http ??
+      createHttp(async () => ({
+        data: { access_token: 'a2', refresh_token: 'r2', expires_in: 1800 },
+      })),
     now: () => clock,
     setTimer: timers.setTimer,
     clearTimer: timers.clearTimer,
     locks,
-    sleep: sleep ?? (async (ms) => { sleeps.push(ms) }),
+    sleep:
+      sleep ??
+      (async (ms) => {
+        sleeps.push(ms)
+      }),
     onSessionEnded: (info) => ended.push(info),
     onTransientError: (error) => transient.push(error),
   })
@@ -113,7 +121,9 @@ function setup({ storage: initial, http, locks = null, sleep } = {}) {
     ended,
     transient,
     sleeps,
-    advance: (ms) => { clock += ms },
+    advance: (ms) => {
+      clock += ms
+    },
   }
 }
 
@@ -144,13 +154,19 @@ test('saveTokens falls back to the JWT exp claim when expires_in is missing', ()
 test('proactive refresh is scheduled 60s before expiry', () => {
   const { session, timers } = setup({ storage: {} })
   session.saveTokens({ access_token: 'a', refresh_token: 'r', expires_in: 1800 })
-  assert.deepEqual(timers.pending().map((t) => t.ms), [1_800_000 - REFRESH_LEAD_MS])
+  assert.deepEqual(
+    timers.pending().map((t) => t.ms),
+    [1_800_000 - REFRESH_LEAD_MS],
+  )
 })
 
 test('proactive refresh is never scheduled sooner than 5s from now', () => {
   const { session, timers } = setup({ storage: {} })
   session.saveTokens({ access_token: 'a', refresh_token: 'r', expires_in: 30 })
-  assert.deepEqual(timers.pending().map((t) => t.ms), [MIN_REFRESH_DELAY_MS])
+  assert.deepEqual(
+    timers.pending().map((t) => t.ms),
+    [MIN_REFRESH_DELAY_MS],
+  )
 })
 
 test('scheduled timer refreshes and reschedules for the new token', async () => {
@@ -164,14 +180,20 @@ test('scheduled timer refreshes and reschedules for the new token', async () => 
   assert.equal(http.calls.length, 1)
   assert.equal(http.calls[0].body.get('refresh_token'), 'r1')
   assert.equal(storage.getItem('refresh_token'), 'r2')
-  assert.deepEqual(timers.pending().map((t) => t.ms), [600_000 - REFRESH_LEAD_MS])
+  assert.deepEqual(
+    timers.pending().map((t) => t.ms),
+    [600_000 - REFRESH_LEAD_MS],
+  )
 })
 
 test('concurrent refreshes in one tab share a single request', async () => {
   let release
-  const http = createHttp(() => new Promise((resolve) => {
-    release = () => resolve({ data: { access_token: 'a2', refresh_token: 'r2', expires_in: 1800 } })
-  }))
+  const http = createHttp(
+    () =>
+      new Promise((resolve) => {
+        release = () => resolve({ data: { access_token: 'a2', refresh_token: 'r2', expires_in: 1800 } })
+      }),
+  )
   const { session } = setup({ http })
   const results = Promise.all([session.refresh(), session.refresh(), session.getValidAccessToken()])
   await new Promise((resolve) => setImmediate(resolve))
@@ -203,7 +225,10 @@ test('refresh uses the cross-tab lock and skips the network if another tab rotat
   assert.deepEqual(locks.names, [REFRESH_LOCK_NAME])
   assert.equal(http.calls.length, 0)
   assert.deepEqual(changes, ['a-other'])
-  assert.deepEqual(ctx.timers.pending().map((t) => t.ms), [1_800_000 - REFRESH_LEAD_MS])
+  assert.deepEqual(
+    ctx.timers.pending().map((t) => t.ms),
+    [1_800_000 - REFRESH_LEAD_MS],
+  )
 })
 
 test('refresh under the lock calls /refresh when the stored token is unchanged', async () => {
@@ -228,7 +253,10 @@ test('without locks a 401 retries once with a token rotated by another tab', asy
   storageRef = ctx.storage
 
   assert.equal(await ctx.session.refresh(), 'a3')
-  assert.deepEqual(http.calls.map((c) => c.body.get('refresh_token')), ['r1', 'r2'])
+  assert.deepEqual(
+    http.calls.map((c) => c.body.get('refresh_token')),
+    ['r1', 'r2'],
+  )
   assert.deepEqual(ctx.ended, [])
 })
 
@@ -255,7 +283,10 @@ test('400 from /refresh ends the session', async () => {
   assert.deepEqual(ended, [{ remote: false }])
 })
 
-for (const [label, error] of [['network error', httpError()], ['5xx', httpError(502)]]) {
+for (const [label, error] of [
+  ['network error', httpError()],
+  ['5xx', httpError(502)],
+]) {
   test(`${label} during refresh keeps tokens and reports a transient error`, async () => {
     const http = createHttp(async () => {
       throw error
@@ -297,13 +328,18 @@ test('storage event with new tokens notifies listeners and reschedules', () => {
   session.handleStorageEvent({ key: 'access_token', oldValue: 'a1', newValue: 'a-other' })
 
   assert.deepEqual(changes, ['a-other'])
-  assert.deepEqual(timers.pending().map((t) => t.ms), [900_000 - REFRESH_LEAD_MS])
+  assert.deepEqual(
+    timers.pending().map((t) => t.ms),
+    [900_000 - REFRESH_LEAD_MS],
+  )
 })
 
 test('storage event for unrelated keys is ignored', () => {
   const { session } = setup()
   let notified = false
-  session.subscribe(() => { notified = true })
+  session.subscribe(() => {
+    notified = true
+  })
   session.handleStorageEvent({ key: 'theme', oldValue: 'dark', newValue: 'light' })
   assert.equal(notified, false)
 })
@@ -322,12 +358,15 @@ test('logout in another tab ends the session here too', () => {
 
 test('logout posts the refresh token as JSON and clears storage', async () => {
   const http = createHttp(async () => ({ data: { code: 200 } }))
-  const { session, storage, timers, ended } = setup({ http, storage: {
-    access_token: 'a1',
-    refresh_token: 'r1',
-    [ACCESS_EXPIRES_AT_KEY]: String(NOW + 30_000),
-    user: '{"username":"admin"}',
-  } })
+  const { session, storage, timers, ended } = setup({
+    http,
+    storage: {
+      access_token: 'a1',
+      refresh_token: 'r1',
+      [ACCESS_EXPIRES_AT_KEY]: String(NOW + 30_000),
+      user: '{"username":"admin"}',
+    },
+  })
   session.schedule()
 
   await session.logout()
@@ -358,7 +397,10 @@ test('logout waits for an in-flight refresh and revokes the rotated token', asyn
   const { session, storage } = setup({ http })
   session.refresh()
   await session.logout()
-  assert.deepEqual(http.calls.map((c) => c.url), ['/refresh', '/logout'])
+  assert.deepEqual(
+    http.calls.map((c) => c.url),
+    ['/refresh', '/logout'],
+  )
   assert.deepEqual(http.calls[1].body, { refresh_token: 'r2' })
   assert.deepEqual(storage.dump(), {})
 })

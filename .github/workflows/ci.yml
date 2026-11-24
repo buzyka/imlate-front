@@ -1,0 +1,174 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+
+  deps:
+    name: deps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run deps:check
+
+  audit:
+    name: audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+      # what ships to the browser: fails on high and critical
+      - name: Production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      # build and test tooling: reported, does not fail the PR
+      - name: All dependencies (report only)
+        continue-on-error: true
+        run: npm audit
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run test:coverage
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: head-coverage
+          path: |
+            coverage/coverage-summary.json
+            coverage/lcov.info
+          retention-days: 14
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Bundle size
+        run: node scripts/bundle-report.mjs dist/admin --json head-bundle.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: head-bundle
+          path: head-bundle.json
+          retention-days: 14
+
+  # Coverage and bundle size of the base commit, for comparison. The base is trusted code
+  # (already merged), and every step may fail without blocking the PR: a base that cannot
+  # produce a baseline simply means "nothing to compare".
+  base-metrics:
+    name: base-metrics
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: head
+          sparse-checkout: |
+            .nvmrc
+            scripts
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: head/.nvmrc
+          cache: npm
+          cache-dependency-path: base/package-lock.json
+      - name: Install base dependencies
+        working-directory: base
+        continue-on-error: true
+        run: npm ci
+      - name: Base coverage
+        working-directory: base
+        continue-on-error: true
+        run: |
+          if [ -f vitest.config.js ]; then
+            npx vitest run --coverage
+          else
+            echo "Base has no Vitest config, no coverage baseline."
+          fi
+      - name: Base bundle size
+        working-directory: base
+        continue-on-error: true
+        run: |
+          npm run build
+          node ../head/scripts/bundle-report.mjs dist/admin --json ../base-bundle.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: base-metrics
+          path: |
+            base/coverage/coverage-summary.json
+            base-bundle.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  coverage-gate:
+    name: coverage-gate
+    if: github.event_name == 'pull_request'
+    needs: [test, build, base-metrics]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: |
+            .nvmrc
+            scripts
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          path: artifacts
+      - name: Bundle size compared with base (report only)
+        run: >
+          node scripts/bundle-report.mjs
+          artifacts/head-bundle/head-bundle.json
+          --base artifacts/base-metrics/base-bundle.json
+      - name: Coverage must not drop by more than 0.1 points
+        run: >
+          node scripts/coverage-compare.mjs
+          artifacts/base-metrics/base/coverage/coverage-summary.json
+          artifacts/head-coverage/coverage-summary.json
+          --threshold 0.1

@@ -4,10 +4,7 @@
     <el-card>
       <template #header><b>My Profile</b></template>
 
-      <el-form
-        label-position="left"
-        label-width="120px"
-      >
+      <el-form label-position="left" label-width="120px">
         <el-form-item label="Username">
           <el-input :model-value="auth.user?.username" disabled />
         </el-form-item>
@@ -30,13 +27,7 @@
     <el-card>
       <template #header><b>Security</b></template>
 
-      <el-button
-        v-if="!showPasswordForm"
-        type="primary"
-        @click="showPasswordForm = true"
-      >
-        Change Password
-      </el-button>
+      <el-button v-if="!showPasswordForm" type="primary" @click="showPasswordForm = true"> Change Password </el-button>
 
       <template v-if="showPasswordForm">
         <el-form
@@ -47,12 +38,7 @@
           label-width="160px"
         >
           <el-form-item label="New Password" prop="password">
-            <el-input
-              v-model="passwordForm.password"
-              type="password"
-              show-password
-              placeholder="Enter new password"
-            />
+            <el-input v-model="passwordForm.password" type="password" show-password placeholder="Enter new password" />
           </el-form-item>
 
           <el-form-item label="Confirm Password" prop="confirmPassword">
@@ -65,13 +51,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button
-              type="primary"
-              :loading="saving"
-              @click="savePassword"
-            >
-              Save
-            </el-button>
+            <el-button type="primary" :loading="saving" @click="savePassword"> Save </el-button>
             <el-button @click="cancelPasswordChange">Cancel</el-button>
           </el-form-item>
         </el-form>
@@ -95,7 +75,7 @@ const passwordFormRef = ref(null)
 
 const passwordForm = reactive({
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
 })
 
 /* VALIDATION RULES */
@@ -131,12 +111,12 @@ const validateConfirmPassword = (_rule, value, callback) => {
 const passwordRules = {
   password: [
     { required: true, message: 'Password is required', trigger: 'blur' },
-    { validator: validatePasswordStrength, trigger: 'blur' }
+    { validator: validatePasswordStrength, trigger: 'blur' },
   ],
   confirmPassword: [
     { required: true, message: 'Please confirm your password', trigger: 'blur' },
-    { validator: validateConfirmPassword, trigger: 'blur' }
-  ]
+    { validator: validateConfirmPassword, trigger: 'blur' },
+  ],
 }
 
 /* SAVE PASSWORD */
@@ -152,7 +132,7 @@ async function savePassword() {
   saving.value = true
   try {
     await api.put(`/users/${auth.user.id}/password`, {
-      password: passwordForm.password
+      password: passwordForm.password,
     })
     ElMessage.success('Password updated successfully')
     resetPasswordForm()

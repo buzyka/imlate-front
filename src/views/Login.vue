@@ -5,17 +5,23 @@
         <img src="../assets/logo.png" alt="ImLate" class="login-logo" />
         <h2>ImLate Control Panel</h2>
       </div>
-      <el-form :model="form" :rules="rules" ref="formRef" label-position="top" @keyup.enter="submit">
+      <el-form ref="formRef" :model="form" :rules="rules" label-position="top" @keyup.enter="submit">
         <el-form-item label="Username" prop="username">
           <el-input ref="usernameInput" v-model="form.username" placeholder="admin" clearable />
         </el-form-item>
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="••••••••" show-password
-            autocomplete="current-password" />
+          <el-input
+            v-model="form.password"
+            type="password"
+            placeholder="••••••••"
+            show-password
+            autocomplete="current-password"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="loading" :disabled="isDisabled" style="width: 100%;"
-            @click="submit">Login</el-button>
+          <el-button type="primary" :loading="loading" :disabled="isDisabled" style="width: 100%" @click="submit"
+            >Login</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -38,7 +44,7 @@ onMounted(() => {
 const form = reactive({ username: '', password: '' })
 const rules = {
   username: [{ required: true, message: 'Username required', trigger: ['blur', 'change'] }],
-  password: [{ required: true, message: 'Password required', trigger: ['blur', 'change'] }]
+  password: [{ required: true, message: 'Password required', trigger: ['blur', 'change'] }],
 }
 const formRef = ref()
 const loading = ref(false)
@@ -53,7 +59,6 @@ const isDisabled = computed(() => {
 })
 // Submit function
 const submit = async () => {
-
   if (!formRef.value) return
   // Prevent submission (including Enter key) when form is disabled or already loading
   if (isDisabled.value || loading.value) {
@@ -76,10 +81,7 @@ const submit = async () => {
     }
     console.error(error)
     const status = error?.response?.status
-    const backendMessage =
-      typeof error?.response?.data?.message === 'string'
-        ? error.response.data.message
-        : null
+    const backendMessage = typeof error?.response?.data?.message === 'string' ? error.response.data.message : null
     let message = 'Login failed. Please try again.'
     // Provide a clear message for invalid credentials
     if (status === 401 || status === 403) {
@@ -127,5 +129,5 @@ const submit = async () => {
 .login-brand h2 {
   margin: 0;
   text-align: center;
- }
+}
 </style>

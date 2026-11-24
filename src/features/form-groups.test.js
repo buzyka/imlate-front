@@ -1,48 +1,60 @@
-import test from 'node:test'
+import { test } from 'vitest'
 import assert from 'node:assert/strict'
 
 import { EMPTY_VALUE, formatFormGroup, getFormGroupOptions } from './form-groups.js'
 
 test('form group options drop null and blank values', () => {
   assert.deepEqual(
-    getFormGroupOptions([
-      { is_student: true, form_group: '6 A' },
-      { is_student: true, form_group: null },
-      { is_student: true, form_group: '   ' },
-      { is_student: true },
-    ], null),
+    getFormGroupOptions(
+      [
+        { is_student: true, form_group: '6 A' },
+        { is_student: true, form_group: null },
+        { is_student: true, form_group: '   ' },
+        { is_student: true },
+      ],
+      null,
+    ),
     ['6 A'],
   )
 })
 
 test('form group options are distinct and trimmed', () => {
   assert.deepEqual(
-    getFormGroupOptions([
-      { is_student: true, form_group: '6 A' },
-      { is_student: true, form_group: ' 6 A ' },
-      { is_student: true, form_group: '6 B' },
-    ], null),
+    getFormGroupOptions(
+      [
+        { is_student: true, form_group: '6 A' },
+        { is_student: true, form_group: ' 6 A ' },
+        { is_student: true, form_group: '6 B' },
+      ],
+      null,
+    ),
     ['6 A', '6 B'],
   )
 })
 
 test('form group options dedupe case-insensitively and keep the first spelling', () => {
   assert.deepEqual(
-    getFormGroupOptions([
-      { is_student: true, form_group: 'Y6-c' },
-      { is_student: true, form_group: 'Y6-C' },
-    ], null),
+    getFormGroupOptions(
+      [
+        { is_student: true, form_group: 'Y6-c' },
+        { is_student: true, form_group: 'Y6-C' },
+      ],
+      null,
+    ),
     ['Y6-c'],
   )
 })
 
 test('form group options use a natural sort so 10 A comes after 9 B', () => {
   assert.deepEqual(
-    getFormGroupOptions([
-      { is_student: true, form_group: '10 A' },
-      { is_student: true, form_group: '9 B' },
-      { is_student: true, form_group: '2 C' },
-    ], null),
+    getFormGroupOptions(
+      [
+        { is_student: true, form_group: '10 A' },
+        { is_student: true, form_group: '9 B' },
+        { is_student: true, form_group: '2 C' },
+      ],
+      null,
+    ),
     ['2 C', '9 B', '10 A'],
   )
 })
@@ -127,7 +139,10 @@ test('form group suggestions match "contains" case-insensitively', () => {
     buildFormGroupSuggestions(FORM_GROUPS, 'a').map((s) => s.value),
     ['Staff', 'Y4-A', 'Y5-A'],
   )
-  assert.deepEqual(buildFormGroupSuggestions(FORM_GROUPS, ' y4 ').map((s) => s.value), ['Y4-A', 'Y4-B'])
+  assert.deepEqual(
+    buildFormGroupSuggestions(FORM_GROUPS, ' y4 ').map((s) => s.value),
+    ['Y4-A', 'Y4-B'],
+  )
 })
 
 test('form group suggestions list the selected grade first', () => {
@@ -173,10 +188,13 @@ test('reports filter options treat groups without a positive grade as staff', ()
 
 test('reports filter options dedupe case-insensitively across grades', () => {
   assert.deepEqual(
-    getFormGroupFilterOptions([
-      { form_group: 'Y4-A', grade: 4, visitors_count: 20 },
-      { form_group: 'y4-a', grade: 5, visitors_count: 1 },
-    ], null),
+    getFormGroupFilterOptions(
+      [
+        { form_group: 'Y4-A', grade: 4, visitors_count: 20 },
+        { form_group: 'y4-a', grade: 5, visitors_count: 1 },
+      ],
+      null,
+    ),
     ['Y4-A'],
   )
 })

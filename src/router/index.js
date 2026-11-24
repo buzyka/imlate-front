@@ -15,18 +15,18 @@ const routes = [
   { path: '/admin-users', name: 'admin-users', component: AdminUsers, meta: { requiresAuth: true } },
   { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } },
   { path: '/profile', name: 'profile', component: Profile, meta: { requiresAuth: true } },
-  { path: '/reports', component: Reports, meta: { requiresAuth: true } } 
+  { path: '/reports', component: Reports, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
   history: createWebHistory('/admin/'),
-  routes
+  routes,
 })
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
   if (to.meta.requiresAuth && !auth.token) {
-    next({ name: 'login', query: { redirect: to.fullPath }})
+    next({ name: 'login', query: { redirect: to.fullPath } })
   } else if (to.name === 'login' && auth.token) {
     next({ path: '/' })
   } else {

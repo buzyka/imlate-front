@@ -1,46 +1,27 @@
 <template>
   <div class="grid gap">
-
     <!-- VISITORS TABLE -->
     <el-card>
       <template #header><b>Visitors</b></template>
 
       <el-row :gutter="16" class="mb-2">
         <el-col :span="8">
-          <el-input
-            v-model="q"
-            placeholder="Search by name or surname"
-            clearable
-          />
+          <el-input v-model="q" placeholder="Search by name or surname" clearable />
         </el-col>
         <el-col :span="8">
-          <el-input
-            v-model="qName"
-            placeholder="Search by name"
-            clearable
-          />
+          <el-input v-model="qName" placeholder="Search by name" clearable />
         </el-col>
         <el-col :span="8">
-          <el-input
-            v-model="qGrade"
-            placeholder="Search by grade"
-            clearable
-          />
+          <el-input v-model="qGrade" placeholder="Search by grade" clearable />
         </el-col>
       </el-row>
 
-      <el-table
-        v-loading="loading"
-        :data="filtered"
-        border
-        highlight-current-row
-        @current-change="selectRow"
-      >
+      <el-table v-loading="loading" :data="filtered" border highlight-current-row @current-change="selectRow">
         <el-table-column label="" width="60">
           <template #default="scope">
             <el-image
               :src="scope.row.image ? imageUrl(scope.row.image) : noImageSrc"
-              style="width:40px;height:40px;border-radius:50%"
+              style="width: 40px; height: 40px; border-radius: 50%"
               fit="cover"
             />
           </template>
@@ -104,13 +85,7 @@
 
         <el-table-column label="" width="60" align="center">
           <template #default="scope">
-            <el-button
-              size="small"
-              type="danger"
-              :icon="Delete"
-              circle
-              @click.stop="deleteVisitor(scope.row)"
-            />
+            <el-button size="small" type="danger" :icon="Delete" circle @click.stop="deleteVisitor(scope.row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -127,18 +102,12 @@
       <template v-if="trackRow">
         <div class="track-dialog-shell">
           <div class="track-hero">
-          <el-image
-            :src="trackRow.image ? imageUrl(trackRow.image) : noImageSrc"
-              class="track-avatar"
-            fit="cover"
-          />
+            <el-image :src="trackRow.image ? imageUrl(trackRow.image) : noImageSrc" class="track-avatar" fit="cover" />
             <div class="track-hero-copy">
               <el-tag :type="trackDialogCopy.intent" effect="dark" round>
                 {{ trackDialogCopy.badge }}
               </el-tag>
-              <div class="track-visitor-name">
-                {{ trackRow.name }} {{ trackRow.surname }}
-              </div>
+              <div class="track-visitor-name">{{ trackRow.name }} {{ trackRow.surname }}</div>
               <div class="track-visitor-title">{{ trackDialogCopy.title }}</div>
               <p class="track-visitor-hint">{{ trackDialogCopy.hint }}</p>
             </div>
@@ -152,10 +121,7 @@
                 :key="option.key"
                 type="button"
                 class="track-action-card"
-                :class="[
-                  `is-${option.intent}`,
-                  { 'is-active': trackAction === option.key }
-                ]"
+                :class="[`is-${option.intent}`, { 'is-active': trackAction === option.key }]"
                 @click="trackAction = option.key"
               >
                 <strong>{{ option.badge }}</strong>
@@ -198,46 +164,28 @@
 
     <!-- CREATE / EDIT FORM -->
     <el-card v-loading="formBusy">
-      <template #header><b>{{ form.id ? 'Edit Visitor' : 'Create Visitor' }}</b></template>
+      <template #header
+        ><b>{{ form.id ? 'Edit Visitor' : 'Create Visitor' }}</b></template
+      >
 
       <el-image
         :src="imagePreview || (form.image ? imageUrl(form.image) : noImageSrc)"
-        style="width:120px;height:120px;border-radius:50%;margin-bottom:8px"
+        style="width: 120px; height: 120px; border-radius: 50%; margin-bottom: 8px"
         fit="cover"
       />
 
-      <div v-if="form.id && !isImported" style="margin-bottom:16px">
-        <input
-          ref="fileInputRef"
-          type="file"
-          accept="image/*"
-          style="display:none"
-          @change="onFileSelected"
-        />
-        <el-button size="small" @click="fileInputRef?.click()">
-          Choose Image
-        </el-button>
-        <el-button
-          v-if="selectedFile"
-          size="small"
-          type="primary"
-          :loading="uploading"
-          @click="uploadImage"
-        >
+      <div v-if="form.id && !isImported" style="margin-bottom: 16px">
+        <input ref="fileInputRef" type="file" accept="image/*" style="display: none" @change="onFileSelected" />
+        <el-button size="small" @click="fileInputRef?.click()"> Choose Image </el-button>
+        <el-button v-if="selectedFile" size="small" type="primary" :loading="uploading" @click="uploadImage">
           Upload
         </el-button>
-        <span v-if="selectedFile" style="margin-left:8px;font-size:12px;color:#666">
+        <span v-if="selectedFile" style="margin-left: 8px; font-size: 12px; color: #666">
           {{ selectedFile.name }}
         </span>
       </div>
 
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        label-position="left"
-        label-width="120px"
-      >
+      <el-form ref="formRef" :model="form" :rules="formRules" label-position="left" label-width="120px">
         <el-form-item label="Name" prop="name">
           <el-input v-model="form.name" :disabled="isImported" />
         </el-form-item>
@@ -251,7 +199,13 @@
         </el-form-item>
 
         <el-form-item v-if="form.is_student" label="Grade">
-          <el-input-number v-model="form.grade" :min="0" :disabled="isImported" controls-position="right" style="width:100%" />
+          <el-input-number
+            v-model="form.grade"
+            :min="0"
+            :disabled="isImported"
+            controls-position="right"
+            style="width: 100%"
+          />
         </el-form-item>
 
         <el-form-item label="Form group" prop="form_group" :error="formGroupError">
@@ -262,7 +216,7 @@
             :disabled="isImported"
             trigger-on-focus
             clearable
-            style="width:100%"
+            style="width: 100%"
             @input="formGroupError = ''"
           >
             <template #default="{ item }">
@@ -277,37 +231,23 @@
 
         <template v-if="form.id">
           <el-form-item label="RFID Add">
-            <el-row :gutter="8" style="width:100%">
+            <el-row :gutter="8" style="width: 100%">
               <el-col :span="16">
                 <el-input v-model="newKey" :disabled="addingKey" @keyup.enter="addKey" />
               </el-col>
               <el-col :span="8">
-                <el-button type="primary" style="width:100%" :loading="addingKey" @click="addKey">
-                  Add
-                </el-button>
+                <el-button type="primary" style="width: 100%" :loading="addingKey" @click="addKey"> Add </el-button>
               </el-col>
             </el-row>
           </el-form-item>
 
-          <el-table
-            v-if="form.keys.length"
-            v-loading="keyLoading"
-            :data="form.keys"
-            border
-            class="mb-2"
-          >
+          <el-table v-if="form.keys.length" v-loading="keyLoading" :data="form.keys" border class="mb-2">
             <el-table-column label="RFID">
               <template #default="scope">{{ scope.row }}</template>
             </el-table-column>
             <el-table-column width="70">
               <template #default="scope">
-                <el-button
-                  size="small"
-                  type="danger"
-                  @click="removeKey(scope.row)"
-                >
-                  X
-                </el-button>
+                <el-button size="small" type="danger" @click="removeKey(scope.row)"> X </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -321,7 +261,6 @@
         </el-form-item>
       </el-form>
     </el-card>
-
   </div>
 </template>
 
@@ -372,7 +311,7 @@ const emptyForm = () => ({
   grade: 0,
   form_group: '',
   keys: [],
-  image: ''
+  image: '',
 })
 const form = ref(emptyForm())
 const newKey = ref('')
@@ -381,7 +320,7 @@ const newKey = ref('')
 const formRules = {
   name: [{ required: true, message: 'Name is required', trigger: 'blur' }],
   surname: [{ required: true, message: 'Surname is required', trigger: 'blur' }],
-  form_group: [{ max: FORM_GROUP_MAX_LENGTH, message: `Max ${FORM_GROUP_MAX_LENGTH} characters`, trigger: 'blur' }]
+  form_group: [{ max: FORM_GROUP_MAX_LENGTH, message: `Max ${FORM_GROUP_MAX_LENGTH} characters`, trigger: 'blur' }],
 }
 
 /* FORM GROUPS (autocomplete) */
@@ -408,7 +347,7 @@ const formGroupNotice = computed(() => {
 })
 
 const formGroupFilters = computed(() =>
-  getFormGroupOptions(visitors.value, null).map(value => ({ text: value, value }))
+  getFormGroupOptions(visitors.value, null).map((value) => ({ text: value, value })),
 )
 
 function filterByFormGroup(value, row) {
@@ -429,24 +368,24 @@ const filtered = computed(() => {
 
   if (qName.value) {
     const s = qName.value.toLowerCase()
-    list = list.filter(v => v.name.toLowerCase().includes(s) || v.surname.toLowerCase().includes(s))
+    list = list.filter((v) => v.name.toLowerCase().includes(s) || v.surname.toLowerCase().includes(s))
   }
 
   if (qGrade.value) {
     const s = qGrade.value.toLowerCase()
-    list = list.filter(v => String(v.grade).toLowerCase().includes(s))
+    list = list.filter((v) => String(v.grade).toLowerCase().includes(s))
   }
 
   if (q.value) {
     const searchWords = q.value
       .toLowerCase()
       .split(' ')
-      .map(w => w.replace(/\s+/g, ''))
+      .map((w) => w.replace(/\s+/g, ''))
       .filter(Boolean)
 
-    list = list.filter(v => {
+    list = list.filter((v) => {
       const searchString = (v.name + v.surname + v.grade + (v.form_group || '')).toLowerCase().replace(/\s+/g, '')
-      return searchWords.every(word => searchString.includes(word))
+      return searchWords.every((word) => searchString.includes(word))
     })
   }
 
@@ -462,12 +401,14 @@ function imageUrl(path) {
 }
 
 /* NO-IMAGE PLACEHOLDER (inline SVG data URI) */
-const noImageSrc = 'data:image/svg+xml,' + encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">' +
-  '<rect width="80" height="80" fill="#e0e0e0" rx="40"/>' +
-  '<text x="40" y="46" text-anchor="middle" fill="#999" font-size="11" font-family="sans-serif">No image</text>' +
-  '</svg>'
-)
+const noImageSrc =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">' +
+      '<rect width="80" height="80" fill="#e0e0e0" rx="40"/>' +
+      '<text x="40" y="46" text-anchor="middle" fill="#999" font-size="11" font-family="sans-serif">No image</text>' +
+      '</svg>',
+  )
 
 /* FORMAT DATE */
 function formatDate(str) {
@@ -506,7 +447,7 @@ function selectRow(row) {
     grade: row.grade || 0,
     form_group: row.form_group || '',
     keys: [...(row.keys || [])],
-    image: row.image || ''
+    image: row.image || '',
   }
 }
 
@@ -536,7 +477,7 @@ async function removeKey(key) {
   try {
     await api.delete(`/visitors/${form.value.id}/key/${encodeURIComponent(key)}`)
     ElMessage.success('RFID removed')
-    form.value.keys = form.value.keys.filter(k => k !== key)
+    form.value.keys = form.value.keys.filter((k) => k !== key)
     await refresh()
   } catch (err) {
     ElMessage.error(err.response?.data?.error || err.response?.data?.message || 'Failed to remove RFID')
@@ -548,14 +489,18 @@ async function removeKey(key) {
 /* SAVE (CREATE / UPDATE) */
 async function save() {
   if (!formRef.value) return
-  try { await formRef.value.validate() } catch { return }
+  try {
+    await formRef.value.validate()
+  } catch {
+    return
+  }
 
   const payload = {
     name: form.value.name,
     surname: form.value.surname,
     is_student: form.value.is_student,
     grade: form.value.is_student ? form.value.grade : null,
-    form_group: normalizeFormGroupInput(form.value.form_group)
+    form_group: normalizeFormGroupInput(form.value.form_group),
   }
 
   formGroupError.value = ''
@@ -596,7 +541,7 @@ async function uploadImage() {
   uploading.value = true
   try {
     const { data } = await api.post(`/visitors/${form.value.id}/image`, fd, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
     form.value.image = data.image
     ElMessage.success('Image uploaded')
@@ -621,12 +566,14 @@ function clearFileSelection() {
 /* DELETE VISITOR */
 async function deleteVisitor(row) {
   try {
-    await ElMessageBox.confirm(
-      `Delete visitor "${row.name} ${row.surname}"?`,
-      'Confirm',
-      { type: 'warning', confirmButtonText: 'Delete', cancelButtonText: 'Cancel' }
-    )
-  } catch { return }
+    await ElMessageBox.confirm(`Delete visitor "${row.name} ${row.surname}"?`, 'Confirm', {
+      type: 'warning',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+    })
+  } catch {
+    return
+  }
 
   loading.value = true
   try {
@@ -652,11 +599,11 @@ const trackActionOptions = MANUAL_TRACK_ACTIONS.map((key) => ({
 }))
 const trackDialogCopy = computed(() => getManualTrackDialogCopy(trackAction.value))
 const trackSubmitLabel = computed(() => getManualTrackSubmitLabel(trackAction.value))
-const trackReasonPlaceholder = computed(() => (
+const trackReasonPlaceholder = computed(() =>
   trackAction.value === 'sign_in'
     ? 'Example: Visitor arrived at reception and forgot to scan.'
-    : 'Example: Visitor left the building without scanning at the exit.'
-))
+    : 'Example: Visitor left the building without scanning at the exit.',
+)
 
 function openTrackDialog(row) {
   trackRow.value = row
@@ -674,7 +621,7 @@ async function submitTrack() {
     await api.post('/track/visit', {
       visitor_id: trackRow.value.id,
       signed_in: actionMeta.signedIn,
-      description: trackReason.value.trim()
+      description: trackReason.value.trim(),
     })
     ElMessage.success(`Visitor was ${actionMeta.successLabel} successfully`)
     trackDialogVisible.value = false
@@ -697,13 +644,39 @@ function reset() {
 </script>
 
 <style scoped>
-.grid { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
-.mb-2 { margin-bottom: 12px; }
-.fg-option { display: flex; justify-content: space-between; gap: 12px; }
-.fg-hint { color: var(--el-text-color-secondary); font-size: 12px; }
-.fg-notice { width: 100%; color: var(--el-color-warning); font-size: 12px; line-height: 1.4; margin-top: 4px; }
-.qr-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
-.track-dialog-shell { display: grid; gap: 20px; }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+}
+.mb-2 {
+  margin-bottom: 12px;
+}
+.fg-option {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fg-hint {
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+}
+.fg-notice {
+  width: 100%;
+  color: var(--el-color-warning);
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+.qr-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.track-dialog-shell {
+  display: grid;
+  gap: 20px;
+}
 .track-hero {
   display: flex;
   align-items: center;
@@ -774,7 +747,10 @@ function reset() {
   background: #fff;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 .track-action-card strong {
   font-size: 16px;
@@ -804,5 +780,9 @@ function reset() {
     grid-template-columns: 1fr;
   }
 }
-@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
